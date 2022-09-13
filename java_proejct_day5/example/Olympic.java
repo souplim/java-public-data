@@ -10,39 +10,66 @@ import java.util.Scanner;
  */
 public class Olympic {
     public static void main(String[] args) {
-        int[] score = new int[5];
         Scanner scanner = new Scanner(System.in);
-        for(int i=0; i<score.length; i++){
+
+        int[] score = new int[5];
+        int tempNum;
+        int count=0;
+
+        int i = 0;
+        do{
             System.out.print("점수를 입력해주세요 : ");
-            if(0<=score[i]&&score[i]<=100){
-                score[i] = scanner.nextInt();
-            } else{
+            tempNum = scanner.nextInt();
+            if(!(0<= tempNum && tempNum <=100)){
                 System.out.println("점수는 0~100 사이로 입력해주세요.");
+            } else {
+                while (i < score.length) {
+                    score[i] = tempNum;
+                    count++;
+                    i++;
+                    break;
+                }
             }
-        }
+        } while(count<score.length);
 
         System.out.println("-----총 입력된 점수들-----");
-        for(int i=0; i<score.length; i++){
-            System.out.println(score[i]+"점");
+        for(int j=0; j<score.length; j++){
+            System.out.println(score[j]+"점");
         }
         System.out.println("-----제거 대상 점수-----");
         int max = score[0];
-        for(int i=1; i<score.length; i++){
-            if(score[i]>max){
-                max = score[i];
+        for(int j=1; j<score.length; j++){
+            if(score[j]>max){
+                max = score[j];
             }
         }
 
         int min = score[0];
-        for(int i=1; i<score.length; i++){
-            if(score[i]<min){
-                min = score[i];
+        for(int j=1; j<score.length; j++){
+            if(score[j]<min){
+                min = score[j];
             }
         }
         System.out.println("최고 점수 : "+max);
         System.out.println("최고 점수 : "+min);
 
         System.out.println("-----최종 입력 점수-----");
+        for(int j=0; j<score.length; j++){
+            if(score[j]!=max && score[j]!=min){
+                System.out.println(score[j]+"점");
+            }
+        }
 
+        System.out.println("---------------------");
+        int total = 0;
+        float avg = 0;
+        for(int j=0; j<score.length; j++){
+            if(score[j]!=max && score[j]!=min){
+                total += score[j];
+            }
+        }
+        avg = ((int)(((float)total / (score.length - 2))*100+0.5))/100f;
+        System.out.println("총점 : "+total);
+        System.out.println("평균 : "+avg);
     }
 }
