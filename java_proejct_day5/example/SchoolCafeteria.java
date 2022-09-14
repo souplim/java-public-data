@@ -7,16 +7,20 @@ package example;
 public class SchoolCafeteria {
     public static void main(String[] args) {
         int[] score = {1, 2, 1, 2, 3, 1, 2, 2, 3, 1, 3, 3, 1, 1, 1, 2, 3, 1, 3, 2};
+
         int satisfied=0;
         int normal=0;
         int notsatisfied=0;
+        // 변수 세개 선언하지 않고 배열 사용해도 ok
+//        int[] frequency = new int[3];
 
         for(int i=0; i<score.length; i++){
             if(score[i]==3){
                 satisfied++;
+//                frequency[2]++;
             } else if(score[i]==2){
                 normal++;
-            } else{
+            } else if(score[i]==1){ // else로 처리해도 되고 엄격하게 하려면 else if 사용
                 notsatisfied++;
             }
         }
