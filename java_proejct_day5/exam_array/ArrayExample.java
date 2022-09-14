@@ -51,14 +51,15 @@ public class ArrayExample {
         int[] kor = new int[]{80, 95, 90, 85, 100}; // 배열초기화(국어점수)
         int[] eng = new int[5];
 
-        for(int i=0; i<eng.length; i++){
+        for(int i=0; i<eng.length; i++){ // 입력값 배열저장(영어점수)
             System.out.println("영어 점수를 입력해주세요.");
             eng[i] = scanner.nextInt();
         }
 
-        for(int i=0; i<eng.length; i++){
+        for(int i=0; i<eng.length; i++){ // 배열값 출력
             System.out.print("kor["+i+"] ="+kor[i]+", ");
             System.out.println("eng["+i+"] ="+eng[i]);
         }
+        scanner.close();
     }
 }
