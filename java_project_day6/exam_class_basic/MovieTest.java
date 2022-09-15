@@ -15,5 +15,7 @@ public class MovieTest {
     public static void main(String[] args) {
         Movie m = new Movie();
         System.out.println(m.toString());
+        // 하나 값 
+        // 사용자에게 값 입력받아 영화정보 출력
     }
 }
