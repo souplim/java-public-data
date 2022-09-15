@@ -7,15 +7,18 @@ public class MaxMinExample {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         final int NUMBER = 10;
-        int num;
         int min=0, max=0;
 
 
-        for(int i=0; i<NUMBER; i++){
+        System.out.print("10개의 수를 입력하세요 : ");
+        int num = scanner.nextInt();
+        min = num;
+        max = num;
+
+        for(int i=1; i<NUMBER; i++){
             System.out.print("10개의 수를 입력하세요 : ");
             num = scanner.nextInt();
-            min = num;
-            max = num;
+
             if(num<min){
                 min = num;
             }
@@ -26,35 +29,5 @@ public class MaxMinExample {
 
         System.out.println("최소값 : "+min);
         System.out.println("최대값 : "+max);
-
-
-
-
-
-//        int count=0;
-//        do {
-//            System.out.print("10개의 수를 입력하세요 : ");
-//            count++;
-//        } while(count<10)
-//
-//
-//
-//        // 최소값 구하기
-//        min = nums[0];
-//        for(int i=1; i<10; i++){
-//            if(nums[i]<min){
-//                min = nums[i];
-//            }
-//        }
-//
-//        // 최대값 구하기
-//        max = nums[0];
-//        for(int i=1; i<10; i++){
-//            if(nums[i]>max){
-//                max = nums[i];
-//            }
-//        }
-
-
     }
 }
