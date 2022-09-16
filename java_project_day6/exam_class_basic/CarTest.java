@@ -18,8 +18,7 @@ class Car {
         gear = g;
         color = c;
     }
-
-
+    
     public void speedUp(int s){ // 속도 증가 메서드. s: 매개변수
         speed+=s;
     }
@@ -56,13 +55,8 @@ public class CarTest {
 //        c2.gear = 3;
 //        c2.color = "blue";
 
-        Car c2 = new Car();
-        c2.carData(60, 3, "blue");
-
-//        Car c2 = Car(60, 3, "blue");
-
-
-
+        Car c2 = Car(60, 3, "blue");
+        
         c2.speedDown(40);
         c2.printData();
         System.out.println("Car2: "+c.toString());
