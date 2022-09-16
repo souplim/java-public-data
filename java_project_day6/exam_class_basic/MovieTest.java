@@ -14,7 +14,7 @@ public class MovieTest {
         m.movieYear = 2007;
         System.out.println(m.toString());
 
-        Movie m2 = new Movie("안경", 3, "오기가미 나오코", 2007);
+        Movie m2 = new Movie("킹메이커", 3, "변성현", 2020);
         System.out.println(m2.toString());
 
 
@@ -30,7 +30,7 @@ public class MovieTest {
         m3.movieDirector = scanner.nextLine();
         System.out.print("영화 개봉연도 : ");
         m3.movieYear = scanner.nextInt();
-        System.out.println(m.toString());
+        System.out.println(m3.toString());
 
 
         // 사용자로 하여금 영화정보를 입력받기 위한 메서드를 별도로 구하여 설정
