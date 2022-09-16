@@ -1,61 +1,84 @@
 package exam_class_basic;
 
-class Movie {
-    public String movieTitle;
-    public int movieGrade;
-    public String movieDirector;
-    public int movieYear;
-
-    public String toString(){
-        return "movieTitle: "+movieTitle+", movieGrade: "+movieGrade+", movieDirector: "+movieDirector+", movieYear: "+movieYear;
-    }
-}
-
-public class MovieTest {
-    public static void main(String[] args) {
-        Movie m = new Movie();
-        System.out.println(m.toString());
-        // 하나 값 
-        // 사용자에게 값 입력받아 영화정보 출력
-    }
-}
-package exam_class_basic;
-
 import java.util.Scanner;
 
-class Movie {
-    public String movieTitle;
-    public double movieGrade;
-    public String movieDirector;
-    public int movieYear;
-
-    public String toString(){
-        return "movieTitle: "+movieTitle+", movieGrade: "+movieGrade+", movieDirector: "+movieDirector+", movieYear: "+movieYear;
-    }
-}
-
 public class MovieTest {
+    public static Scanner scanner = new Scanner(System.in); // 메인메소드 외에서도 사용할 수 있게 public으로 설정
     public static void main(String[] args) {
+        // 1. 영화 정보를 직접 명시
         Movie m = new Movie();
-        // 출력하기
+
         m.movieTitle = "안경";
         m.movieGrade = 3;
         m.movieDirector = "오기가미 나오코";
         m.movieYear = 2007;
         System.out.println(m.toString());
 
-        // 사용자에게 값 입력받아 영화정보 출력
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("원하는 영화의 제목을 입력하시오 : ");
-        m.movieTitle = scanner.nextLine();
-        System.out.print("해당 영화의 평점을 입력하시오 : ");
-        m.movieGrade = scanner.nextDouble();
+        Movie m2 = new Movie("안경", 3, "오기가미 나오코", 2007);
+        System.out.println(m2.toString());
+
+
+        // 2. 사용자에게 값 입력받아 영화정보 출력
+
+        Movie m3 = new Movie();
+        System.out.print("영화 제목 : ");
+        m3.movieTitle = scanner.nextLine();
+        System.out.print("영화 평점 : ");
+        m3.movieGrade = scanner.nextDouble();
         scanner.nextLine();
-        System.out.print("해당 영화의 감족을 입력하시오 : ");
-        m.movieDirector = scanner.nextLine();
-        System.out.print("해당 영화의 개봉연도를 입력하시오 : ");
-        m.movieYear = scanner.nextInt();
+        System.out.print("영화 감독 : ");
+        m3.movieDirector = scanner.nextLine();
+        System.out.print("영화 개봉연도 : ");
+        m3.movieYear = scanner.nextInt();
         System.out.println(m.toString());
 
+
+        // 사용자로 하여금 영화정보를 입력받기 위한 메서드를 별도로 구하여 설정
+        Movie m4 = new Movie();
+        inputData(m4);
+        Movie m5 = new Movie();
+        inputData(m5);
+
+        System.out.println("영화 정보는 다음과 같다");
+        System.out.println("========================================");
+        System.out.println("제목\t\t평점\t\t감독\t\t개봉일");
+        System.out.println("========================================");
+        System.out.println(m4.toString());
+        System.out.println(m5.toString());
+    }
+
+    // 데이터를 입력받기 위한 메서드
+    public static void inputData(Movie mv) { // Movie mv = m4(참조값/주솟값)
+        //필드에 직접 대입
+        scanner.nextLine(); // 엔터를 입력값으로 받지 않기 위한 코드
+        System.out.print("영화 제목 : ");
+        mv.movieTitle = scanner.nextLine();
+        System.out.print("영화 평점 : ");
+        mv.movieGrade = scanner.nextDouble();
+        scanner.nextLine();
+        System.out.print("영화 감독 : ");
+        mv.movieDirector = scanner.nextLine();
+        System.out.print("영화 개봉연도 : ");
+        mv.movieYear = scanner.nextInt();
+    }
+}
+
+class Movie {
+    public String movieTitle; // 영화제목
+    public double movieGrade; // 영화평점
+    public String movieDirector; // 영화감독
+    public int movieYear; // 개봉연도
+
+    Movie(){ }
+    Movie(String movieTitle, double movieGrade, String movieDirector, int movieYear){
+        this.movieTitle = movieTitle;
+        this.movieGrade = movieGrade;
+        this.movieDirector = movieDirector;
+        this.movieYear = movieYear;
+    }
+
+    public String toString(){
+        return "movieTitle: "+movieTitle+", movieGrade: "+movieGrade+", movieDirector: "+movieDirector+", movieYear: "+movieYear;
+//        return String.format("%s\t %s\t %-10s\t %s", movieTitle, movieGrade, movieDirector, movieYear);
     }
 }
