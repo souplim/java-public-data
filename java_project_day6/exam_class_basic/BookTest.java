@@ -13,10 +13,7 @@ class Book {
     public String toString(){
         return String.format("책번호: %s\n책이름: %s\n출판사명: %s\n총페이지수: %d\n", book_no, book_name, book_pub, book_pages);
     }
-
-
 }
-
 
 public class BookTest {
     public static void main(String[] args){
