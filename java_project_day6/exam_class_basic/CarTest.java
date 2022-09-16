@@ -55,7 +55,7 @@ public class CarTest {
 //        c2.gear = 3;
 //        c2.color = "blue";
 
-        Car c2 = Car(60, 3, "blue");
+        Car c2 = new Car(60, 3, "blue");
         
         c2.speedDown(40);
         c2.printData();
