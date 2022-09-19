@@ -6,7 +6,7 @@ package simplephoneinfo;
  * 필드는 private 선언
  * 설정자(Setter) / 접근자(Getter)
  * 생성자
- * 출력은 toString()이 아니라 showPhoneInfo()로 설정
+ * 출력은 toString()이 아니라 showPhoneInfo()로 설정 Q.WHY?
  * [실행 예시]
  * name: 임미경
  * phone: 010-2345-8745
@@ -19,13 +19,13 @@ class PhoneInfo {
     private String birthday;
 
     PhoneInfo(){ }
-    PhoneInfo(String name, String phoneNumber, String birthday){
-        this(name, phoneNumber);
-        this.birthday = birthday;
-    }
     PhoneInfo(String name, String phoneNumber){
+        this(name, phoneNumber, "");
+    }
+    PhoneInfo(String name, String phoneNumber, String birthday){
         this.name = name;
         this.phoneNumber = phoneNumber;
+        this.birthday = birthday;
     }
 
     public void setName(String name){
@@ -56,7 +56,7 @@ class PhoneInfo {
 
 public class PhoneBookVer01 {
     public static void main(String[] args) {
-        // (1)
+        // (1) setter / getter 사용
         PhoneInfo pi = new PhoneInfo();
         pi.setName("임미경");
         pi.setPhoneNumber("010-2345-6573");
@@ -66,8 +66,8 @@ public class PhoneBookVer01 {
         pi2.setName("김현수");
         pi2.setPhoneNumber("011-6435-1249");
 
-        // (2)
-        PhoneInfo pi3 = new PhoneInfo("임은재", "010-4355-8742", "1992.05.14.");
+        // (2) 생성자 사용
+        PhoneInfo pi3 = new PhoneInfo("임미경", "010-2345-6573", "1965.03.28.");
 
         // (3)
         PhoneInfo pi4 = new PhoneInfo("김현수", "011-6435-1249");
@@ -75,6 +75,6 @@ public class PhoneBookVer01 {
         pi.showPhoneInfo();
         pi2.showPhoneInfo();
         pi3.showPhoneInfo();
-        pi4.showPhoneInfo(); // birthdaynull 안 뜨게 하려면?
+        pi4.showPhoneInfo(); // birthday 안 적은 사람 birthday 조차 안 뜨게 하려면?
     }
 }
