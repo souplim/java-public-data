@@ -47,10 +47,11 @@ class PhoneInfo2 {
     }
 
     public void showPhoneInfo(){
-        if(birthday.equals("")){
-            System.out.printf("name: %s\nphone: %s\n", name, phoneNumber);
-        } else {
-            System.out.printf("name: %s\nphone: %s\nbirthday: %s\n", name, phoneNumber, birthday);
+        System.out.println("name : "+name);
+        System.out.println("phone : "+phoneNumber);
+
+        if(birthday != ""){ // "", null값일 때는 비교연산자 가능!
+            System.out.println("birthday : "+birthday);
         }
     }
 }
@@ -90,8 +91,8 @@ public class PhoneBookVer02 {
             if(choice==2){ break; }
             else if(choice==1){
                 PhoneInfo pi5 = new PhoneInfo();
-                inputPhoneinfo(pi5);
-                pi5.showPhoneInfo();
+                inputPhoneinfo(pi5); // static 메서드의 사용
+                pi5.showPhoneInfo(); // 인스턴스 메서드의 사용
             }
         } while(!(choice==2));
         System.out.println("프로그램을 종료합니다.");
