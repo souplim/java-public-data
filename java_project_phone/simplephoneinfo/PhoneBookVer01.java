@@ -52,22 +52,15 @@ class PhoneInfo {
     }
 
     public void showPhoneInfo(){
-        System.out.printf("name: %s\nphone: %s\nbirthday%s\n", name, phoneNumber, birthday);
+        if(birthday.equals("")){
+            System.out.printf("name: %s\nphone: %s\n", name, phoneNumber);
+        } else {
+            System.out.printf("name: %s\nphone: %s\nbirthday: %s\n", name, phoneNumber, birthday);
+        }
     }
 }
 
 public class PhoneBookVer01 {
-    public static Scanner scanner = new Scanner(System.in);
-    public static void inputPhoneinfo(PhoneInfo pi){
-        scanner.nextLine();
-        System.out.print("이름 : ");
-        pi.setName(scanner.nextLine());
-        System.out.print("전화번호 : ");
-        pi.setPhoneNumber(scanner.nextLine());
-        System.out.print("생년월일 : ");
-        pi.setBirthday(scanner.nextLine());
-    }
-
     public static void main(String[] args) {
         // (1) setter / getter 사용
         PhoneInfo pi = new PhoneInfo();
@@ -76,31 +69,10 @@ public class PhoneBookVer01 {
         pi.setBirthday("1965.03.28.");
         pi.showPhoneInfo();
 
-        PhoneInfo pi2 = new PhoneInfo();
-        pi2.setName("김현수");
-        pi2.setPhoneNumber("011-6435-1249");
-        pi2.showPhoneInfo();
-
         // (2) 생성자 사용
-        PhoneInfo pi3 = new PhoneInfo("임미경", "010-2345-6573", "1965.03.28.");
-        PhoneInfo pi4 = new PhoneInfo("김현수", "011-6435-1249");
-        pi3.showPhoneInfo();
-        pi4.showPhoneInfo(); // birthday 안 적은 사람 birthday 조차 안 뜨게 하려면?
+        PhoneInfo pi2 = new PhoneInfo("김현수", "011-6435-1249");
 
-        // (3) 데이터 입력받기
-        int i = 0;
-        int choice = 1; // 데이터 입력과 종료 변수
-        do{
-            System.out.printf("선택하세요\n1. 데이터 입력\n2. 프로그램 종료\n선택 : ");
-            choice = scanner.nextInt();
-            if(choice==2){ break; }
-            else if(choice==1){
-                PhoneInfo pi5 = new PhoneInfo();
-                inputPhoneinfo(pi5);
-                pi5.showPhoneInfo();
-            }
-        } while(!(choice==2));
-        System.out.println("프로그램을 종료합니다.");
-        scanner.close();
+        pi.showPhoneInfo();
+        pi2.showPhoneInfo();
     }
 }
