@@ -40,29 +40,23 @@ class Payroll {
 
 public class PayrollTest {
     public static void main(String[] args) {
-        Payroll p1 = new Payroll("A111", 780000);
-        p1.getSu();
-        p1.getSe();
-        p1.getBong();
-        p1.getGrad();
+        Payroll[] p = new Payroll[]{new Payroll("A111", 780000),
+                new Payroll("B222", 450000),
+                new Payroll("C333", 570000),
+        };
 
-        Payroll p2 = new Payroll("B222", 450000);
-        p2.getSu();
-        p2.getSe();
-        p2.getBong();
-        p2.getGrad();
-
-        Payroll p3 = new Payroll("C333", 570000);
-        p3.getSu();
-        p3.getSe();
-        p3.getBong();
-        p3.getGrad();
+        for(int i=0; i<p.length; i++){
+            p[i].getSu();
+            p[i].getSe();
+            p[i].getBong();
+            p[i].getGrad();
+        }
 
         System.out.println("                      봉급계산서                                    ");
         System.out.println("==================================================================");
         System.out.println(" 사번\t  기본급\t\t\t수당\t\t\t세금\t\t\t본봉\t\t\t등급");
-        System.out.println(p1.toString());
-        System.out.println(p2.toString());
-        System.out.println(p3.toString());
+        for(int i=0; i<p.length; i++){
+            System.out.println(p[i].toString());
+        }
     }
 }
