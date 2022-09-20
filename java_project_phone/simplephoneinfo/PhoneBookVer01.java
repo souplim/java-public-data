@@ -52,10 +52,11 @@ class PhoneInfo {
     }
 
     public void showPhoneInfo(){
-        if(birthday.equals("")){
-            System.out.printf("name: %s\nphone: %s\n", name, phoneNumber);
-        } else {
-            System.out.printf("name: %s\nphone: %s\nbirthday: %s\n", name, phoneNumber, birthday);
+        System.out.println("name : "+name);
+        System.out.println("phone : "+phoneNumber);
+
+        if(birthday != ""){ // "", null값일 때는 비교연산자 가능!
+            System.out.println("birthday : "+birthday);
         }
     }
 }
