@@ -1,5 +1,10 @@
 package exam_class_constructor;
 
+/*스마트폰을 구입하려고 한다. SmartPhone 클래스의 생성자를 이용하여 객체를 생성하고 모든 종류와 할인 정보를 출력한다.
+아래 UML을 기준으로 SmartPhone 클래스를 생성하자.
+각 멤버 변수(필드)는 제조사 maker, 명칭 name, 가격 price, 할인율 discountRate로 지정한다.
+생성자, 설정자, 접근자 등을 작성해 주면 된다.
+실행 클래스 내에 main() 메서드를 실행하여 다음과 같은 결과가 나올 수 있도록 구현하시오.*/
 class SmartPhone {
     private String maker;
     private String name;
