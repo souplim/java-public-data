@@ -53,8 +53,17 @@ public class CarObjectArray {
             System.out.println("자동차("+(i+1)+") "+cars[i].toString()); // 인스턴스 변수 출력
         }
 
-        // 매개변수 있는 생성자 이용한 객체 생성!
+        // 매개변수 있는 생성자 이용한 객체 생성! 디폴트 값 보다는 내가 원하는 것 커스터마이징 하는 경우 많음
         Car[] cars2 = new Car[]{
+                new Car(60, 1 ,"검정색"),
+                new Car(90, 3, "회색"),
+                new Car(0, 1, "검정색"),
+                new Car(10, 2, "그린"),
+                new Car(30, 2, "회색"),
+                new Car(40, 1, "하얀색"),
+        };
+
+        Car[] cars3 = { // 생성과 동시에 초기화 할 때는 생략 가능
                 new Car(60, 1 ,"검정색"),
                 new Car(90, 3, "회색"),
                 new Car(0, 1, "검정색"),
