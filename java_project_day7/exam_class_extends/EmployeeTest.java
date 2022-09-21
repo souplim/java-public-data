@@ -37,11 +37,10 @@ public class EmployeeTest{
     public static void main(String[] args) {
         Employee2 e = new Employee2();
         e.setEmpData("홍길동", "역삼동", "010-1234-5678", 500);
+        System.out.println(e);
 
         Manager m = new Manager();
-        m.setMgrData("임은재", "역삼동","010-1234-5678", 700, 5000, "웹개발자");
-
-        System.out.println(e);
+        m.setMgrData("임은재", "역삼동","010-1234-5678", 700, 5000, "대리");
         System.out.println(m);
     }
 }
