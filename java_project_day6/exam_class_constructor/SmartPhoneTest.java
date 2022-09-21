@@ -34,22 +34,42 @@ class SmartPhone {
     public int getDiscountRate(){ return discountRate; }
     public void setDiscountRate(int discountRate){ this.discountRate = discountRate; }
 
-    public String toString(){
-        return String.format("-------------------------------------\n%s [%s]\n가격 : %d\n할인가격(%d%%) : %d",name, maker, price, discountRate, calculateDiscount());
-    }
+    // UML에 toString 메서드 없음. 실행클래스에서 직접 출력으로 짜기
+//    public String toString(){
+//        return String.format("-----------------------------\n%s [%s]\n가격 : %d\n할인가격(%d%%) : %d",name, maker, price, discountRate, calculateDiscount());
+//    }
 }
 
 public class SmartPhoneTest {
     public static void main(String[] args) {
-        SmartPhone samsung = new SmartPhone("삼성","갤럭시노트9",1094500);
-        samsung.calculateDiscount();
-        SmartPhone apple = new SmartPhone("애플","아이폰XS",1364000, 10);
-        apple.calculateDiscount();
-        SmartPhone samsung2 = new SmartPhone("삼성","갤럭시S8",935000, 35);
-        samsung2.calculateDiscount();
+//        SmartPhone samsung = new SmartPhone("삼성","갤럭시노트9",1094500);
+//        samsung.calculateDiscount();
+//        SmartPhone apple = new SmartPhone("애플","아이폰XS",1364000, 10);
+//        apple.calculateDiscount();
+//        SmartPhone samsung2 = new SmartPhone("삼성","갤럭시S8",935000, 35);
+//        samsung2.calculateDiscount();
 
-        System.out.println(samsung.toString()); // 할인가격 없을 때 안 나오게 하는 법?
-        System.out.println(apple.toString());
-        System.out.println(samsung2.toString());
+        // 객체 배열
+        SmartPhone[] samsung = new SmartPhone[]{
+                new SmartPhone("삼성","갤럭시노트9",1094500),
+                new SmartPhone("애플","아이폰XS",1364000, 10),
+                new SmartPhone("삼성","갤럭시S8",935000, 35)
+        };
+
+        for(int i=0; i<samsung.length; i++){
+            samsung[i].calculateDiscount();
+        }
+
+        System.out.println("===========제품목록===========");
+        for(int i=0; i<samsung.length; i++){
+            System.out.println(samsung[i].getName()+" ["+samsung[i].getMaker()+"]");
+            System.out.println("가격 : "+samsung[i].getPrice());
+            if(samsung[i].getDiscountRate()!=0)
+                System.out.println("할인가격("+samsung[i].getDiscountRate()+"%) : "+samsung[i].calculateDiscount());
+        }
+
+//        System.out.println(samsung.toString()); // 할인가격 없을 때 안 나오게 하는 법?
+//        System.out.println(apple.toString());
+//        System.out.println(samsung2.toString());
     }
 }
