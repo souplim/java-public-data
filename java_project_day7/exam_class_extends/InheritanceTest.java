@@ -1,4 +1,4 @@
-package exam_inheritance;
+package exam_class_extends;
 
 class Person {
     private String name;
