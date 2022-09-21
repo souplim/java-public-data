@@ -59,9 +59,12 @@ public class FruitTest {
             savePrice2 = (int)(totalPrice2*0.15);
         }
         System.out.println("==========과일구입 목록==========");
-        for(int i=0; i<f.length; i++){
-            System.out.println(f[i].toString());
+        for(Fruit ft : f){ // 향상된 for문 : for(자료형 변수명 : 배열명){ }
+            System.out.println(ft.toString());
         }
+//        for(int i=0; i<f.length; i++){
+//            System.out.println(f[i].toString());
+//        }
         System.out.println("--------------------------------");
         System.out.println("총금액 : "+totalPrice2);
         System.out.println("할인후 결제 금액 : "+(totalPrice2-savePrice2)+"원");
