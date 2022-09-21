@@ -38,7 +38,6 @@ class PhoneInfo2 {
     public String getPhoneNumber(){
         return phoneNumber;
     }
-
     public void setBirthday(String birthday){
         this.birthday = birthday;
     }
@@ -50,7 +49,7 @@ class PhoneInfo2 {
         System.out.println("name : "+name);
         System.out.println("phone : "+phoneNumber);
 
-        if(birthday != ""){ // "", null값일 때는 비교연산자 가능!
+        if(!birthday.equals("")){ // "", null값일 때는 비교연산자 가능!
             System.out.println("birthday : "+birthday);
         }
     }
@@ -58,44 +57,38 @@ class PhoneInfo2 {
 
 public class PhoneBookVer02 {
     public static Scanner scanner = new Scanner(System.in);
-    public static void inputPhoneinfo(PhoneInfo pi){
-        scanner.nextLine();
+
+    public static void showMenu(){
+        System.out.printf("선택하세요\n1. 데이터 입력\n2. 프로그램 종료\n선택 : ");
+    }
+    public static void readData(){
         System.out.print("이름 : ");
-        pi.setName(scanner.nextLine());
+        String name = scanner.nextLine();
         System.out.print("전화번호 : ");
-        pi.setPhoneNumber(scanner.nextLine());
+        String phoneNumber = scanner.nextLine();
         System.out.print("생년월일 : ");
-        pi.setBirthday(scanner.nextLine());
+        String birthday = scanner.nextLine();
+
+        PhoneInfo2 info = new PhoneInfo2(name, phoneNumber, birthday);
+        info.showPhoneInfo(); // 인스턴스 메서드의 사용
     }
 
     public static void main(String[] args) {
-        // (1) setter / getter 사용
-        PhoneInfo pi = new PhoneInfo();
-        pi.setName("임미경");
-        pi.setPhoneNumber("010-2345-6573");
-        pi.setBirthday("1965.03.28.");
-        pi.showPhoneInfo();
-
-        // (2) 생성자 사용
-        PhoneInfo pi2 = new PhoneInfo("김현수", "011-6435-1249");
-
-        pi.showPhoneInfo();
-        pi2.showPhoneInfo();
-
         // (3) 데이터 입력받아 출력
-        int i = 0;
-        int choice = 1; // 데이터 입력과 종료 변수
-        do{
-            System.out.printf("선택하세요\n1. 데이터 입력\n2. 프로그램 종료\n선택 : ");
+        int choice; // 데이터 입력과 종료 변수
+        do{ showMenu();
             choice = scanner.nextInt();
-            if(choice==2){ break; }
-            else if(choice==1){
-                PhoneInfo pi5 = new PhoneInfo();
-                inputPhoneinfo(pi5); // static 메서드의 사용
-                pi5.showPhoneInfo(); // 인스턴스 메서드의 사용
+            scanner.nextLine(); // 입력받을 때 엔터 제거 구문
+
+            switch(choice){
+                case 1:
+                    readData();
+                    break;
+                case 2:
+                    System.out.println("프로그램을 종료합니다.");
+                    scanner.close();
+                    return;
             }
-        } while(!(choice==2));
-        System.out.println("프로그램을 종료합니다.");
-        scanner.close();
+        } while(true);
     }
 }
