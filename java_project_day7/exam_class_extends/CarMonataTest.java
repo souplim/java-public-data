@@ -8,7 +8,6 @@ class Car{
     private String color;
     private int account;
 
-    Car(){ }
     public Car(String color, int account){
         this.color = color;
         this.account = account;
@@ -39,9 +38,15 @@ class Monata extends Car{
 
 public class CarMonataTest {
     public static void main(String[] args){
-        Car c = new Car();
         Monata m = new Monata("흰색", 5000, "승용", "NF");
+        Monata m2 = new Monata("은색", 7000, "업무","Brilliant");
+        Monata m3 = new Monata("감홍색", 4000, "택시","EF");
+        Monata m4 = new Monata("검정색", 6000, "승용","Hybrid");
 
+        System.out.println("========================= Monata 생산 시작 =========================");
         System.out.println(m.toString());
+        System.out.println(m2.toString());
+        System.out.println(m3.toString());
+        System.out.println(m4.toString());
     }
 }
