@@ -51,13 +51,11 @@ public class FruitTest {
                 new Fruit("cherry", 12000)};
 
         int totalPrice2 = 0;
-        int savePrice2 = 0;
         for(int i=0; i<f.length; i++){
             totalPrice2 += f[i].getPrice();
         }
-        for(int i=0; i<f.length; i++){
-            savePrice2 = (int)(totalPrice2*0.15);
-        }
+        int savePrice2 = (int)(totalPrice2*0.15);
+        
         System.out.println("==========과일구입 목록==========");
         for(Fruit ft : f){ // 향상된 for문 : for(자료형 변수명 : 배열명){ }
             System.out.println(ft.toString());
