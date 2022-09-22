@@ -10,6 +10,15 @@ class Employee2 {
     private String phoneNumber;
     private int salary;
 
+    // 생성자 추가
+    public Employee2(){ }
+    public Employee2(String name, String address, String phoneNumber, int salary){
+        this.name = name;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.salary = salary;
+    }
+
     // 전체 필드 설정하기 위한 메서드(직원정보)
     public void setEmpData(String name, String address, String phoneNumber, int salary){
         this.name = name;
@@ -17,6 +26,15 @@ class Employee2 {
         this.phoneNumber = phoneNumber;
         this.salary = salary;
     }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
+    public String getPhoneNumber() { return phoneNumber; }
+    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+    public int getSalary() { return salary; }
+    public void setSalary(int salary) { this.salary = salary; }
 
     public String toString(){
         return name+" : "+address+" : "+phoneNumber+" : "+salary;
@@ -27,12 +45,31 @@ class Manager extends Employee2{
     private int bonus;
     private String job;
 
+    // 생성자
+    public Manager(){ }
+    public Manager(String name, String address, String phoneNumber, int salary, int bonus, String job){
+        super(name, address, phoneNumber, salary);
+        this.bonus = bonus;
+        this.job = job;
+    }
+
     // 전체 필드 설정하기 위한 메서드(관리자정보)
     public void setMgrData(String name, String address, String phoneNumber, int salary, int bonus, String job){
         // 직원 클래스의 setEmpData()를 통해 직원에 정의된 필드 설정
         super.setEmpData(name, address, phoneNumber, salary);
         // 자신이 가진 필드 설정
         this.bonus = bonus;
+        this.job = job;
+    }
+
+    public int getBonus() { return bonus; }
+    public void setBonus(int bonus) { this.bonus = bonus; }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
         this.job = job;
     }
 
@@ -44,6 +81,7 @@ class Manager extends Employee2{
 
 public class EmployeeTest{
     public static void main(String[] args) {
+        // 실행결과 1
         Employee2 e = new Employee2();
         e.setEmpData("홍길동", "역삼동", "010-1234-5678", 500);
         System.out.println(e);
@@ -51,5 +89,11 @@ public class EmployeeTest{
         Manager m = new Manager();
         m.setMgrData("임은재", "역삼동","010-1234-5678", 700, 5000, "대리");
         System.out.println(m);
+
+        // 실행결과 2
+        Employee2 e2 = new Employee2("홍길동", "역삼동", "010-1234-5678", 500);
+        Manager m2 = new Manager("임은재", "역삼동","010-1234-5678", 700, 5000, "과장");
+        System.out.println(e2);
+        System.out.println(m2);
     }
 }
