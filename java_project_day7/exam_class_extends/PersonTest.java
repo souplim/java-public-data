@@ -23,9 +23,8 @@ class Person2{
     public void setAge(int age){ this.age = age; }
     public int getAge(){ return age;}
 
-    public void show(){
-        System.out.print("[이름 : "+getName()+", 나이 : "+getAge());
-    }
+    // show()의 반환타입이 꼭 void일 필요는 없음
+    public String show(){ return "이름 : "+getName()+", 나이 : "+getAge(); }
 }
 
 class Student2 extends Person2{
@@ -40,10 +39,8 @@ class Student2 extends Person2{
     public void setStuNum(int stuNum) { this.stuNum = stuNum; }
 
     @Override
-    public void show(){
-        super.show();
-        System.out.print(", 학번 : "+stuNum);
-    }
+    public String show(){ return super.show() + ", 학번 : "+stuNum; }
+
 }
 
 class ForeignStudent extends Student2 {
@@ -59,28 +56,18 @@ class ForeignStudent extends Student2 {
     public void setNationality(String nationality) { this.nationality = nationality; }
 
     @Override
-    public void show(){
-        super.show();
-        System.out.print(", 국적 : "+nationality);
-    }
+    public String show(){ return super.show()+", 국적 : "+nationality; }
 }
 
 public class PersonTest {
     public static void main(String[] args) {
         // 이런 비효율적인 방법 말고는 없나?ㅜ
-        System.out.print("사람");
         Person2 p = new Person2("홍길동", 56);
-        p.show();
-        System.out.println("]");
-
-        System.out.print("학생");
         Student2 s = new Student2("한늘봄", 41, 99010001);
-        s.show();
-        System.out.println("]");
-
-        System.out.print("외국학생");
         ForeignStudent fs = new ForeignStudent("Olivia", 39, 97060004, "U.S.A");
-        fs.show();
-        System.out.println("]");
+
+        System.out.println("사람["+p.show()+"]");
+        System.out.println("학생["+s.show()+"]");
+        System.out.println("외국학생["+fs.show()+"]");
     }
 }
