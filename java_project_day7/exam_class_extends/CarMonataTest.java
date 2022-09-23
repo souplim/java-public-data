@@ -16,9 +16,10 @@ class Car{
     public String getColor(){ return color; }
     public int getAccount(){ return account; }
 
-    public String toString(){
-        return String.format("[색상] %-7s [생산수량] %-7d ",color,account);
-    }
+//    public String toString(){
+//        return String.format("[색상] %-7s [생산수량] %-7d ",color,account);
+//    }
+    public String toString(){ return "[색상] " +color+"\t[생산수량] "+account+"\t";}
 }
 
 class Monata extends Car{
@@ -31,22 +32,41 @@ class Monata extends Car{
         this.use = use;
     }
 
-    public String toString(){
-        return String.format(super.toString()+"[용도] %-7s [시리즈] %-7s ",series,use);
-    }
+//    public String toString(){
+//        return String.format(super.toString()+"[용도] %-7s [시리즈] %-7s ",series,use);
+//    }
+    public String toString(){ return super.toString()+"[용도] "+use+"\t[시리즈] "+series;}
 }
 
 public class CarMonataTest {
     public static void main(String[] args){
-        Monata m = new Monata("흰색", 5000, "승용", "NF");
-        Monata m2 = new Monata("은색", 7000, "업무","Brilliant");
-        Monata m3 = new Monata("감홍색", 4000, "택시","EF");
-        Monata m4 = new Monata("검정색", 6000, "승용","Hybrid");
+//        Monata m1 = new Monata("흰색", 5000, "승용", "NF");
+//        Monata m2 = new Monata("은색", 7000, "업무","Brilliant");
+//        Monata m3 = new Monata("감홍색", 4000, "택시","EF");
+//        Monata m4 = new Monata("검정색", 6000, "승용","Hybrid");
+
+        // 객체 배열
+        Monata[] m = new Monata[]{
+                new Monata("흰색", 5000, "승용", "NF"),
+                new Monata("은색", 7000, "업무","Brilliant"),
+                new Monata("감홍색", 4000, "택시","EF"),
+                new Monata("검정색", 6000, "승용","Hybrid")
+        };
 
         System.out.println("========================= Monata 생산 시작 =========================");
-        System.out.println(m.toString());
-        System.out.println(m2.toString());
-        System.out.println(m3.toString());
-        System.out.println(m4.toString());
+//        System.out.println(m1.toString());
+//        System.out.println(m2.toString());
+//        System.out.println(m3.toString());
+//        System.out.println(m4.toString());
+
+        // 향상for문
+        for(Monata monata : m){
+            System.out.println(monata.toString());
+        }
+        // 향상for문의 원리
+        for(int i=0; i< m.length; i++){
+            Monata monata = m[i];
+            System.out.println(monata.toString());
+        }
     }
 }
