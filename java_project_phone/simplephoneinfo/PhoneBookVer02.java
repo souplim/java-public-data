@@ -10,51 +10,6 @@ import java.util.Scanner;
 그리고 실행 때마다 생성된 인스턴스는 유지되지 않아도 된다.
 프로그램의 흐름을 계속할지 아니면 종료할지 프로그램 사용자가 선택할 수 있도록 해야 한다.
 단 현재 예제에서는 사용자에게 이름, 전화번호, 생년월일을 입력 받도록 하자.*/
-class PhoneInfo2 {
-    private String name;
-    private String phoneNumber;
-    private String birthday;
-
-    PhoneInfo2(){ }
-    PhoneInfo2(String name, String phoneNumber){
-        this(name, phoneNumber, "");
-    }
-    PhoneInfo2(String name, String phoneNumber, String birthday){
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.birthday = birthday;
-    }
-
-    public void setName(String name){
-        this.name = name;
-    }
-    public String getName(){
-        return name;
-    }
-
-    public void setPhoneNumber(String phoneNumber){
-        this.phoneNumber = phoneNumber;
-    }
-    public String getPhoneNumber(){
-        return phoneNumber;
-    }
-    public void setBirthday(String birthday){
-        this.birthday = birthday;
-    }
-    public String getBirthday(){
-        return birthday;
-    }
-
-    public void showPhoneInfo(){
-        System.out.println("name : "+name);
-        System.out.println("phone : "+phoneNumber);
-
-        if(!birthday.equals("")){ // "", null값일 때는 비교연산자 가능!
-            System.out.println("birthday : "+birthday);
-        }
-    }
-}
-
 public class PhoneBookVer02 {
     public static Scanner scanner = new Scanner(System.in);
 
@@ -69,7 +24,7 @@ public class PhoneBookVer02 {
         System.out.print("생년월일 : ");
         String birthday = scanner.nextLine();
 
-        PhoneInfo2 info = new PhoneInfo2(name, phoneNumber, birthday);
+        PhoneInfo info = new PhoneInfo(name, phoneNumber, birthday);
         info.showPhoneInfo(); // 인스턴스 메서드의 사용
     }
 
