@@ -14,7 +14,7 @@ class ScoreOX {
     private int score; // 개별 점수
     public int rank;
     private char[] c_ox; // 문제 O,X 표시
-    public static int tot; // 전체 맞은 개수
+    public static int tot = 0; // 전체 맞은 개수
 
     public ScoreOX(){ }
     public ScoreOX(int no, String name, int[] dap){
@@ -24,17 +24,16 @@ class ScoreOX {
     }
 
     int[] answer = new int[]{1, 1, 1, 1, 1};
+
     public void compute(){
         cnt = 0;
-        tot = 0;
         for(int i=0; i<answer.length; i++){
             if(answer[i]==dap[i]){
                 cnt++;
-
             }
         }
         score = cnt*20;
-        tot += cnt;
+        ScoreOX.tot += cnt;
     }
 
     public void display(){
@@ -52,18 +51,14 @@ class ScoreOX {
     }
 
     public static void ranking(ScoreOX[] sc){
-        // max값 구한다
-        int max = sc[0].score;
-        for(int i=1; i<sc.length; i++){
-            if(sc[i].score>max)
-                max = sc[i].score;
-        }
-        // max값을 기준으로 정한다
-        int standard = max; // 기준 정한다
+        // 순위 알고리즘
         for(int i=0; i<sc.length; i++){
-            sc[i].rank = 1; // 초기화
-            if(standard>sc[i].score)
-                sc[i].rank++;
+            for(int j=0; j<sc.length; j++) // 순위 초기화
+                sc[i].rank = 1;
+            for(int j=0; j<sc.length; j++){
+                if(sc[i].score<sc[j].score)
+                    sc[i].rank++;
+            }
         }
     }
 }
