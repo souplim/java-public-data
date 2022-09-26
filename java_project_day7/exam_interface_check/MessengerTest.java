@@ -43,6 +43,11 @@ class GalaxyMessenger implements Messenger, WorkFile{
     }
 
     // 일반 메서드
+    public void changeKeyboard(){
+        System.out.println("키보드아이콘 터치 후 키보드를 변경합니다.");
+    }
+
+    // WorkFile 인터페이스 추상 메서드 오버라이딩
     @Override
     public void fileUpload() {
         System.out.println("file을 업로드합니다.");
@@ -83,6 +88,23 @@ public class MessengerTest {
         IphoneMessenger iphone = new IphoneMessenger();
         GalaxyMessenger galaxy = new GalaxyMessenger();
 
+        System.out.println("메신저 최소 문자 크기"+Messenger.MIN_SIZE);
+        System.out.println("메신저 최소 문자 크기"+Messenger.MAX_SIZE);
 
+        iphone.setLogin(true);
+        System.out.println(iphone.getMessage());
+        iphone.setMessage("안녕~~~");
+        iphone.clearMessage();
+
+        iphone.draw_textBok();
+        iphone.draw_textBok();
+
+        galaxy.setLogin(true);
+        System.out.println(galaxy.getMessage());
+        galaxy.setMessage("안녕~~~");
+        galaxy.changeKeyboard();
+
+        galaxy.fileUpload();
+        galaxy.fileDownload();
     }
 }
