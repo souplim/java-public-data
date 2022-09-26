@@ -14,7 +14,7 @@ class PhoneBookManager {
     public void intro()
     {
         System.out.println();
-        System.out.println("선택하세요...");
+        System.out.println("선택하세요");
         System.out.println("1. 데이터 입력");
         System.out.println("2. 데이터 검색");
         System.out.println("3. 데이터 삭제");
@@ -25,11 +25,11 @@ class PhoneBookManager {
     public void input()
     {
         System.out.println("데이터 입력을 시작합니다.");
-        System.out.println("이름 : ");
+        System.out.print("이름 : ");
         name = sc.nextLine();
-        System.out.println("전화번호 : ");
+        System.out.print("전화번호 : ");
         phone = sc.nextLine();
-        System.out.println("생년월일 : ");
+        System.out.print("생년월일 : ");
         birth = sc.nextLine();
         System.out.println("데이터 입력이 완료되었습니다.");
         instance = new PhoneInfo(name, phone, birth);
@@ -46,14 +46,11 @@ class PhoneBookManager {
             if(array[i].getName().equals(name))
             {
                 array[i].showPhoneInfo();
-                System.out.print("데이터 검색이 완료되었습니다.");
-                break;
+                System.out.println("데이터 검색이 완료되었습니다.");
+                return;
             }
-            else
-                System.out.print("데이터가 존재하지 않습니다.");
-            break;
         }
-        System.out.println();
+        System.out.println("데이터가 존재하지 않습니다.");
     }
 
     public void delete()
