@@ -82,9 +82,9 @@ class Manager extends Employee2{
 public class EmployeeTest{
     public static void main(String[] args) {
         // 실행결과 1
-        Employee2 e = new Employee2();
-        e.setEmpData("홍길동", "역삼동", "010-1234-5678", 500);
-        System.out.println(e);
+        Employee2 e1 = new Employee2();
+        e1.setEmpData("홍길동", "역삼동", "010-1234-5678", 500);
+        System.out.println(e1);
 
         Manager m = new Manager();
         m.setMgrData("임은재", "역삼동","010-1234-5678", 700, 5000, "대리");
@@ -95,5 +95,19 @@ public class EmployeeTest{
         Manager m2 = new Manager("임은재", "역삼동","010-1234-5678", 700, 5000, "과장");
         System.out.println(e2);
         System.out.println(m2);
+
+        // 객체 배열
+        Employee2[] e = {
+                new Employee2("홍길동", "역삼동", "010-1234-5678", 500),
+                new Manager("임은재", "역삼동","010-1234-5678", 700, 5000, "부장")
+        };
+
+        for(int i=0; i<e.length; i++){
+            System.out.println(e[i]);
+//            System.out.println(e[i].toString()); // 위와 동일 코드
+        }
+
+        for(Employee2 ee : e)
+            System.out.println(ee);
     }
 }
