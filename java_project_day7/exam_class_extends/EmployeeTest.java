@@ -96,7 +96,10 @@ public class EmployeeTest{
         System.out.println(e2);
         System.out.println(m2);
 
-        // 객체 배열
+        // 실행결과 3 - 객체 배열. 슈퍼클래스[] 배열명 = { new 슈퍼클래스생성자(), new 서브클래스생성자()};
+        // Employee[] e = new Employee[2];
+        // e[0] = new Employee2("홍길동", "역삼동", "010-1234-5678", 500);
+        // e[1] = new Manager("임은재", "역삼동","010-1234-5678", 700, 5000, "부장");
         Employee2[] e = {
                 new Employee2("홍길동", "역삼동", "010-1234-5678", 500),
                 new Manager("임은재", "역삼동","010-1234-5678", 700, 5000, "부장")
