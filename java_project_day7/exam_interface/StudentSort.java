@@ -38,6 +38,7 @@ class Student implements Comparable{
         else
             return 0;*/
 
+        // 이름 기준
         // String 클래스에 이미 compareTo가 정의되어있음
         return this.name.compareTo(other.name);
     }
