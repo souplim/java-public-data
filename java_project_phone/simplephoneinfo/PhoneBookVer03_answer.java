@@ -2,13 +2,13 @@ package simplephoneinfo;
 
 import java.util.Scanner;
 
-class PhoneBookManager {
+class PhoneBookManager2 {
     private static final int size=100;
     PhoneInfo[] infoStorage; // 전화번호 저장하는 객체배열
     String name, phone, birth = null;
     private int cnt = 0; // 현재 저장된 객체들의 인덱스
 
-    public PhoneBookManager(){
+    public PhoneBookManager2(){
         infoStorage = new PhoneInfo[size];
     }
 
@@ -34,7 +34,7 @@ class PhoneBookManager {
             System.out.println("해당하는 데이터가 존재하지 않습니다. \n");
         else{
             infoStorage[dataIdx].showPhoneInfo();
-            System.out.println("데이터 검색이 완료되었습니다.");
+            System.out.println("데이터 검색이 완료되었습니다. \n");
         }
     }
 
@@ -50,34 +50,21 @@ class PhoneBookManager {
         return -1;
     }
 
-    public void delete()
-    {
+    public void delete() {
         System.out.println("데이터 삭제를 시작합니다.");
         System.out.print("이름 : ");
         name = MenuViewer.sc.nextLine();
 
-        control1 :
-        do{
-            for(int i=0;i<cnt;i++)
-            {
-                if((infoStorage[i].getName()).equals(name))
-                {
-                    for(int j=i; j<cnt-1;j++)
-                    {
-                        infoStorage[j]=infoStorage[j+1];
-                    }
-                    infoStorage[cnt-1] = null;
-                    cnt--;
-                    System.out.println("데이터 삭제가 완료되었습니다.");
-                    break control1;
-                }
-            }
-            for(int i=0;i<cnt;i++)
-                if(!(infoStorage[i].getName()).equals(name)){
-                    System.out.println("삭제할 데이터가 존재하지 않습니다.");
-                    break control1;
-                }
-        } while(true);
+        int dataIdx = searchName(name); // 그 사용자의 인덱스를 불러온다
+        if(dataIdx<0)
+            System.out.println("해당하는 데이터가 존재하지 않습니다. \n");
+        else {
+            for(int i=dataIdx; i<cnt-1; i++)
+                infoStorage[i]=infoStorage[i+1];
+            infoStorage[cnt-1] = null;
+            cnt--;
+            System.out.println("데이터 삭제가 완료되었습니다.");
+        }
     }
 }
 
@@ -98,17 +85,15 @@ class MenuViewer {
 
 public class PhoneBookVer03_answer {
     public static void main(String[] args) { // 실행클래스에서 메서드 만들면 재사용이 불가능
-        PhoneBookManager pbm = new PhoneBookManager();
-        int menu = 0;
+        PhoneBookManager2 pbm = new PhoneBookManager2();
+        int menu;
 
-        while(true)
-        {
+        while(true) {
             MenuViewer.intro();
             menu = MenuViewer.sc.nextInt();
             MenuViewer.sc.nextLine();
 
-            switch(menu)
-            {
+            switch(menu) {
                 case 1 :
                     pbm.input();
                     break;
