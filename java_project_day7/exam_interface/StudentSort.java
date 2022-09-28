@@ -27,16 +27,19 @@ class Student implements Comparable{
         return "이름="+name+" 평점="+gpa;
     }
 
-    // Comparable의 추상메서드 구현
+    // Comparable의 추상메서드 구현 - 이름도 있고 평점도 있는데 정렬의 근거는 무엇으로 줄 건가도 생각
     public int compareTo(Object obj){ // 슈퍼클래스 참조변수 = 서브클래스의 참조값. 업캐스팅
         Student other = (Student)obj; // 서브클래스 참조변수 = (서브클래스)슈퍼클래스의 타입 참조변수. 다운캐스팅
         // 평점 기준
-        if(this.gpa < other.gpa)
+        /*if(this.gpa < other.gpa)
             return -1;
         else if(this.gpa > other.gpa)
             return 1;
         else
-            return 0;
+            return 0;*/
+
+        // String 클래스에 이미 compareTo가 정의되어있음
+        return this.name.compareTo(other.name);
     }
 }
 
@@ -45,7 +48,7 @@ public class StudentSort {
     public static void main(String[] args) {
         // 5개의 숫자를 오름차순 정렬하여 출력하는 코드를 작성해주세요.
         int[] numbers = {60, 80, 10, 45, 90};
-        Arrays.sort(numbers);
+        Arrays.sort(numbers); // 자바에서 제공하는 Arrays 클래스의 sort 메서드 사용
 
         for(int num : numbers)
             System.out.print(num+" ");
@@ -56,10 +59,9 @@ public class StudentSort {
         students[0] = new Student("홍길동", 3.39);
         students[1] = new Student("이한솔", 4.21);
         students[2] = new Student("김희진", 2.19);
-        Arrays.sort(students);
+        Arrays.sort(students); // 각각의 클래스에 정렬 기준 제공해야
 
         for(Student s : students)
-            System.out.println(s);
+            System.out.println(s); // toString() 호출
     }
 }
-
