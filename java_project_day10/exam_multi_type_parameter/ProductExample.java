@@ -58,19 +58,32 @@ class SmartPhone {
 }
 
 class TV {
-    private String color;
+    private int size;
 
     public TV(){ }
-    public TV(String color){ this.color = color; }
+    public TV(int size){ this.size = size; }
 
-    public String getColor(){ return color; }
-    public void setColor(String color){ this.color = color; }
+    public int getSize(){ return size; }
+    public void setSize(int size){ this.size = size; }
 
     @Override
     public String toString(){
-        return "[color : "+color+"]";
+        return "[size : "+size+"인치]";
     }
 }
 
 public class ProductExample {
+    public static void main(String[] args) {
+        Product<Car, String> product1 = new Product<>();
+        product1.setKind(new Car());
+        product1.getKind().setColor("RED");
+        product1.setModel("베뉴");
+        System.out.println(product1.toString()+product1.getKind().toString());
+
+        Product<TV, String> product2 = new Product<>(new TV(48), "스마트 TV");
+        System.out.println(product2.toString()+product2.getKind().toString());
+
+        Product<SmartPhone, String> product3 = new Product<>(new SmartPhone("삼성", "안드로이드"), "갤럭시 Z 플립3");
+        System.out.println(product3.toString()+product3.getKind().toString());
+    }
 }
