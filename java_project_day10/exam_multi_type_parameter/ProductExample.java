@@ -15,7 +15,7 @@ class Product<T, M> {
     public void setKind(T kind){ this.kind = kind; }
     public void setModel(M model){ this.model = model; }
 
-    @Override
+    @Override // .getClass() 현재 실행중인 클래스 이름(패키지명.클래스명) .getSimpleName() 클래스명만 가져옴 .toUpperCase() 대문자로 변환
     public String toString(){
         return "kind : "+kind.getClass().getSimpleName().toUpperCase()+", model : "+model;
     }
@@ -76,7 +76,7 @@ public class ProductExample {
     public static void main(String[] args) {
         Product<Car, String> product1 = new Product<>();
         product1.setKind(new Car());
-        product1.getKind().setColor("RED");
+        product1.getKind().setColor("RED"); // product1.getKind() -> 자동차의 주소값.setColor("color");
         product1.setModel("베뉴");
         System.out.println(product1.toString()+product1.getKind().toString());
 
@@ -85,5 +85,7 @@ public class ProductExample {
 
         Product<SmartPhone, String> product3 = new Product<>(new SmartPhone("삼성", "안드로이드"), "갤럭시 Z 플립3");
         System.out.println(product3.toString()+product3.getKind().toString());
+        // product3 -> Product의 주소 product3.toString() -> Product의 toString()
+        // product3.getKind() -> 스마트폰의 주소 product3.getKind().toString() -> 스마트폰의 toString()
     }
 }
