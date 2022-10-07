@@ -11,14 +11,14 @@ public class PhoneBookManager {
     private int cnt = 0; // 현재 저장된 객체들의 인덱스
 
     // 싱글톤
-    private static PhoneBookManager pbm = new PhoneBookManager();
-    private PhoneBookManager(){
-        infoStorage = new PhoneInfo[size];
-    }
+    private static PhoneBookManager pbm = null;
     public static PhoneBookManager getInstance(){
-        if(pbm == null)
+        if(pbm == null) // 인스턴스 null값일 때만 하나 만들 수 있게 함
             pbm = new PhoneBookManager();
         return pbm;
+    }
+    private PhoneBookManager(){
+        infoStorage = new PhoneInfo[size];
     }
 
     public void input() {
