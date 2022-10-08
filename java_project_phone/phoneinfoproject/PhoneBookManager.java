@@ -20,42 +20,61 @@ public class PhoneBookManager {
     public void input() {
         System.out.println("데이터 입력을 시작합니다.");
         System.out.print("1.일반 2.대학 3.회사\n선택 >> ");
+
         type = MenuViewer.sc.nextInt();
         MenuViewer.sc.nextLine();
+        PhoneInfo info = null;
 
         switch(type){
             case 1:
-                inputInfo();
-                System.out.println("데이터 입력이 완료되었습니다.");
-                infoStorage[cnt++] = new PhoneInfo(name, phone);
+                info = readInfo();
                 break;
             case 2:
-                inputInfo();
-                System.out.print("전공 : ");
-                major = MenuViewer.sc.nextLine();
-                System.out.print("학년 : ");
-                year = MenuViewer.sc.nextInt();
-                System.out.println("데이터 입력이 완료되었습니다.");
-                infoStorage[cnt++] = new PhoneUnivInfo(name, phone, major, year);
+                info = readUnivInfo();
                 break;
             case 3:
-                inputInfo();
-                System.out.print("회사 : ");
-                company = MenuViewer.sc.nextLine();
-                System.out.println("데이터 입력이 완료되었습니다.");
-                infoStorage[cnt++] = new PhoneCompanyInfo(name, phone, company);
+                info = readCompanyInfo();
                 break;
             default :
                 System.out.println("잘못 입력 하셨습니다.");
                 return;
         }
+        infoStorage[cnt++] = info;
+        System.out.println("데이터 입력이 완료되었습니다.");
     }
 
-    public void inputInfo(){
+    private PhoneInfo readInfo(){
         System.out.print("이름 : ");
         name = MenuViewer.sc.nextLine();
         System.out.print("전화번호 : ");
         phone = MenuViewer.sc.nextLine();
+
+        return new PhoneInfo(name, phone);
+    }
+
+    public PhoneInfo readUnivInfo(){
+        System.out.print("이름 : ");
+        name = MenuViewer.sc.nextLine();
+        System.out.print("전화번호 : ");
+        phone = MenuViewer.sc.nextLine();
+        System.out.print("전공 : ");
+        major = MenuViewer.sc.nextLine();
+        System.out.print("학년 : ");
+        year = MenuViewer.sc.nextInt();
+
+        return new PhoneUnivInfo(name, phone, major, year);
+    }
+
+    public PhoneInfo readCompanyInfo(){
+        System.out.print("이름 : ");
+        name = MenuViewer.sc.nextLine();
+        System.out.print("전화번호 : ");
+        phone = MenuViewer.sc.nextLine();
+        System.out.print("회사 : ");
+        company = MenuViewer.sc.nextLine();
+        System.out.println("데이터 입력이 완료되었습니다.");
+
+        return new PhoneCompanyInfo(name, phone, company);
     }
 
     public void search() { // 인덱스 번호 반환하는 메서드 따로 떼기
