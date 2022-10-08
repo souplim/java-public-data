@@ -38,8 +38,7 @@ class PhoneUnivInfo extends PhoneInfo{ // 대학동기들
     public void setYear(int year) { this.year = year; }
 
     public void showPhoneInfo(){
-        System.out.println("name : "+super.getName());
-        System.out.println("phone : "+super.getPhoneNumber());
+        super.showPhoneInfo();
         System.out.println("major : "+getMajor());
         System.out.println("year : "+getYear());
     }
@@ -58,8 +57,7 @@ class PhoneCompanyInfo extends PhoneInfo{ // 회사동료
     public void setCompany(String company) { this.company = company; }
 
     public void showPhoneInfo(){
-        System.out.println("name : "+super.getName());
-        System.out.println("phone : "+super.getPhoneNumber());
+        super.showPhoneInfo();
         System.out.println("company : "+getCompany());
     }
 }
