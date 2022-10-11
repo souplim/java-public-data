@@ -34,6 +34,7 @@ public class ArrayListExample {
             if(i>10) break;
         }
 
+        // 1. 최대 최소값 삭제하고 합 구하기
         list.remove(Collections.max(list));
         list.remove(Collections.min(list));
 
@@ -41,6 +42,20 @@ public class ArrayListExample {
         for(int j=0; j<list.size(); j++){
             total += list.get(j);
         }
+
+        // 2. 최대 최소값 아닌 값만 합 구하기 -> 배열의 이동 일어나지 않게
+        double max = Collections.max(list);
+        double min = Collections.min(list);
+        double sum = 0.0;
+        double collValue = 0.0;
+
+        for(int j=0; j<10; j++){
+            collValue = list.get(j);
+            if(collValue != max && collValue != min)
+                sum += collValue;
+        }
+
         System.out.println("점수의 합 : "+total);
+        scanner.close();
     }
 }
