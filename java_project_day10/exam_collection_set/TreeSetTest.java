@@ -77,7 +77,7 @@ public class TreeSetTest {
         while(tIter.hasNext())
             System.out.println(tIter.next());
 
-        System.out.println("\n반복자를 이용하여 출력 - 내름차순");
+        System.out.println("\n반복자를 이용하여 출력 - 내림차순");
         SortedSet<Score> sSet = tSet.descendingSet();
         Iterator<Score> sIter = sSet.iterator();
         while(sIter.hasNext())
