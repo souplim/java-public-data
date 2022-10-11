@@ -8,16 +8,12 @@ import java.util.List;
 public class RandomList {
     public static void main(String[] args) {
         List<Integer> list = new ArrayList<>();
-        list.add((int)(Math.random()*100)+1);
-        list.add((int)(Math.random()*100)+1);
-        list.add((int)(Math.random()*100)+1);
-        list.add((int)(Math.random()*100)+1);
-        list.add((int)(Math.random()*100)+1);
-        list.add((int)(Math.random()*100)+1);
-        list.add((int)(Math.random()*100)+1);
-        list.add((int)(Math.random()*100)+1);
-        list.add((int)(Math.random()*100)+1);
-        list.add((int)(Math.random()*100)+1);
+
+        final int NUM = 10;
+
+        for(int i=0; i<NUM; i++){
+            list.add((int)(Math.random()*100)+1);
+        }
 
         System.out.println("정렬 전 list 데이터");
         for(Integer number : list)
