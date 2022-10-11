@@ -15,17 +15,31 @@ public class ArrayListExample {
         Scanner scanner = new Scanner(System.in);
         List<Double> list = new ArrayList<>();
 
-        for(int i=0; i<10; i++){
-            System.out.print("심사위원의 점수 : ");
-            list.add(scanner.nextDouble());
+        // 심사위원이 열명 모두 정확하게 0~10 사이의 값이 들어왔다는 것이 전제된 코드
+//        for(int i=0; i<10; i++){
+//            System.out.print("심사위원의 점수 : ");
+//            list.add(scanner.nextDouble());
+//        }
+
+        // 그렇지 않을 경우
+        int i = 1;
+        double value = 0.0;
+        while(true){
+            System.out.printf("(%d)번째 심사위원의 점수: ", i);
+            value = scanner.nextDouble();
+            if(value<0 || 10<value)
+                continue;
+            list.add(value);
+            i++;
+            if(i>10) break;
         }
 
         list.remove(Collections.max(list));
         list.remove(Collections.min(list));
 
         double total = 0;
-        for(int i=0; i<list.size(); i++){
-            total += list.get(i);
+        for(int j=0; j<list.size(); j++){
+            total += list.get(j);
         }
         System.out.println("점수의 합 : "+total);
     }
