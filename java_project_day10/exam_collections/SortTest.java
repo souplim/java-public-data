@@ -48,10 +48,18 @@ public class SortTest {
         /* 2. 그 값을 리스트 타입으로 변환하여 Collections.sort()를 사용하여 정렬한 후 출력한다.  */
         List<Fruit> list = Arrays.asList(f);
         Collections.sort(list);
-        System.out.println(list);
+        System.out.println("오름차순 : "+list);
+
+        Collections.reverse(list);
+        Collections.sort(list,Collections.reverseOrder());
+        System.out.println("내림차순 : "+list);
 
         /* 3. TreeSet에 저장하여 출력한다.*/
         TreeSet<Fruit> set = new TreeSet<>(list);
         System.out.println(set);
+
+        Iterator<Fruit> it = set.iterator();
+        while(it.hasNext())
+            System.out.println(it.next().getName()+":"+it.next().getPrice()); // ?
     }
 }
