@@ -59,7 +59,9 @@ public class SortTest {
         System.out.println(set);
 
         Iterator<Fruit> it = set.iterator();
-        while(it.hasNext())
-            System.out.println(it.next().getName()+":"+it.next().getPrice()); // ?
+        while(it.hasNext()){
+            Fruit fruit = it.next();
+            System.out.println(fruit.getName()+":"+fruit.getPrice());
+        }
     }
 }
