@@ -43,11 +43,7 @@ public class SortTest {
         };
 
         Arrays.sort(f);
-        for(int i=0; i<f.length; i++)
-            System.out.print(f[i]+", ");
-        System.out.println();
-//        for(Fruit array : f)
-//            System.out.println(array);
+        System.out.println(Arrays.toString(f)); // 배열의 원소를 문자로 반환하는 메서드
 
         /* 2. 그 값을 리스트 타입으로 변환하여 Collections.sort()를 사용하여 정렬한 후 출력한다.  */
         List<Fruit> list = Arrays.asList(f);
