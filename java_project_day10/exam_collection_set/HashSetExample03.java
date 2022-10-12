@@ -9,7 +9,7 @@ package exam_collection_set;
 import java.util.HashSet;
 import java.util.Set;
 
-class Member {
+class Member implements Comparable<Member>{
     private String name;
     private int age;
 
@@ -71,6 +71,13 @@ class Member {
     @Override
     public int hashCode(){
         return name.hashCode(); // String 클래스의 hashCode()
+    }
+
+    @Override
+    public int compareTo(Member m){
+        if(this.age>m.age) return 1;
+        else if(this.age==m.age) return 0;
+        else return -1;
     }
 
 }
