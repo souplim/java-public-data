@@ -13,7 +13,8 @@ public class PhoneBookVer07 {
                 menu = MenuViewer.sc.nextInt();
                 MenuViewer.sc.nextLine();
 
-                if (menu < 1 || 3 < menu) {
+                if (menu < 1 || 4 < menu) {
+//                if (!(menu==1 || menu==2 || menu==3 || menu==4)) {
                     throw new MenuChoiceException(menu);
                 }
 
@@ -55,8 +56,8 @@ class PhoneInfo {
     public String getPhoneNumber(){ return phoneNumber; }
 
     public void showPhoneInfo(){
-        System.out.println("name : "+name);
-        System.out.println("phone : "+phoneNumber);
+        System.out.println("name : "+getName());
+        System.out.println("phone : "+getPhoneNumber());
     }
 
     @Override
