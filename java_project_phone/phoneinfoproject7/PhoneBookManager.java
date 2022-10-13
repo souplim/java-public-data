@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class PhoneBookManager implements Comparable<PhoneBookManager> {
     private static final int size=100;
 //    PhoneInfo[] infoStorage; // 전화번호 저장하는 객체배열
-    HashSet<phoneinfoproject7.PhoneInfo> infoStorage; // 전화번호 저장하는 HashSet<>
+    HashSet<phoneinfoproject7.PhoneInfo> infoStorage; // 전화번호 저장하는 HashSet<PhoneInfo>
     int type;
     String name, phone, major, company = null;
     int year;
@@ -27,20 +27,24 @@ public class PhoneBookManager implements Comparable<PhoneBookManager> {
 
         type = MenuViewer.sc.nextInt();
         MenuViewer.sc.nextLine();
-        PhoneInfo info = null;
+//        PhoneInfo info = null;
+
+        if(type < 1 || 3 < type){
+            throw new MenuChoiceException(type);
+        }
 
         switch(type){
             case 1:
-                info = readInfo();
-                infoStorage.add(info);
+//                info = readInfo();
+                infoStorage.add(readInfo());
                 break;
             case 2:
-                info = readUnivInfo();
-                infoStorage.add(info);
+//                info = readUnivInfo();
+                infoStorage.add(readUnivInfo());
                 break;
             case 3:
-                info = readCompanyInfo();
-                infoStorage.add(info);
+//                info = readCompanyInfo();
+                infoStorage.add(readCompanyInfo());
                 break;
             default :
                 System.out.println("잘못 입력 하셨습니다.");
@@ -97,6 +101,21 @@ public class PhoneBookManager implements Comparable<PhoneBookManager> {
 //        }
 //    }
 
+    public void search() { // 인덱스 번호 반환하는 메서드 따로 떼기
+        System.out.println("데이터 검색을 시작합니다.");
+        System.out.print("이름 : ");
+        name = MenuViewer.sc.nextLine();
+
+        PhoneInfo pi = searchName(name);
+
+        if(pi==null)
+            System.out.println("해당하는 데이터가 존재하지 않습니다. \n");
+        else{
+            pi.showPhoneInfo();
+            System.out.println("데이터 검색이 완료되었습니다. \n");
+        }
+    }
+
 //    private int searchName(String name){ // 내부에서만 사용될 메서드 private
 //        for(int i=0; i<cnt; i++){
 //            PhoneInfo curInfo = infoStorage[i];
@@ -109,25 +128,13 @@ public class PhoneBookManager implements Comparable<PhoneBookManager> {
 //        return -1;
 //    }
 
-    public void search() { // 인덱스 번호 반환하는 메서드 따로 떼기
-        System.out.println("데이터 검색을 시작합니다.");
-        System.out.print("이름 : ");
-        name = MenuViewer.sc.nextLine();
-
-        if(searchName(name)==null)
-            System.out.println("해당하는 데이터가 존재하지 않습니다. \n");
-        else{
-            info.showPhoneInfo();
-            System.out.println("데이터 검색이 완료되었습니다. \n");
-        }
-    }
-
-    private String searchName(String name){ // 내부에서만 사용될 메서드 private
+    private PhoneInfo searchName(String name){ // 내부에서만 사용될 메서드 private
         Iterator<PhoneInfo> it = infoStorage.iterator();
         while(it.hasNext()){
-            String n = it.next().getName();
+            PhoneInfo p = it.next();
+            String n = p.getName();
             if(name.compareTo(n)==0)
-                return name;
+                return p;
         }
         return null;
     }
@@ -137,17 +144,32 @@ public class PhoneBookManager implements Comparable<PhoneBookManager> {
         System.out.print("이름 : ");
         name = MenuViewer.sc.nextLine();
 
-        int dataIdx = searchName(name); // 그 사용자의 인덱스를 불러온다
-        if(dataIdx<0)
+        PhoneInfo pi = searchName(name);
+
+        if(pi==null)
             System.out.println("해당하는 데이터가 존재하지 않습니다. \n");
-        else {
-            for(int i=dataIdx; i<cnt-1; i++)
-                infoStorage[i]=infoStorage[i+1];
-            infoStorage[cnt-1] = null;
-            cnt--;
-            System.out.println("데이터 삭제가 완료되었습니다.");
+        else{
+            infoStorage.remove(pi);
+            System.out.println("데이터 삭제가 완료되었습니다. \n");
         }
     }
+
+//    public void delete() {
+//        System.out.println("데이터 삭제를 시작합니다.");
+//        System.out.print("이름 : ");
+//        name = MenuViewer.sc.nextLine();
+//
+//        int dataIdx = searchName(name); // 그 사용자의 인덱스를 불러온다
+//        if(dataIdx<0)
+//            System.out.println("해당하는 데이터가 존재하지 않습니다. \n");
+//        else {
+//            for(int i=dataIdx; i<cnt-1; i++)
+//                infoStorage[i]=infoStorage[i+1];
+//            infoStorage[cnt-1] = null;
+//            cnt--;
+//            System.out.println("데이터 삭제가 완료되었습니다.");
+//        }
+//    }
 
     @Override
     public int compareTo(PhoneBookManager pm){
