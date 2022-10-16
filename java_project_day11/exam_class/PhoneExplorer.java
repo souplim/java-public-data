@@ -44,12 +44,6 @@ public class PhoneExplorer {
                 value = bw.readLine();
                 map.put(key, value);
             }
-
-            for(Map.Entry<String, String> sd : map.entrySet()){
-                String k = sd.getKey();
-                String v = sd.getValue();
-                System.out.println("이름: "+k+", 전화번호: "+v);
-            }
         } catch (IOException io){ io.printStackTrace(); }
     }
 
