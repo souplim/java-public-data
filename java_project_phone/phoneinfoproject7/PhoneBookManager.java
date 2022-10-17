@@ -7,6 +7,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Scanner;
 
+interface InputMenu {
+    // 1. 일반, 2. 대학, 3. 회사
+    int NORMAL = 1, UNIV = 2, COMPANY = 3;
+}
+
 public class PhoneBookManager implements Comparable<PhoneBookManager> {
     private static final int size=100;
 //    PhoneInfo[] infoStorage; // 전화번호 저장하는 객체배열
@@ -29,30 +34,54 @@ public class PhoneBookManager implements Comparable<PhoneBookManager> {
         MenuViewer.sc.nextLine();
 //        PhoneInfo info = null;
 
-        if(type < 1 || 3 < type){
+        // 6단계 예외 객체 생성
+        if(type < InputMenu.NORMAL || InputMenu.COMPANY < type){
             throw new MenuChoiceException(type);
         }
 
-        switch(type){
-            case 1:
+        // 4단계까지 제어
+//        switch(type){
+//            case 1:
 //                info = readInfo();
+//                break;
+//            case 2:
+//                info = readUnivInfo();
+//                break;
+//            case 3:
+//                info = readCompanyInfo();
+//                break;
+//        }
+
+        // 5단계 상수로 제어
+//        switch(type){
+//            case InputMenu.NORMAL:
+//                info = readInfo();
+//                break;
+//            case InputMenu.UNIV:
+//                info = readUnivInfo();
+//                break;
+//            case InputMenu.COMPANY:
+//                info = readCompanyInfo();
+//                break;
+//        }
+
+        // 7단계 HashSet에 저장
+        switch(type){
+            case InputMenu.NORMAL:
                 infoStorage.add(readInfo());
                 break;
-            case 2:
-//                info = readUnivInfo();
+            case InputMenu.UNIV:
                 infoStorage.add(readUnivInfo());
                 break;
-            case 3:
-//                info = readCompanyInfo();
+            case InputMenu.COMPANY:
                 infoStorage.add(readCompanyInfo());
                 break;
-            default :
-                System.out.println("잘못 입력 하셨습니다.");
-                return;
         }
+
         System.out.println("데이터 입력이 완료되었습니다.");
     }
 
+    // 일반을 선택했을 때 호출할 메서드(참조값 반환)
     private PhoneInfo readInfo(){
         System.out.print("이름 : ");
         name = MenuViewer.sc.nextLine();
@@ -62,6 +91,7 @@ public class PhoneBookManager implements Comparable<PhoneBookManager> {
         return new PhoneInfo(name, phone);
     }
 
+    // 대학(학교)을 선택했을 때 호출할 메서드(참조값 반환)
     public PhoneInfo readUnivInfo(){
         System.out.print("이름 : ");
         name = MenuViewer.sc.nextLine();
@@ -75,6 +105,7 @@ public class PhoneBookManager implements Comparable<PhoneBookManager> {
         return new PhoneUnivInfo(name, phone, major, year);
     }
 
+    // 회사를 선택했을 때 호출할 메서드(참조값 반환)
     public PhoneInfo readCompanyInfo(){
         System.out.print("이름 : ");
         name = MenuViewer.sc.nextLine();
@@ -106,8 +137,8 @@ public class PhoneBookManager implements Comparable<PhoneBookManager> {
         System.out.print("이름 : ");
         name = MenuViewer.sc.nextLine();
 
+        // 7단계 HashSet에서 검색
         PhoneInfo pi = searchName(name);
-
         if(pi==null)
             System.out.println("해당하는 데이터가 존재하지 않습니다. \n");
         else{
@@ -129,6 +160,7 @@ public class PhoneBookManager implements Comparable<PhoneBookManager> {
 //    }
 
     private PhoneInfo searchName(String name){ // 내부에서만 사용될 메서드 private
+        // 7단계 HashSet에서 검색
         Iterator<PhoneInfo> it = infoStorage.iterator();
         while(it.hasNext()){
             PhoneInfo p = it.next();
@@ -144,8 +176,8 @@ public class PhoneBookManager implements Comparable<PhoneBookManager> {
         System.out.print("이름 : ");
         name = MenuViewer.sc.nextLine();
 
+        // 7단계 HashSet에서 삭제
         PhoneInfo pi = searchName(name);
-
         if(pi==null)
             System.out.println("해당하는 데이터가 존재하지 않습니다. \n");
         else{
