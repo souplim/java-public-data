@@ -55,7 +55,7 @@ public class AccountExample {
         } catch(ClassNotFoundException cnf){
             System.out.println("클래스를 찾을 수 없습니다.");
         } catch(IOException io){
-            System.out.println(io);
+            // readObject()는 파일의 끝까지 읽기 때문에 출력 코드 넣으면 반드시 그 코드가 나오기 때문에 아무것도 넣지 않는다.
         }
     }
 }
