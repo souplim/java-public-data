@@ -30,6 +30,7 @@ class Account implements Serializable {
         return "계좌번호 : "+accountNo+"\n예금주명 : "+ownerName+"\n금액 : "+balance;
     }
 }
+
 public class AccountExample {
     public static void main(String[] args) {
         String file = "account.dat";
