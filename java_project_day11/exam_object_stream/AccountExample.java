@@ -42,6 +42,8 @@ public class AccountExample {
         try (ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
 
             oos.writeObject(new Account("123-4535-33478","홍길동",100000));
+            oos.flush(); // 만약을 대비한 버퍼 비우기
+            
         } catch (IOException io){
             System.out.println(io);
         }
@@ -52,6 +54,7 @@ public class AccountExample {
 
             Account ac = (Account)ois.readObject();
             System.out.println(ac);
+            
         } catch(ClassNotFoundException cnf){
             System.out.println("클래스를 찾을 수 없습니다.");
         } catch(IOException io){
