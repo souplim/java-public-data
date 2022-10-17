@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 /* [요구사항] 랜덤 메서드나 랜덤 클래스 등을 이용하여 정수 10개(각자 임의의 수)를 문자열의 형태로 들어있는 파일(input.txt)을 생성한다.
  * 생성된 파일을 읽어서 오름차순으로 정렬한 다음 정렬된 숫자를 문자열의 형태로 파일(output.txt)에 쓰는 프로그램을 작성하라.
-
 input.txt   ------------> output.txt
    127         10
    25         25
@@ -34,9 +33,10 @@ public class FileExample {
         try (BufferedReader br = new BufferedReader(new FileReader("input.txt"));
              PrintWriter pw = new PrintWriter((new FileWriter("output.txt")))) {
 
+            String s = "";
             for(int i=0; i<NUM; i++){
-                str[i] = br.readLine();
-                System.out.println(str[i].toString());
+                if ((s = br.readLine()) != null)
+                    str[i] = s;
             }
             System.out.println();
 
@@ -49,7 +49,6 @@ public class FileExample {
                     }
                 }
             }
-            System.out.println(Arrays.toString(str));
 
             for(int i=0; i<NUM; i++)
                 pw.println(str[i]);
