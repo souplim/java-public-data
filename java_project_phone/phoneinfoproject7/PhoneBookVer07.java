@@ -2,6 +2,11 @@ package phoneinfoproject7;
 
 import phoneinfoproject.PhoneBookManager;
 
+interface Menu {
+    // 1. 데이터 입력 2. 데이터 검색 3. 데이터 삭제 4. 프로그램 종료
+    int INPUT = 1, SEARCH = 2, DELETE = 3, EXIT = 4;
+}
+
 public class PhoneBookVer07 {
     public static void main(String[] args) {
         PhoneBookManager pbm = new PhoneBookManager();
@@ -14,21 +19,20 @@ public class PhoneBookVer07 {
                 MenuViewer.sc.nextLine();
 
                 if (menu < 1 || 4 < menu) {
-//                if (!(menu==1 || menu==2 || menu==3 || menu==4)) {
                     throw new MenuChoiceException(menu);
                 }
 
                 switch (menu) {
-                    case 1:
+                    case Menu.INPUT:
                         pbm.input();
                         break;
-                    case 2:
+                    case Menu.SEARCH:
                         pbm.search();
                         break;
-                    case 3:
+                    case Menu.DELETE:
                         pbm.delete();
                         break;
-                    case 4:
+                    case Menu.EXIT:
                         System.out.println("프로그램을 종료합니다.");
                         return;
                 }
@@ -119,6 +123,7 @@ class PhoneCompanyInfo extends PhoneInfo{ // 회사동료
     }
 }
 
+// 6단계 예외처리
 class MenuChoiceException extends Exception {
     private int wrongChoice;
 
