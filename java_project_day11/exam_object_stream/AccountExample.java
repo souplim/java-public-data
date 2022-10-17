@@ -54,7 +54,7 @@ public class AccountExample {
         } catch(ClassNotFoundException cnf){
             System.out.println("클래스를 찾을 수 없습니다.");
         } catch(IOException io){
-
+            System.out.println(io);
         }
     }
 }
