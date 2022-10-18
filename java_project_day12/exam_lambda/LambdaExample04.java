@@ -6,18 +6,16 @@ interface NumberFunction {
 
 public class LambdaExample04 {
     public static void main(String[] args) {
-        NumberFunction number = new NumberFunction() {
-            @Override
-            public int sum(int n){
-                int total = 0;
-                for(int i=0; i<n; i++)
-                    if(i%2 ==0)
-                        total += i;
-                return total;
-            }
+        NumberFunction number = (n) -> {
+            int result = 0;
+            for(int i=1; i<=n; i++)
+                result += i;
+            return result;
         };
 
-        System.out.println("1부터 10까지의 짝수의 합 : "+ number.sum(10));
+        System.out.println("1부터 10까지의 합: "+number.sum(10));
+        System.out.println("1부터 100까지의 합: "+number.sum(100));
+
 
     }
 }
