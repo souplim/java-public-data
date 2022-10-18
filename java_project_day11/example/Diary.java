@@ -22,6 +22,8 @@ public class Diary {
         // 반복문1
         // 무한반복. 사용자가 3을 입력하면 반복문을 탈출하도록 구현
         while(true) {
+            diaries = file.listFiles();
+
             System.out.println("1. 일기 읽기");
             System.out.println("2. 새 일기");
             System.out.println("3. 일기 삭제");
@@ -43,8 +45,6 @@ public class Diary {
 
             // 메모 읽기를 선택한 경우
             if(taskNum == 1) {
-                diaries = file.listFiles();
-
                 if(diaries.length==0) {
                     System.out.println("생성된 일기가 존재하지 않습니다.");
                     continue;
@@ -116,7 +116,6 @@ public class Diary {
                 // 사용자가 입력한 문자열을 파일에 쓰고 줄바꿈 문자를 통해 줄바꿈 추가
                 try {
                     writer.write("날짜: "+fileName+" 날씨: "+weather+" 제목: "+title+"\n");
-                    diaries = file.listFiles();
                 } catch (IOException e){
                     System.out.println("파일에 텍스트를 추가하지 못했습니다.");
                 }
@@ -172,10 +171,8 @@ public class Diary {
 
                 File fileDelete = new File("C:/Temp/Diary/"+fileName+".txt");
                 if(fileDelete.exists())
-                    if(fileDelete.delete()) {
+                    if(fileDelete.delete())
                         System.out.println("해당 일기가 삭제되었습니다.");
-                        diaries = file.listFiles();
-                    }
             }
 
             // 종료를 선택한 경우
