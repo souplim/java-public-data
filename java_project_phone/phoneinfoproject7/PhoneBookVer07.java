@@ -1,15 +1,12 @@
 package phoneinfoproject7;
 
-import phoneinfoproject.PhoneBookManager;
+import phoneinfoproject5.PhoneBookManager;
 
-interface Menu {
-    // 1. 데이터 입력 2. 데이터 검색 3. 데이터 삭제 4. 프로그램 종료
-    int INPUT = 1, SEARCH = 2, DELETE = 3, EXIT = 4;
-}
+import java.util.InputMismatchException;
 
 public class PhoneBookVer07 {
     public static void main(String[] args) {
-        PhoneBookManager pbm = new PhoneBookManager();
+        PhoneBookManager pbm = PhoneBookManager.getInstance();
         int menu;
 
         while (true) {
@@ -23,19 +20,25 @@ public class PhoneBookVer07 {
                 }
 
                 switch (menu) {
-                    case Menu.INPUT:
+                    case 1:
                         pbm.input();
                         break;
-                    case Menu.SEARCH:
+                    case 2:
                         pbm.search();
                         break;
-                    case Menu.DELETE:
+                    case 3:
                         pbm.delete();
                         break;
-                    case Menu.EXIT:
+                    case 4:
                         System.out.println("프로그램을 종료합니다.");
                         return;
                 }
+            } catch (NumberFormatException nfe) {
+                nfe.printStackTrace();
+//            } catch (InputMismatchException ise) {
+//                ise.printStackTrace();
+//                System.out.println("숫자 1~4 사이의 값을 입력해주세요");
+//                continue;
             } catch (MenuChoiceException e) {
                 e.showWrongChoice();
                 System.out.println("메뉴 선택을 처음부터 다시 진행합니다.");
@@ -123,7 +126,6 @@ class PhoneCompanyInfo extends PhoneInfo{ // 회사동료
     }
 }
 
-// 6단계 예외처리
 class MenuChoiceException extends Exception {
     private int wrongChoice;
 
