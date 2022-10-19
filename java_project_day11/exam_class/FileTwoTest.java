@@ -22,10 +22,15 @@ public class FileTwoTest {
 
             int read = 0;
             int read2 = 0;
-            while(((read = reader.read()) != -1) || (read2 = reader2.read()) != -1){
-                  writer.write(read);
-                  writer.write(read2);
+            while((read = reader.read()) != -1 ){
+                writer.write(read);
             }
+
+            while((read2 = reader2.read()) != -1){
+                writer.write(read2);
+            }
+
+            System.out.println("파일 복사가 완료되었습니다.");
         } catch(IOException io){
             io.printStackTrace();
         }
