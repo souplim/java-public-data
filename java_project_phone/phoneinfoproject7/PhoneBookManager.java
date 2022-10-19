@@ -32,7 +32,7 @@ public class PhoneBookManager implements Comparable<PhoneBookManager> {
 
         type = MenuViewer.sc.nextInt();
         MenuViewer.sc.nextLine();
-//        PhoneInfo info = null;
+        PhoneInfo info = null;
 
         // 6단계 예외 객체 생성
         if(type < InputMenu.NORMAL || InputMenu.COMPANY < type){
@@ -53,32 +53,24 @@ public class PhoneBookManager implements Comparable<PhoneBookManager> {
 //        }
 
         // 5단계 상수로 제어
-//        switch(type){
-//            case InputMenu.NORMAL:
-//                info = readInfo();
-//                break;
-//            case InputMenu.UNIV:
-//                info = readUnivInfo();
-//                break;
-//            case InputMenu.COMPANY:
-//                info = readCompanyInfo();
-//                break;
-//        }
-
-        // 7단계 HashSet에 저장
         switch(type){
             case InputMenu.NORMAL:
-                infoStorage.add(readInfo());
+                info = readInfo();
                 break;
             case InputMenu.UNIV:
-                infoStorage.add(readUnivInfo());
+                info = readUnivInfo();
                 break;
             case InputMenu.COMPANY:
-                infoStorage.add(readCompanyInfo());
+                info = readCompanyInfo();
                 break;
         }
 
-        System.out.println("데이터 입력이 완료되었습니다.");
+        // 7단계 HashSet에 저장
+        boolean isAdded = infoStorage.add(info);
+        if(isAdded)
+            System.out.println("데이터 입력이 완료되었습니다.");
+        else
+            System.out.println("이미 저장된 데이터입니다.");
     }
 
     // 일반을 선택했을 때 호출할 메서드(참조값 반환)
@@ -92,7 +84,7 @@ public class PhoneBookManager implements Comparable<PhoneBookManager> {
     }
 
     // 대학(학교)을 선택했을 때 호출할 메서드(참조값 반환)
-    public PhoneInfo readUnivInfo(){
+    private PhoneInfo readUnivInfo(){
         System.out.print("이름 : ");
         name = MenuViewer.sc.nextLine();
         System.out.print("전화번호 : ");
@@ -106,7 +98,7 @@ public class PhoneBookManager implements Comparable<PhoneBookManager> {
     }
 
     // 회사를 선택했을 때 호출할 메서드(참조값 반환)
-    public PhoneInfo readCompanyInfo(){
+    private PhoneInfo readCompanyInfo(){
         System.out.print("이름 : ");
         name = MenuViewer.sc.nextLine();
         System.out.print("전화번호 : ");
