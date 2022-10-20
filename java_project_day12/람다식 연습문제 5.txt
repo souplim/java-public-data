@@ -1,3 +1,0 @@
-@FunctionalInterface
-public interface Function<T> {
-	pubic
