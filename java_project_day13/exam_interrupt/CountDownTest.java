@@ -1,3 +1,5 @@
+package exam_interrupt;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -5,7 +7,7 @@ public class CountDownTest extends JFrame { // 윈도우창 상속
     private JLabel label; // 사용자한테 보여줄 때 사용할 클래스
     private Thread t;
 
-    class MyThread extends Thread { // 내부클래스 - 외부 클래스의 private필드에 접근 용이
+    class Counter extends Thread { // 내부클래스 - 외부 클래스의 private필드에 접근 용이
         @Override
         public void run(){
             for(int i=10;i>=0;i--){
@@ -29,16 +31,17 @@ public class CountDownTest extends JFrame { // 윈도우창 상속
         getContentPane().add(label);
 
         JButton btnNewButton = new JButton("카운터 중지");
-        btnNewButton
-        label = new JLabel("Start", JLabel.CENTER);
-
-        add(label); // 레이블을 프레임창에 추가
-        (new MyThread()).start(); // 스레드 start()
-
+        btnNewButton.setBounds(247,25,125,23);
+        btnNewButton.addActionListener(e -> t.interrupt());
+        getContentPane().add(btnNewButton);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true); // 프레임창 화면에 보이게 설정
+
+        t = new Counter();
+        t.start();
     }
 
     public static void main(String[] args){
-        new CountDownTest(); // 생성자 호출
+        CountDownTest t = new CountDownTest(); // 생성자 호출
     }
 }
