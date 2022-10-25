@@ -2,7 +2,6 @@ package phoneinfoproject8;
 
 import java.io.*;
 import java.util.InputMismatchException;
-import java.util.Iterator;
 
 interface Menu {
     // 1. 데이터 입력 2. 데이터 검색 3. 데이터 삭제 4. 프로그램 종료
@@ -10,31 +9,12 @@ interface Menu {
 }
 
 public class PhoneBookVer08 {
+
     public static void main(String[] args) {
         PhoneBookManager pbm = PhoneBookManager.getInstance();
-        ObjectInputStream in = null;
-        ObjectOutputStream out = null;
+        // 기존 전화번호부 복원 메서드 호출
+        pbm.reloadPhoneBook();
         int menu;
-
-        // 기존 전화번호부 프로그램상으로 복원하기
-        try {
-            in = new ObjectInputStream(new FileInputStream("PhoneBook.dat"));
-            Object pi;
-            PhoneInfo phoneInfo;
-                while((pi = in.readObject()) != null){
-                    if(pi instanceof PhoneUnivInfo)
-                        phoneInfo = (PhoneUnivInfo)pi;
-                    else if(pi instanceof PhoneCompanyInfo)
-                        phoneInfo = (PhoneCompanyInfo)pi;
-                    else
-                        phoneInfo = (PhoneInfo)pi;
-                    pbm.infoStorage.add(phoneInfo);
-                }
-        } catch (IOException io) {
-            System.out.println("입출력 과정에서 문제가 발생했습니다.");
-        } catch (ClassNotFoundException cnf) {
-            System.out.println("데이터 파일을 찾을 수 없습니다.");
-        }
 
         while (true) {
             try {
@@ -58,43 +38,23 @@ public class PhoneBookVer08 {
                         break;
                     case Menu.EXIT:
                         // 입력된 데이터를 파일에 저장
-                        out = new ObjectOutputStream(new FileOutputStream("PhoneBook.dat"));
-                        Iterator<PhoneInfo> it = pbm.infoStorage.iterator();
-                        while(it.hasNext()){
-                            PhoneInfo p = it.next();
-                            out.writeObject(p);
-                        }
+                        pbm.savePhoneBook();
                         System.out.println("프로그램을 종료합니다.");
                         return;
                 }
-            } catch (NumberFormatException nfe) {
-                nfe.printStackTrace();
             } catch (MenuChoiceException e) {
                 e.showWrongChoice();
                 System.out.println("메뉴 선택을 처음부터 다시 진행합니다.");
             } catch (InputMismatchException ise) {
                 System.out.println("숫자 1~4 사이의 값을 입력해주세요"); // 이 문장 menu 선택에서 문자열로 들어가서 무한반복되는 오류
                 MenuViewer.sc.nextLine();
-            } catch (IOException io) {
-                System.out.println("입출력 과정에서 문제가 발생했습니다.");
-            } finally {
-                try {
-                    if(out != null)
-                        out.close();
-                    if(in != null)
-                        in.close();
-                } catch (IOException io){
-                    io.printStackTrace();
-                }
             }
         }
     }
 }
 
-
-
-
 class PhoneInfo implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String name;
     private String phoneNumber;
 
