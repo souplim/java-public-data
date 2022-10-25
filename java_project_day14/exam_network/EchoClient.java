@@ -14,10 +14,12 @@ public class EchoClient {
         Socket socket = null;
         String ServerIP;
         try {
+            // 접속할 서버가 클라이언트와 동일 컴퓨터에 존재 시 아래와 같이 작성할 수 있다.
             ServerIP = InetAddress.getLocalHost().getHostAddress(); // 서버의 ip 주소
-            // localhost == 127.0.0.1.
-            socket = new Socket("localhost",9999); // 클라이언트 소켓 생성. 서버에 바로 접속
-            System.out.println("서버에 접속하였습니다...");
+            // 그러나 서버와 클라이언트가 서로 다른 컴퓨터라면 반드시 서버의 IP를 명시해주어야 한다.
+            // 예를 들어 서버 IP가 192.168.0.12라면 ServerIP = "192.168.0.12"로 작성해야 한다.
+            socket = new Socket(ServerIP,9999); // localhost == 127.0.0.1. 클라이언트 소켓 생성. 서버에 바로 접속
+            System.out.println(ServerIP+" 서버에 접속하였습니다...");
 
             out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())); // 서버로의 출력스트림
             String outputMessage;
