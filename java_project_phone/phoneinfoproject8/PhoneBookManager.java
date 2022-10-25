@@ -1,5 +1,6 @@
 package phoneinfoproject8;
 
+import java.io.*;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -17,6 +18,9 @@ public class PhoneBookManager implements Comparable<PhoneBookManager> {
     String name, phone, major, company = null;
     int year;
     private int cnt = 0; // 현재 저장된 객체들의 인덱스
+
+    // 8단계 전화번호부 저장 파일 생성
+    private File file = new File("PhoneBook.dat");
 
     private static PhoneBookManager instance = null;
     public static PhoneBookManager getInstance() {
@@ -76,6 +80,52 @@ public class PhoneBookManager implements Comparable<PhoneBookManager> {
             System.out.println("데이터 입력이 완료되었습니다.");
         else
             System.out.println("이미 저장된 데이터입니다.");
+    }
+
+    // 8단계 기존 전화번호부 프로그램상으로 복원하는 메서드
+    public void reloadPhoneBook() {
+        ObjectInputStream in = null;
+        try {
+            in = new ObjectInputStream(new FileInputStream(file));
+            Object pi;
+            while ((pi = in.readObject()) != null) {
+                PhoneInfo phoneInfo = (PhoneInfo) pi;
+                infoStorage.add(phoneInfo);
+            }
+        } catch (IOException io) {
+            return;
+        } catch (ClassNotFoundException cnf) {
+            System.out.println("데이터 파일을 찾을 수 없습니다.");
+        } finally {
+            try {
+                if (in != null)
+                    in.close();
+            } catch (IOException io) {
+                io.printStackTrace();
+            }
+        }
+    }
+
+    // 8단계 입력된 데이터를 파일에 저장하는 메서드
+    public void savePhoneBook(){
+        ObjectOutputStream out = null;
+        try {
+            out = new ObjectOutputStream(new FileOutputStream(file));
+            Iterator<PhoneInfo> it = infoStorage.iterator();
+            while(it.hasNext()){
+                PhoneInfo p = it.next();
+                out.writeObject(p);
+            }
+        } catch(IOException io){
+            System.out.println("입출력 과정에서 문제가 발생했습니다.");
+        } finally {
+            try {
+                if (out != null)
+                    out.close();
+            } catch (IOException io) {
+                io.printStackTrace();
+            }
+        }
     }
 
     // 일반을 선택했을 때 호출할 메서드(참조값 반환)
