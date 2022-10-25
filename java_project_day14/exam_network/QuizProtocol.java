@@ -37,7 +37,7 @@ class QuizProtocol {
             } else {
                 theOutput = "오답입니다. 계속하시겠습니까? (y/n)";
             }
-            currentProblem = (currentProblem+1)%NUMPROBLEMS;
+            currentProblem = (currentProblem+1)%NUMPROBLEMS; // 나머지. 번갈아가면서 나올 때 0,1,2만 반복
         }
         return theOutput;
     }
