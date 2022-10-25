@@ -1,6 +1,7 @@
 package phoneinfoproject8;
 
 import java.io.*;
+import java.util.InputMismatchException;
 import java.util.Iterator;
 
 interface Menu {
@@ -15,6 +16,7 @@ public class PhoneBookVer08 {
         ObjectOutputStream out = null;
         int menu;
 
+        // 기존 전화번호부 프로그램상으로 복원하기
         try {
             in = new ObjectInputStream(new FileInputStream("PhoneBook.dat"));
             Object pi;
@@ -70,6 +72,8 @@ public class PhoneBookVer08 {
             } catch (MenuChoiceException e) {
                 e.showWrongChoice();
                 System.out.println("메뉴 선택을 처음부터 다시 진행합니다.");
+            } catch (InputMismatchException ise) {
+                System.out.println("숫자 1~4 사이의 값을 입력해주세요");
             } catch (IOException io) {
                 System.out.println("입출력 과정에서 문제가 발생했습니다.");
             } finally {
@@ -85,6 +89,9 @@ public class PhoneBookVer08 {
         }
     }
 }
+
+
+
 
 class PhoneInfo implements Serializable {
     private String name;
