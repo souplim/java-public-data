@@ -73,7 +73,8 @@ public class PhoneBookVer08 {
                 e.showWrongChoice();
                 System.out.println("메뉴 선택을 처음부터 다시 진행합니다.");
             } catch (InputMismatchException ise) {
-                System.out.println("숫자 1~4 사이의 값을 입력해주세요");
+                System.out.println("숫자 1~4 사이의 값을 입력해주세요"); // 이 문장 menu 선택에서 문자열로 들어가서 무한반복되는 오류
+                MenuViewer.sc.nextLine();
             } catch (IOException io) {
                 System.out.println("입출력 과정에서 문제가 발생했습니다.");
             } finally {
