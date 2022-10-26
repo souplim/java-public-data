@@ -33,6 +33,8 @@ public class PhoneBookManager implements Comparable<PhoneBookManager> {
     public PhoneBookManager(){
 //        infoStorage = new PhoneInfo[size];
         infoStorage = new HashSet<>();
+        // 8단계 - PhoneBookManager의 인스턴스 생성시 파일로부터 데이터 읽어와 HashSet에 저장
+        reloadPhoneBook();
     }
 
     public void input() throws MenuChoiceException {
@@ -93,9 +95,10 @@ public class PhoneBookManager implements Comparable<PhoneBookManager> {
                 infoStorage.add(phoneInfo);
             }
         } catch (IOException io) {
-            return;
+            return; // 역직렬화할 때 readObject()는 읽을 데이터가 없으면 EOException 발생시킴 -> 호출한 곳으로 돌아가게 해줌
         } catch (ClassNotFoundException cnf) {
             System.out.println("데이터 파일을 찾을 수 없습니다.");
+            return;
         } finally {
             try {
                 if (in != null)
