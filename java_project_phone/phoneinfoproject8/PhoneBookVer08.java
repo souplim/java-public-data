@@ -12,8 +12,6 @@ public class PhoneBookVer08 {
 
     public static void main(String[] args) {
         PhoneBookManager pbm = PhoneBookManager.getInstance();
-        // 기존 전화번호부 복원 메서드 호출
-        pbm.reloadPhoneBook();
         int menu;
 
         while (true) {
@@ -54,6 +52,7 @@ public class PhoneBookVer08 {
 }
 
 class PhoneInfo implements Serializable {
+    // serialVersionUID는 같은 클래스임을 알려주는 식별자 역할. Serializable 인터페이스를 구현한 클래스 컴파일하면 자동적으로 추가됨
     private static final long serialVersionUID = 1L;
     private String name;
     private String phoneNumber;
