@@ -30,7 +30,7 @@ public class PhoneBookManager implements Comparable<PhoneBookManager> {
     }
 
     // 현재 생성자 접근 제어자를 private로 설정
-    public PhoneBookManager(){
+    private PhoneBookManager(){
 //        infoStorage = new PhoneInfo[size];
         infoStorage = new HashSet<>();
         // 8단계 - PhoneBookManager의 인스턴스 생성시 파일로부터 데이터 읽어와 HashSet에 저장
@@ -86,6 +86,8 @@ public class PhoneBookManager implements Comparable<PhoneBookManager> {
 
     // 8단계 기존 전화번호부 프로그램상으로 복원하는 메서드
     public void reloadPhoneBook() {
+        if(file.exists()==false) return; // 파일 존재하지 않을 때
+
         ObjectInputStream in = null;
         try {
             in = new ObjectInputStream(new FileInputStream(file));
@@ -103,8 +105,8 @@ public class PhoneBookManager implements Comparable<PhoneBookManager> {
             try {
                 if (in != null)
                     in.close();
-            } catch (IOException io) {
-                io.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
