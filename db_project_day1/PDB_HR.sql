@@ -142,19 +142,33 @@ WHERE commission_pct IS NOT NULL;
 SELECT * FROM employees;
 SELECT employee_id, first_name, last_name, job_id FROM employees
 WHERE manager_id IS NULL;
+-- <문제> 커미션을 받는 사원만 출력하되 사원번호, 이름, 급여, 수당율, 수당금액(계산식-급여*수당율)을 출력하라.
+SELECT employee_id, first_name, salary, commission_pct, salary*commission_pct FROM employees
+WHERE commission_pct IS NOT NULL;
 
 -- ORDER BY 정렬하기
 -- 쿼리문 맨 뒤에 기술 : SELECT 컬럼 FROM 테이블 WHERE 조건 ORDER BY 컬럼 ASC/DESC;
 -- 1. 오름차순 정렬을 위한 ASC : 생략 가능
--- 사번을 기준으로 오름차순 정렬
+-- 사번을 기준으로 오름차순 정렬 - NULL 레코드를 제일 마지막에
 SELECT employee_id, first_name FROM employees ORDER BY employee_id ASC;
 -- 2. 내림차순 정렬을 위한 DESC
--- 사번을 기준으로 내림차순 정렬
+-- 사번을 기준으로 내림차순 정렬 - NULL 레코드를 제일 먼저
 SELECT employee_id, first_name FROM employees ORDER BY employee_id DESC;
+SELECT employee_id, first_name FROM employees ORDER BY 1 DESC; -- 정렬할 컬럼의 순번으로도 가능
 -- <문제> 직원번호, 이름, 급여, 부서번호를 급여가 높은 순으로 출력하라
 SELECT employee_id, first_name, salary, job_id FROM employees ORDER BY salary DESC;
+-- 정렬기준 여러개 올 수 있음 - 첫 번째 기준에서 동일한 데이터 있으면 그 다음으로는 두 번째 기준으로 정렬
+SELECT employee_id, first_name, salary, job_id FROM employees ORDER BY salary DESC, employee_id DESC;
+SELECT employee_id, first_name, salary, job_id FROM employees ORDER BY 3 DESC, 1 DESC; -- 정렬할 컬럼의 순번으로도 가능
 -- <문제> 입사일이 가장 최근인 직원 순으로 직원번호, 이름, 입사일을 출력하라
 SELECT employee_id, first_name, hire_date FROM employees ORDER BY hire_date DESC;
+-- <문제> 부서번호가 20, 50번 부서에서 근무하는 모든 사원의 이름, 부서 번호, 급여를 알파벳순으로 출력하라
+SELECT first_name, department_id, salary FROM employees
+WHERE department_id = 20 OR department_id = 50
+ORDER BY first_name;
+SELECT first_name, department_id, salary FROM employees
+WHERE department_id IN(20, 50)
+ORDER BY first_name;
 
 -- 기본 SELECT문 연습 예제
 --[문제 1] EMPLOYEES 테이블에서 급여가 3000이상인 사원의 정보를 사원번호, 이름, 담당업무, 급여를 출력하라.
