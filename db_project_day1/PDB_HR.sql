@@ -238,7 +238,8 @@ DESC EMPOYEES02;
 -- 1. ADD 새로운 칼럼 추가
 ALTER TABLE EMP01
 ADD(job varchar2(9));
-DESC EMP01; -- 변경 확인
+-- 변경 확인
+DESC EMP01; 
 -- <문제> 이미 존재하는 EMP01 테이블에 입사일 칼럼(CREDATE)을 날짜형으로 추가하라
 ALTER TABLE EMP01
 ADD(credate DATE);
@@ -321,3 +322,247 @@ CREATE TABLE BOOK_ORDER(
     COUNT NUMBER(6),
     OR_DATE DATE
 );
+
+-- SELECT문 함수
+-- 1. DUAL 테이블과 SQL 함수 분류
+-- (1) DUAL 테이블 : 산술 연산이나 가상 칼럼 등의 값을 한 번만 출력하고 싶을 때 사용하는 테이블
+DESC departments;
+SELECT 24*60*60 FROM departments;
+SELECT 24*60*60 FROM DUAL;
+-- DUAL 테이블은 DUMMY라는 한 개의 칼럼으로 구성되어 있음 
+DESC DUAL;
+-- DUAL 테이블은 X라는 한 개의 문자만을 값으로 가진 단 하나의 로우만을 저장하고 있음
+-- 그래서 함수를 사용하여 결과를 확인하고 싶을 때 : SELECT 컬럼 FROM DUAL;
+SELECT * FROM DUAL;
+-- (2) 단일 행 함수와 그룹함수로 SQL 함수 분류
+-- (단일 행 함수) 30번 부서 소속 사원의 급여를 출력하는 쿼리문
+SELECT department_id, salary FROM employees
+WHERE department_id = 30;
+-- (그룹함수) 30번 부서 소속 사원의 총 급여를 구하는 쿼리문. 30번 부서 소속 사원이 6명임에도 결과는 하나의 행으로 나옴
+SELECT department_id, SUM(salary) FROM employees
+GROUP BY department_id
+HAVING department_id = 30;
+
+-- 2. 문자함수
+-- (1) 소문자로 변환하는 LOWER 함수
+-- 사원 테이블에서 부서번호가 20번인 사원명을 모두 소문자로 변환
+SELECT first_name, LOWER(first_name)
+FROM employees
+WHERE department_id = 20;
+-- (2) 대문자로 변환하는 UPPER 함수
+SELECT 'DataBase', UPPER('DataBase')
+FROM DUAL;
+-- job_id가 'it_prog'인 사원을 검색
+SELECT employee_id, first_name, job_id FROM employees
+WHERE job_id = 'IT_PROG';
+SELECT employee_id, first_name, job_id FROM employees
+WHERE job_id = UPPER('it_prog');
+SELECT employee_id, first_name, job_id FROM employees
+WHERE LOWER(job_id) = 'it_prog';
+-- (3) 첫 글자만 대문자로 나머지는 소문자로 변환하는 INITCAP 함수
+SELECT INITCAP('DATA BASE PROGRAM')
+FROM DUAL;
+-- 사원 테이블의 30번 부서에 소속된 이메일의 첫 글자만 대문자로
+DESC employees;
+SELECT email FROM employees;
+SELECT employee_id, first_name, INITCAP(email) FROM employees
+WHERE department_id = 30;
+-- 'jking'이란 이메일을 가진 직원의 이름과 커미션을 출력하라(INITCAP, UPPER 사용)
+SELECT first_name, commission_pct FROM employees
+WHERE email = UPPER('jking');
+SELECT first_name, commission_pct, INITCAP(email) FROM employees
+WHERE email = UPPER('jking');
+-- (4) 두 문자를 연결하는 CONCAT 함수
+SELECT CONCAT('Data','Base')
+FROM DUAL;
+SELECT CONCAT(first_name, '($'||salary||')') AS "사원 정보" FROM employees
+WHERE department_id = 30;
+-- (5) 문자 길이를 구하는 LENGTH/LENGTHB 함수
+-- LENGTH : 글자의 개수를 구한다
+SELECT LENGTH('DataBase'), LENGTH('데이터베이스')
+FROM DUAL;
+-- LENGTHB : 메모리에 차지하는 바이트 수를 구한다
+SELECT LENGTHB('DataBase'), LENGTHB('데이터베이스') -- 한글 : 3byte
+FROM DUAL;
+-- 20번 부서 소속 사원들의 이름의 길이를 출력하기
+SELECT department_id, employee_id, first_name, LENGTH(first_name) FROM employees
+WHERE department_id = 20;
+-- 직원 중 이름이 4글자인 직원의 이름을 소문자로 출력
+SELECT department_id, employee_id, LOWER(first_name) FROM employees
+WHERE LENGTH(first_name) = 4;
+-- <문제> 이름이 6글자 이상인 직원의 직원번호와 이름과 급여를 출력하라
+SELECT employee_id, first_name, salary FROM employees
+WHERE LENGTH(first_name)>=6;
+-- (6) 문자열 일부만 추출하는 SUBSTR/SUBSTRB 함수
+SELECT SUBSTR('DataBase', 1, 3)
+FROM DUAL;
+-- 20번 부서 사원들 입사년도 알아내기
+SELECT hire_date FROM employees;
+SELECT first_name, hire_date, SUBSTR(hire_date, 1, 2) FROM employees
+WHERE department_id=20;
+-- <문제> 03년도에 입사한 사원 알아내기(비교연산자, AND연산자, BETWEEN AND 연산자, SUBSTR 함수)
+DESC employees;
+SELECT hire_date FROM employees;
+SELECT first_name, hire_date FROM employees
+WHERE hire_date>='03/01/01' AND hire_date<='03/12/31';
+SELECT first_name, hire_date FROM employees
+WHERE hire_date BETWEEN '03/01/01' AND '03/12/31';
+SELECT first_name, hire_date FROM employees
+WHERE SUBSTR(hire_date, 1, 2) = '03';
+-- <문제> 이름이 k로 끝나는 직원을 검색(LIKE 연산자의 와일드 카드(%), SUBSTR 함수)
+SELECT first_name FROM employees
+WHERE first_name LIKE '%k';
+SELECT first_name FROM employees -- ?
+WHERE SUBSTR(first_name, );
+-- (7) 특정 문자의 위치를 구하는 INSTR/INSTRB 함수
+SELECT INSTR('DataBase', 'B')
+FROM DUAL;
+-- 30번 부서 소속 사원이름에 e자가 어디에 위치하는지 알려주는 쿼리문
+SELECT department_id, first_name, INSTR(first_name, 'e') FROM employees
+WHERE department_id = 30;
+-- (8) 특정 기호로 채우는 LPAD/RPAD 함수
+SELECT LPAD('DataBase', 20, '$') FROM DUAL;
+SELECT RPAD('DataBase', 20, '$') FROM DUAL;
+SELECT RPAD('123-4535', 12, '(02)') FROM DUAL;
+-- (9) 특정 문자를 잘라내는 TRIM 함수
+SELECT TRIM('a' FROM 'aaaaDataBase programingaaaa') FROM DUAL;
+-- Lisa란 사람의 이름에서 L와 a를 잘라내자
+SELECT first_name, TRIM('L' FROM first_name), TRIM('a' FROM first_name) FROM employees
+WHERE first_name = 'Lisa';
+SELECT TRIM(LEADING FROM '  ABCD  ') LT, LENGTH(TRIM(LEADING FROM '  ABCD  ')) LT_LEN, TRIM(TRAILING FROM '  ABCD  ') RT, 
+LENGTH(TRIM(TRAILING FROM '  ABCD  ')) RT_LEN, TRIM(BOTH FROM '  ABCD  ') BOTH1, LENGTH(TRIM(BOTH FROM '  ABCD  ')) BOTH1_LEN, 
+TRIM('  ABCD  ') BOTH2, LENGTH(TRIM ('  ABCD  ')) BOTH2_LEN
+FROM DUAL;
+
+-- 3. 숫자함수
+-- (1) ABS 함수 - 절대값 / CEIL 함수 - 올림 / FLOOR 함수 - 내림
+SELECT ABS(-15) FROM DUAL;
+SELECT CEIL(10.123), FLOOR(34.5678) FROM DUAL;
+-- (2) 특정 자릿수에서 반올림하는 ROUND 함수
+SELECT ROUND(12.345, 2), ROUND(34.567, 0), ROUND(56.789), ROUND(78.901,-1) FROM DUAL;
+-- (3) 특정 자릿수에서 잘라내는 TRUNC 함수
+SELECT TRUNC(12.345, 2), TRUNC(34.567, 0), TRUNC(56.789), TRUNC(78.901,-1) FROM DUAL;
+-- (4) 나머지 값을 반환하는 MOD함수
+SELECT MOD(34, 2), MOD(34, 5), MOD(34, 7) FROM DUAL;
+-- <문제> 직원번호가 짝수인 직원들의 직원번호와 이름과 직급을 출력하라.
+SELECT * FROM employees;
+SELECT employee_id, first_name, job_id FROM employees
+WHERE MOD(employee_id, 2)=0;
+
+-- 4. 날짜 함수
+-- (1) 현재 날짜를 반환하는 SYSDATE
+SELECT SYSDATE FROM DUAL;
+-- 날짜형 데이터는 더하기나 빼기와 같은 연산이 가능함
+SELECT SYSDATE-1 어제, SYSDATE 오늘, SYSDATE+1 내일 FROM DUAL;
+-- (2) 두 날짜 사이 간격을 계산하는 MONTHS_BETWEEN 함수
+SELECT first_name, SYSDATE 오늘, TO_CHAR(hire_date, 'YYYY/MM/DD') 입사일, TRUNC(MONTHS_BETWEEN(SYSDATE, hire_date)) 근무달수 FROM employees
+WHERE department_id = 30;
+-- (3) 개월 수를 더하는 ADD_MONTHS 함수
+-- 입사일에서 3개월이 지난 날짜를 구하라
+SELECT first_name, hire_date, ADD_MONTHS(hire_date, 3) FROM employees
+WHERE department_id = 30;
+-- (4) 해당 요일의 가장 가까운 날짜를 반환하는 NEXT_DAY 함수
+-- 오늘을 기준으로 최초로 다가오는 수요일
+SELECT SYSDATE, NEXT_DAY(SYSDATE, '수'), NEXT_DAY(SYSDATE, 4) FROM DUAL;
+-- 요일 영어로
+Alter SESSION SET NLS_LANGUAGE=AMERICAN;
+SELECT SYSDATE, NEXT_DAY(SYSDATE,'WEDNESDAY') FROM DUAL;
+-- 요일 한국어로
+Alter SESSION SET NLS_LANGUAGE=KOREAN;
+SELECT SYSDATE, NEXT_DAY(SYSDATE, '수') FROM DUAL;
+-- ( 5) 해당 달의 마지막 날짜를 반환하는 LAST_DAY 함수
+SELECT SYSDATE, LAST_DAY(SYSDATE) FROM DUAL;
+-- (6) ROUND 함수의 다양한 적용 : 함수에 포맷 모델(FORMAT)을 지정하면 숫자 이외의 날짜에 대해서도 반올림을 할 수 있음
+-- 입사일을 달 기준으로 반올림한 예
+SELECT hire_date, ROUND(hire_date,'MONTH') FROM employees
+WHERE department_id = 30;
+-- (7) TRUNC 함수의 다양한 적용
+-- 입사일을 월 기준으로 잘라내기
+SELECT hire_date, TRUNC(hire_date, 'MONTH') FROM employees
+WHERE department_id = 30;
+
+-- 5. 변환 함수
+-- (1) 문자형으로 변환하는 TO_CHAR 함수
+-- 날짜형 -> 문자형
+SELECT SYSDATE, TO_CHAR(SYSDATE, 'YYYY-MM-DD'), TO_CHAR(SYSDATE, 'DL') FROM DUAL;
+-- 직원들의 입사일을 출력하되 요일까지 함께 출력하기
+SELECT TO_CHAR(hire_date, 'YYYY-MM-DD DAY') FROM employees
+WHERE department_id = 30;
+SELECT TO_CHAR(hire_date, 'YYYY"년" MM"월" DD"일" DAY') FROM employees
+WHERE department_id = 30;
+SELECT TO_CHAR(hire_date, 'YYYY/MON/DD DY') FROM employees
+WHERE department_id = 30;
+SELECT TO_CHAR(SYSDATE, 'YYYY-MM-DD, HH24:MI:SS') FROM DUAL;
+-- 숫자형 -> 문자형
+-- 숫자출력
+SELECT first_name, salary, TO_CHAR(salary, '$999,999') salarytformat FROM employees
+WHERE department_id = 30;
+SELECT first_name, salary, TO_CHAR(123456, '999,999,999') FROM employees
+WHERE department_id = 30;
+-- (2) 날짜형으로 변환하는 TO_DATE 함수
+-- 2005년 12월 24일에 입사한 직원을 검색
+SELECT first_name, hire_date FROM employees
+WHERE hire_date = TO_DATE(20051224, 'YYYYMMDD');
+-- 올해 며칠이 지났는지 날짜 계산
+SELECT SYSDATE-'2015/12/24' FROM DUAL; -- 오류
+SELECT TRUNC(SYSDATE-TO_DATE('2015/12/24','YYYY/MM/DD')) FROM DUAL; 
+-- (3) 숫자형으로 변환하는 TO-NUMBER 함수
+-- 수치 형태의 문자값의 차 구하기 -- 오류
+SELECT '10,000'+'20,000' FROM DUAL; -- 오류
+SELECT TO_NUMBER('10,000','999,999')+TO_NUMBER('20,000','999,999') FROM DUAL;
+
+-- 6. 일반 함수
+-- (1) NULL을 다른 값으로 변환하는 NVL 함수
+SELECT first_name, salary, commission_pct, job_id FROM employees
+ORDER BY job_id;
+SELECT first_name, salary, NVL(commission_pct, 0), job_id FROM employees
+ORDER BY job_id;
+-- 급여에 커미션을 더한 금액 구하기
+SELECT first_name, salary, commission_pct, salary*commission_pct AS commission, salary+(salary*commission_pct) AS total, job_id
+FROM employees
+ORDER BY job_id;
+SELECT first_name, salary, commission_pct, salary*NVL(commission_pct, 0) commission, salary+(salary*NVL(commission_pct, 0)) total, job_id
+FROM employees
+ORDER BY job_id;
+-- NVL2 함수
+-- 커미션이 NULL이 아니면 급여+커미션을, NULL이면 급여만 출력
+SELECT first_name, salary, commission_pct, NVL2(commission_pct, salary+(salary*commission_pct), salary) TOTAL_SAL FROM employees;
+-- <문제> 모든 직원은 자신의 상관(manager_id)이 있다. 하지만 employees 테이블에 유일하게 상관이 없는 로우가 있는데 그 사원의 manager_id 칼럼값이 NULL이다.
+-- 상관이 없는 대표이사만 출력하되 manager_id 칼럼 값 NULL 대신 CEO로 출력한다.
+SELECT manager_id FROM employees;
+SELECT employee_id, first_name, NVL2(manager_id, manager_id, 'CEO') manager_id FROM employees
+WHERE manager_id IS NULL; -- 에러 WHY?????
+--(2) 선택을 위한 DECODE 함수 (if문이랑 비슷)
+-- 부서명 구하기
+SELECT * FROM departments;
+SELECT department_id, DECODE(department_id, 10, 'Administration', 
+       20, 'Marketing', 30, 'Purchasing', 40, 'Human Resources', 
+       50, 'Shipping', 60, 'IT') AS departments FROM employees
+ORDER BY department_id;
+-- (3) 조건에 따라 서로 다른 처리가 가능한 CASE 함수 : switch문이랑 비슷
+-- 부서명 구하기
+SELECT first_name, department_id,
+    CASE WHEN department_id=10 THEN 'admministration'
+         WHEN department_id=20 THEN 'Marketing'
+         WHEN department_id=30 THEN 'Purchasing'
+         WHEN department_id=40 THEN 'Human Resources'
+         WHEN department_id=50 THEN 'Shipping'
+         WHEN department_id=60 THEN 'IT'
+         END DEPAPRTEMENT_NAME
+FROM employees
+ORDER BY department_id;
+-- <문제> 부서별에 따라 급여를 인상(직원번호, 직원명, 직급, 급여)
+-- 부서명이 'Marketing'인 직원은 5%, 'Purchasing'인 직원은 10%, 'Human Resources'인 직원 15%, 'IT'인 직원은 20% 인상한다.
+SELECT employee_id, first_name, job_id, salary,
+    CASE WHEN department_id=10 THEN salary
+         WHEN department_id=20 THEN salary*1.05
+         WHEN department_id=30 THEN salary*1.1
+         WHEN department_id=40 THEN salary*1.15
+         WHEN department_id=50 THEN salary
+         WHEN department_id=60 THEN salary*1.2
+         END salary_inc
+FROM employees
+ORDER BY department_id;
+-- (4) GREATEST(exp1, exp2...) 가장 큰 값, LEAST(exp1, exp2...) 가장 작은 값
+SELECT GREATEST(1,4,2,5,3,9), LEAST(1,4,2,5,3,9) FROM DUAL;
+SELECT GREATEST('김희수','조현수','홍길동'), LEAST('김희수','조현수','홍길동') FROM DUAL;
