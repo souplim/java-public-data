@@ -566,3 +566,208 @@ ORDER BY department_id;
 -- (4) GREATEST(exp1, exp2...) 가장 큰 값, LEAST(exp1, exp2...) 가장 작은 값
 SELECT GREATEST(1,4,2,5,3,9), LEAST(1,4,2,5,3,9) FROM DUAL;
 SELECT GREATEST('김희수','조현수','홍길동'), LEAST('김희수','조현수','홍길동') FROM DUAL;
+
+-- 무결성 제약조건
+-- 1. 무결성 제약조건 종류
+-- (1) NOT NULL
+DROP TABLE EMP01;
+CREATE TABLE emp01(
+    empno NUMBER(4),
+    ename VARCHAR2(10),
+    job VARCHAR(9),
+    deptno NUMBER(4)
+);
+INSERT INTO emp01
+VALUES(NULL, NULL, 'salesman', 30);
+SELECT * FROM emp01;
+-- 필수항목에 NULL값 들어갈 수 있으므로 테이블 삭제후 제약조건 부여하여 다시 만들기
+DROP TABLE emp01 PURGE;
+
+CREATE TABLE emp01(
+    empno NUMBER(4) NOT NULL,
+    ename VARCHAR2(10) NOT NULL,
+    job VARCHAR(9),
+    deptno NUMBER(4)
+);
+INSERT INTO emp01
+VALUES(NULL, NULL, 'salesman', 30); -- 오류
+INSERT INTO emp01
+VALUES(7499, 'ALLEN', 'salesman', 30);
+SELECT * FROM emp01;
+-- (2) UNIQUE 유일키
+DROP TABLE emp02;
+CREATE TABLE emp02(
+    empno NUMBER(4) UNIQUE,
+    ename VARCHAR2(10) NOT NULL,
+    job VARCHAR(9),
+    deptno NUMBER(4)
+);
+INSERT INTO emp02
+VALUES(7499, 'ALLEN', 'salesman', 30);
+INSERT INTO emp02(empno, ename, job, deptno)
+VALUES(7499, 'ALLEN', 'salesman', 30); -- 동일한 사원번호로 입력해봄 -> 에러
+-- null은 값에서 제외되므로 유일한지 체크하는 값에서 제외됨
+INSERT INTO emp02(empno, ename, job, deptno)
+VALUES(NULL, 'JONES', 'manager', 20);
+INSERT INTO emp02(empno, ename, job, deptno)
+VALUES(NULL, 'JONES', 'salesman', 10); -- 에러아님. NULL값도 입력되지 않게 하려면 empno NUMBER(4) NOT NULL UNIQUE처럼 두 가지 제약조건 기술해야
+SELECT * FROM emp02;
+-- (3) 데이터 딕셔너리 : 데이터베이스 효율적으로 관리하기 위한 시스템 테이블 - DBA_XXXX, ALL_XXXX, USER_XXXX
+-- HR 사용자가 생성한 테이블의 이름을 조회
+SELECT TABLE_NAME FROM USER_TABLES
+ORDER BY TABLE_NAME DESC;
+-- (4) 제약조건 확인하기 : 에러메시지의 정확한 원인을 알기 위한 USER_CONSTRAINTS 데이터 딕셔너리
+SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE, TABLE_NAME FROM USER_CONSTRAINTS
+WHERE TABLE_NAME = 'EMP02';
+-- 어느 컬럼에 제약조건 지정되어있는지도 확인 가능 : COLUMN_NAME
+SELECT OWNER, CONSTRAINT_NAME, TABLE_NAME, COLUMN_NAME FROM USER_CONS_COLUMNS
+WHERE TABLE_NAME = 'EMP02';
+-- (5) 데이터의 구분을 위한 PRIMARY KEY  제약조건 : 식별 기능을 갖는 칼럼 -> 유일 & 널값 허용 X
+DROP TABLE emp03;
+CREATE TABLE emp03(
+    empno NUMBER(4) PRIMARY KEY,
+    ename VARCHAR2(10) NOT NULL,
+    job VARCHAR(9),
+    deptno NUMBER(4)
+);
+INSERT INTO emp03
+VALUES(7499, 'ALLEN', 'salesman', 30);
+INSERT INTO emp03
+VALUES(7499, 'JONES', 'manager', 20); -- 동일한 사원번호 입력하면 에러 발생
+INSERT INTO emp03
+VALUES(NULL, 'JONES', 'manager', 20); -- 에러. NULL값도 허용 X
+SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE, TABLE_NAME FROM USER_CONSTRAINTS
+WHERE TABLE_NAME = 'EMP03'; -- 제약조건 확인하기
+-- (6) FOREIGN KEY
+-- 부서(부모) 테이블 생성
+CREATE TABLE DEPT01(
+    deptno NUMBER(2) PRIMARY KEY,
+    dname VARCHAR2(14) NOT NULL,
+    loc VARCHAR2(13)
+);
+INSERT INTO dept01(deptno, dname, loc) VALUES(10,'Accounting','NEW YORK');
+INSERT INTO dept01(deptno, dname, loc) VALUES(20,'Research','DALLAS');
+INSERT INTO dept01(deptno, dname, loc) VALUES(30,'Sales','CHICAGO');
+INSERT INTO dept01(deptno, dname, loc) VALUES(40,'Operations','BOSTON');
+-- 외래키 제약 조건 지정하지 않은 emp03 테이블에 존재하지 않는 50번 부서번호 지정해보기
+INSERT INTO emp03
+VALUES(7566,'JONES','MANAGER',50);
+SELECT * FROM emp03; -- 부서번호 없는데도 데이터가 저장됨
+SELECT * FROM dept01;
+-- 사원(자식) 테이블 생성
+CREATE TABLE emp04(
+    empno NUMBER(4) PRIMARY KEY,
+    ename VARCHAR2(10) NOT NULL,
+    job VARCHAR2(9),
+    depno NUMBER(2) REFERENCES dept01(deptno)
+);
+INSERT INTO emp04
+VALUES(7499,'ALLEN','SALESMAN',30);
+SELECT * FROM emp04;
+INSERT INTO emp04
+VALUES(7566,'JONES','SALESMAN',50); -- 에러
+SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE, TABLE_NAME, R_CONSTRAINT_NAME
+FROM USER_CONSTRAINTS
+WHERE TABLE_NAME = 'EMP04';
+-- (7) CHECK 제약 조건 : 입력되는 값 체크하여 설정된 값 이외의 값이 들어오면 수행되지 못하게 함
+CREATE TABLE emp05(
+    empno NUMBER(4) PRIMARY KEY,
+    ename VARCHAR2(10) NOT NULL,
+    gender VARCHAR2(1) CHECK(GENDER IN('M','F'))
+);
+INSERT INTO emp05(empno, ename, gender) VALUES(7566,'JONES','M');
+SELECT * FROM emp05;
+INSERT INTO emp05(empno, ename, gender) VALUES(7566,'JONES','A'); - 오류 : 체크제약조건 발생
+SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE, TABLE_NAME, SEARCH_CONDITION
+FROM USER_CONSTRAINTS
+WHERE TABLE_NAME='EMP05';
+-- (8) DEFAULT : 값 설정 안 할시 기본값으로 입력
+CREATE TABLE emp05_2(
+    empno NUMBER(4) PRIMARY KEY,
+    ename VARCHAR2(10) NOT NULL,
+    gender VARCHAR2(1) CHECK(GENDER IN('M','F')),
+    regdate DATE DEFAULT SYSDATE,
+    hit NUMBER(6) DEFAULT 0
+);
+INSERT INTO emp05_2(empno, ename, gender) VALUES(7566,'JONES','M');
+SELECT * FROM emp05_2;
+
+-- 2. 제약 조건명 지정하기
+CREATE TABLE emp06(
+    empno NUMBER(4) CONSTRAINT emp06_empno_pk PRIMARY KEY,
+    ename VARCHAR2(10) NOT NULL,
+    job VARCHAR2(9) CONSTRAINT emp06_job_uk UNIQUE,
+    depno NUMBER(2) CONSTRAINT emp06_depno_fk REFERENCES dept01(deptno)
+);
+INSERT INTO emp06 VALUES(7499,'ALLEN','SALESMAN',30);
+SELECT * FROM emp06;
+-- 지정된 사용자 제약조건명 확인하기
+SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE, TABLE_NAME, R_CONSTRAINT_NAME
+FROM USER_CONSTRAINTS WHERE TABLE_NAME='EMP06';
+INSERT INTO emp06 VALUES(7499,'ALLEN','SALESMAN', 30); -- 무결성 제약 조건(HR.EMP06_EMPNO_PK)에 위배됩니다
+INSERT INTO emp06 VALUES(7499, NULL, 'SALESMAN', 30); -- NULL을 ("HR"."EMP06"."ENAME") 안에 삽입할 수 없습니다
+INSERT INTO emp06 VALUES(7499, 'ALLEN', 'SALESMAN', 50); -- 무결성 제약 조건(HR.EMP06_EMPNO_PK)에 위배됩니다
+INSERT INTO emp06 VALUES(7500, 'ALLEN', 'SALESMAN', 50); -- 무결성 제약 조건(HR.EMP06_JOB_UK)에 위배됩니다
+INSERT INTO emp06 VALUES(7500, 'ALLEN', 'MANAGER', 50); -- 무결성 제약조건(HR.EMP06_DEPNO_FK)이 위배되었습니다- 부모 키가 없습니다
+
+-- 3. 테이블 레벨 방식으로 제약조건 지정하기
+-- 복합키로 기본키를 지정할 경우 : 반드시 테이블 레벨 방식 사용해야
+-- ALTER TABLE로 제약조건 추가하는 경우 : 테이블 구조 결정된 후에 제약 조건 추가 -> 테이블 레벨 방식으로
+-- (1) 칼럼 레벨로 제약조건을 지정하는 방식
+CREATE TABLE emp07(
+    empno NUMBER(4) PRIMARY KEY,
+    ename VARCHAR2(10) NOT NULL,
+    job VARCHAR2(9) UNIQUE,
+    deptno NUMBER(2) REFERENCES DEPT01(deptno)
+);
+-- (2) 테이블 레벨로 제약조건을 지정하는 방식 + 제약조건명 지정
+CREATE TABLE emp08(
+    empno NUMBER(4),
+    ename VARCHAR2(10) NOT NULL,
+    job VARCHAR2(9),
+    deptno NUMBER(2),
+    PRIMARY KEY(empno),
+    UNIQUE(job),
+    FOREIGN KEY(deptno) REFERENCES DEPT01(deptno) 
+);
+-- (2) 테이블 레벨로 제약조건을 지정하는 방식 + 제약조건명 지정
+CREATE TABLE emp08_2(
+    empno NUMBER(4),
+    ename VARCHAR2(10) NOT NULL,
+    job VARCHAR2(9),
+    deptno NUMBER(2),
+    CONSTRAINT emp08_2_empno_pk PRIMARY KEY(empno),
+    CONSTRAINT emp08_2_job_uk UNIQUE(job),
+    CONSTRAINT emp08_2_deptno_fk FOREIGN KEY(deptno) REFERENCES DEPT01(deptno) 
+);
+-- 제약조건 확인
+SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE, TABLE_NAME, R_CONSTRAINT_NAME
+FROM USER_CONSTRAINTS WHERE TABLE_NAME = 'EMP08_2';
+
+-- 4. 제약 조건 변경하기
+-- (1) 제약조건 추가하기
+CREATE TABLE emp09(
+    empno NUMBER(4),
+    ename VARCHAR2(10),
+    job VARCHAR2(9),
+    deptno NUMBER(4),
+); -- 아무 제약 조건 지정하지 않고 테이블 생성
+SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE, TABLE_NAME, R_CONSTRAINT_NAME
+FROM USER_CONSTRAINTS WHERE TABLE_NAME='EMP09'; -- 제약조건 지정 안 하고 제약조건 확인해보기
+-- 제약조건 추가하기
+ALTER TABLE emp09;
+
+
+
+-- ESCAPE
+-- LIKE 연산으로 '%'나 '_'가 포함된 문자를 검색하고자 할 때 사용된다.
+-- '%'나 '_' 앞에 ESCAPE로 특수문자를 지정하면 검색할 수 있다.
+-- 특수문자는 아무거나 상관없이 사용 가능하다.
+-- 구문 마지막에 ESCAPE 에 사용할 문자열만 지정해주면 '_'나 '%'를 검색에 사용할 수 있게 도와준다.
+
+-- 사원테이블(EMPLOYEES)에서 직무ID에 3번째 _를 포함하고 4번째 자리의 값이 P인 레코드를 조회하고자 한다.
+SELECT * FROM employees
+WHERE job_id LIKE '__\_P%' ESCAPE '\';
+
+SELECT * FROM employees
+WHERE job_id LIKE '__@_P%' ESCAPE '@';
