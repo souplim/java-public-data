@@ -630,12 +630,9 @@ CREATE TABLE emp03(
     job VARCHAR(9),
     deptno NUMBER(4)
 );
-INSERT INTO emp03
-VALUES(7499, 'ALLEN', 'salesman', 30);
-INSERT INTO emp03
-VALUES(7499, 'JONES', 'manager', 20); -- 동일한 사원번호 입력하면 에러 발생
-INSERT INTO emp03
-VALUES(NULL, 'JONES', 'manager', 20); -- 에러. NULL값도 허용 X
+INSERT INTO emp03 VALUES(7499, 'ALLEN', 'salesman', 30);
+INSERT INTO emp03 VALUES(7499, 'JONES', 'manager', 20); -- 동일한 사원번호 입력하면 에러 발생
+INSERT INTO emp03 VALUES(NULL, 'JONES', 'manager', 20); -- 에러. NULL값도 허용 X
 SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE, TABLE_NAME FROM USER_CONSTRAINTS
 WHERE TABLE_NAME = 'EMP03'; -- 제약조건 확인하기
 -- (6) FOREIGN KEY
@@ -650,8 +647,7 @@ INSERT INTO dept01(deptno, dname, loc) VALUES(20,'Research','DALLAS');
 INSERT INTO dept01(deptno, dname, loc) VALUES(30,'Sales','CHICAGO');
 INSERT INTO dept01(deptno, dname, loc) VALUES(40,'Operations','BOSTON');
 -- 외래키 제약 조건 지정하지 않은 emp03 테이블에 존재하지 않는 50번 부서번호 지정해보기
-INSERT INTO emp03
-VALUES(7566,'JONES','MANAGER',50);
+INSERT INTO emp03 VALUES(7566,'JONES','MANAGER',50);
 SELECT * FROM emp03; -- 부서번호 없는데도 데이터가 저장됨
 SELECT * FROM dept01;
 -- 사원(자식) 테이블 생성
@@ -750,14 +746,62 @@ CREATE TABLE emp09(
     empno NUMBER(4),
     ename VARCHAR2(10),
     job VARCHAR2(9),
-    deptno NUMBER(4),
+    deptno NUMBER(4)
 ); -- 아무 제약 조건 지정하지 않고 테이블 생성
 SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE, TABLE_NAME, R_CONSTRAINT_NAME
 FROM USER_CONSTRAINTS WHERE TABLE_NAME='EMP09'; -- 제약조건 지정 안 하고 제약조건 확인해보기
 -- 제약조건 추가하기
-ALTER TABLE emp09;
+ALTER TABLE emp09
+ADD PRIMARY KEY(empno);
+ALTER TABLE emp09
+ADD CONSTRAINT EMP09_deptno_fk FOREIGN KEY(deptno) REFERENCES dept01(deptno);
+SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE, TABLE_NAME, R_CONSTRAINT_NAME
+FROM USER_CONSTRAINTS WHERE TABLE_NAME='EMP09';
+-- (2) 제약 조건 제거하기
+-- EMP06 테이블 제약조건 확인
+SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE, TABLE_NAME, R_CONSTRAINT_NAME
+FROM USER_CONSTRAINTS WHERE TABLE_NAME='EMP06';
+SELECT * FROM EMP06;
+INSERT INTO EMP06
+VALUES(7499, 'ALLEN', 'MANAGER', 50); -- 동일한 사원번호 7499 추가 안 됨. 기본키 제약조건 제거
+ALTER TABLE EMP06
+DROP CONSTRAINT EMP06_EMPNO_PK;
+ALTER TABLE EMP06
+DROP CONSTRAINT EMP06_DEPNO_FK;
 
-
+-- 5. 외래키가 설정된 데이터 삭제
+CREATE TABLE DEPT02(
+    deptno NUMBER(2),
+    dname VARCHAR2(14) NOT NULL,
+    loc VARCHAR2(13),
+    CONSTRAINT DEPT02_DEPTNO_PK PRIMARY KEY(deptno)
+);
+SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE, TABLE_NAME, R_CONSTRAINT_NAME
+FROM USER_CONSTRAINTS WHERE TABLE_NAME='DEPT02';
+-- 샘플데이터를 추가
+INSERT INTO DEPT02 VALUES(10, 'ACCOUNTING', 'NEW YORK');
+INSERT INTO DEPT02 VALUES(20, 'RESEARCH', 'DALLAS');
+SELECT * FROM DEPT02;
+-- 사원테이블의 부서 번호가 부서 테이블의 부서 번호를 참조할 수 있도록 외래키 설정
+DROP TABLE EMP02;
+CREATE TABLE EMP02(
+    empno NUMBER(4),
+    ename VARCHAR2(10) NOT NULL,
+    job VARCHAR2(9),
+    deptno NUMBER(2),
+    CONSTRAINT EMP02_EMPNO_PK PRIMARY KEY(EMPNO),
+    CONSTRAINT EMP02_DEPTNO_FK FOREIGN KEY(DEPTNO) REFERENCES DEPT02(DEPTNO)
+);
+SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE, TABLE_NAME, R_CONSTRAINT_NAME
+FROM USER_CONSTRAINTS WHERE TABLE_NAME='EMP02';
+-- 샘플데이터 추가
+INSERT INTO EMP02 VALUES(7499,'ALLEN','SALESMAN',10);
+INSERT INTO EMP02 VALUES(7369,'SMITH','CLERK',20);
+-- 부모테이블에서 부서번호가 10인 부서데이터 삭제
+DELETE FROM DEPT02 WHERE DEPTNO=10; -- 무결성 제약조건(HR.EMP02_DEPTNO_FK)이 위배되었습니다- 자식 레코드가 발견되었습니다
+-- 부서번호가 10번인 자료 삭제하기 위해서는
+-- (1)부서테이블의 10번 부어세어 근무하는 사원 삭제 후 부서테이블에서 10번 부서 삭제
+-- (2)EMP02테이블의 외래키 제약 조건을 제거한 후에 10번 부서를 삭제
 
 -- ESCAPE
 -- LIKE 연산으로 '%'나 '_'가 포함된 문자를 검색하고자 할 때 사용된다.
@@ -768,6 +812,5 @@ ALTER TABLE emp09;
 -- 사원테이블(EMPLOYEES)에서 직무ID에 3번째 _를 포함하고 4번째 자리의 값이 P인 레코드를 조회하고자 한다.
 SELECT * FROM employees
 WHERE job_id LIKE '__\_P%' ESCAPE '\';
-
 SELECT * FROM employees
 WHERE job_id LIKE '__@_P%' ESCAPE '@';
