@@ -126,6 +126,18 @@ WHERE first_name LIKE '%k';
 -- 이름의 두 번째 글자가 d인 사원
 SELECT employee_id, first_name FROM employees
 WHERE first_name LIKE '_d%';
+-- ESCAPE
+-- LIKE 연산으로 '%'나 '_'가 포함된 문자를 검색하고자 할 때 사용된다.
+-- '%'나 '_' 앞에 ESCAPE로 특수문자를 지정하면 검색할 수 있다.
+-- 특수문자는 아무거나 상관없이 사용 가능하다.
+-- 구문 마지막에 ESCAPE 에 사용할 문자열만 지정해주면 '_'나 '%'를 검색에 사용할 수 있게 도와준다.
+
+-- 사원테이블(EMPLOYEES)에서 직무ID에 3번째 _를 포함하고 4번째 자리의 값이 P인 레코드를 조회하고자 한다.
+SELECT * FROM employees
+WHERE job_id LIKE '__\_P%' ESCAPE '\';
+SELECT * FROM employees
+WHERE job_id LIKE '__@_P%' ESCAPE '@';
+
 
 -- NULL을 위한 연산자
 -- NULL은 연산, 할당, 비교가 불가능하고, = 연산자로 판단할 수 없다.
@@ -286,10 +298,10 @@ CREATE TABLE EMP01(
 
 -- 고객 테이블 생성
 CREATE TABLE TB_CUSTOMER(
-    CUSTOMER_CD CHAR(7) NOT NULL PRIMARY KEY,
+    CUSTOMER_CD CHAR(7)     NOT NULL PRIMARY KEY,
     CUSTOMER_NM VARCHAR(15) NOT NULL,
-    MW_FLG CHAR(1) NOT NULL,
-    BIRTH_DAY CHAR(8) NOT NULL,
+    MW_FLG CHAR(1)          NOT NULL CHECK(MW_FLG IN('M','W')),
+    BIRTH_DAY CHAR(8)       NOT NULL,
     PHONE_NUMBER VARCHAR2(16),
     EMAIL VARCHAR2(50),
     TOTAL_POINT NUMBER(10),
@@ -529,9 +541,9 @@ ORDER BY job_id;
 SELECT first_name, salary, commission_pct, NVL2(commission_pct, salary+(salary*commission_pct), salary) TOTAL_SAL FROM employees;
 -- <문제> 모든 직원은 자신의 상관(manager_id)이 있다. 하지만 employees 테이블에 유일하게 상관이 없는 로우가 있는데 그 사원의 manager_id 칼럼값이 NULL이다.
 -- 상관이 없는 대표이사만 출력하되 manager_id 칼럼 값 NULL 대신 CEO로 출력한다.
-SELECT manager_id FROM employees;
-SELECT employee_id, first_name, NVL2(manager_id, manager_id, 'CEO') manager_id FROM employees
-WHERE manager_id IS NULL; -- 에러 WHY?????
+SELECT manager_id FROM employees; -- 자료형 확인하니 숫자형. 'CEO'로 변환하려면 문자형으로 변환해야함
+SELECT employee_id, first_name, NVL(TO_CHAR(manager_id, '999'), 'CEO') AS manager_id FROM employees
+WHERE manager_id IS NULL; 
 --(2) 선택을 위한 DECODE 함수 (if문이랑 비슷)
 -- 부서명 구하기
 SELECT * FROM departments;
@@ -802,15 +814,142 @@ DELETE FROM DEPT02 WHERE DEPTNO=10; -- 무결성 제약조건(HR.EMP02_DEPTNO_FK
 -- 부서번호가 10번인 자료 삭제하기 위해서는
 -- (1)부서테이블의 10번 부어세어 근무하는 사원 삭제 후 부서테이블에서 10번 부서 삭제
 -- (2)EMP02테이블의 외래키 제약 조건을 제거한 후에 10번 부서를 삭제
+-- (3)ON DELETE CASCADE와 ON DELETE SET NULL 옵션으로 삭제
+-- 진료과목 테이블 
+CREATE TABLE TREATMENT(
+    T_NO NUMBER(4) NOT NULL,
+    T_COURSE_ABBR VARCHAR2(3) NOT NULL,
+    T_COURSE VARCHAR2(30) NOT NULL,
+    T_TEL VARCHAR2(15),
+    CONSTRAINT TREATMENT_NO_PK PRIMARY KEY(T_NO),
+    CONSTRAINT TREATMENT_COURSE_ABBR_UK UNIQUE(T_COURSE_ABBR)
+);
+INSERT INTO TREATMENT VALUES(1001,'NS','신경외과','02-3452-1009');
+INSERT INTO TREATMENT VALUES(1002,'OS','정형외과','02-3452-2009');
+INSERT INTO TREATMENT VALUES(1003,'C','순환기내과','02-3452-3009');
+SELECT * FROM TREATMENT;
+DESC TREATMENT;
+COMMIT;
 
--- ESCAPE
--- LIKE 연산으로 '%'나 '_'가 포함된 문자를 검색하고자 할 때 사용된다.
--- '%'나 '_' 앞에 ESCAPE로 특수문자를 지정하면 검색할 수 있다.
--- 특수문자는 아무거나 상관없이 사용 가능하다.
--- 구문 마지막에 ESCAPE 에 사용할 문자열만 지정해주면 '_'나 '%'를 검색에 사용할 수 있게 도와준다.
+-- 의사 테이블
+CREATE TABLE DOCTOR(
+    D_NO NUMBER(4) NOT NULL,
+    D_NAME VARCHAR2(20) NOT NULL,
+    D_SSN CHAR(14) NOT NULL,
+    D_EMAIL VARCHAR2(80) NOT NULL,
+    D_MAJOR VARCHAR(50) NOT NULL,
+    T_NO NUMBER(4),
+    CONSTRAINT DOCTOR_D_NO_PK PRIMARY KEY(D_NO)
+);
+-- ON DELETE CASCADE 옵션
+ALTER TABLE DOCTOR
+ADD CONSTRAINT DOCTOR_T_NO_FK FOREIGN KEY(T_NO) REFERENCES TREATMENT(T_NO)
+ON DELETE CASCADE; -- 부모테이블의 데이터가 삭제되면 자식테이블의 데이터도 함께 삭제된다.
 
--- 사원테이블(EMPLOYEES)에서 직무ID에 3번째 _를 포함하고 4번째 자리의 값이 P인 레코드를 조회하고자 한다.
-SELECT * FROM employees
-WHERE job_id LIKE '__\_P%' ESCAPE '\';
-SELECT * FROM employees
-WHERE job_id LIKE '__@_P%' ESCAPE '@';
+INSERT INTO DOCTOR VALUES(1,'홍길동','660606-1234561','javauser@naver.com','척추신경외과','1001');
+INSERT INTO DOCTOR VALUES(2,'이재환','690724-1674536','jaehwan@naver.com','뇌졸중,뇌혈관외과','1003');
+INSERT INTO DOCTOR VALUES(3,'양익환','700129-1328962','sheep@naver.com','인공관절,관절염','1002');
+INSERT INTO DOCTOR VALUES(4,'김승현','720901-1348940','seunghyeon@naver.com','종양외과,외상전문','1002');
+SELECT * FROM DOCTOR;
+COMMIT;
+
+DELETE FROM TREATMENT WHERE T_NO=1002;
+SELECT * FROM TREATMENT;
+SELECT * FROM DOCTOR;
+
+-- DELETE SET NULL 옵션
+ROLLBACK;
+ALTER TABLE DOCTOR
+DROP CONSTRAINT DOCTOR_T_NO_FK; -- 제약조건 삭제
+
+ALTER TABLE DOCTOR
+ADD CONSTRAINT DOCTOR_T_NO_FK FOREIGN KEY(T_NO) REFERENCES TREATMENT(T_NO)
+ON DELETE SET NULL;
+
+DELETE FROM TREATMENT WHERE T_NO = 1002;
+SELECT * FROM TREATMENT;
+SELECT * FROM DOCTOR;
+
+-- 테이블에 내용울 추가, 수정, 삭제하기 위한 DML
+-- 1. 테이블에 새로운 행을 추가하는 INSERT문
+CREATE TABLE DEPT(
+    DEPTNO NUMBER(2),
+    DNAME VARCHAR2(14),
+    LOC VARCHAR2(13)
+);
+DESC DEPT;
+-- 레코드 1개 추가하기
+INSERT INTO DEPT(DEPTNO, DNAME, LOC) VALUES(10,'ACCOUNTING','NEWYORK');
+SELECT * FROM DEPT;
+-- 모든 칼럼에 자료를 순서대로 입력하는 경우 칼럼명을 생략해도 됨
+INSERT INTO DEPT VALUES(20,'RESEARCH','DALLAS');
+SELECT * FROM DEPT;
+-- 암시적으로 NULL값 삽입 : 결정되지 않은 칼럼을 생략하면 암시적으로 NULL값이 할당됨
+INSERT INTO DEPT(DEPTNO, DNAME) VALUES(30,'SALES');
+-- 명시적으로 NULL값 삽입. NULL 대신 ''도 사용 가능
+INSERT INTO DEPT VALUES(40,'OPERATIONS',NULL);
+INSERT INTO DEPT VALUES(50,'','CHICAGO');
+SELECT * FROM DEPT;
+-- 기존 데이터 삭제하고 다시 입력작업하기
+DELETE FROM DEPT;
+
+-- 기존 테이블에 존재하는 데이터를 다른 테이블에 입력할 때 삽입 명령문
+-- DEPT 테이블과 DEPARTMENTS 테이블의 컬럼 자릿수 일치하도록 테이블 수정
+ALTER TABLE DEPT MODIFY(DEPTNO NUMBER(4), DNAME VARCHAR2(30));
+INSERT INTO DEPT
+SELECT DEPARTMENT_ID, DEPARTMENT_NAME, LOCATION_ID FROM DEPARTMENTS;
+SELECT * FROM DEPT;
+-- <문제> TB_CUSTOMER 테이블에 아래 데이터를 추가하라
+SELECT * FROM TB_CUSTOMER;
+INSERT INTO TB_CUSTOMER(CUSTOMER_CD, CUSTOMER_NM, MW_FLG, BIRTH_DAY, PHONE_NUMBER, EMAIL, TOTAL_POINT, REG_DTTM)
+VALUES('2017042','강원진','M','19810603','010-8202-8790','wjgang@navi.com',280300,'20170123132432');
+INSERT INTO TB_CUSTOMER(CUSTOMER_CD, CUSTOMER_NM, MW_FLG, BIRTH_DAY, PHONE_NUMBER, EMAIL, TOTAL_POINT, REG_DTTM)
+VALUES('2017053','나경숙','W','19891225','010-4509-0043','ksna#boram.co.kr',4500,'20170210180930');
+INSERT INTO TB_CUSTOMER(CUSTOMER_CD, CUSTOMER_NM, MW_FLG, BIRTH_DAY, PHONE_NUMBER, EMAIL, TOTAL_POINT, REG_DTTM)
+VALUES('2017108','박승대','M','19711430',NULL,'sdpark@haso.com',2345,'20170508203450');
+SELECT * FROM TB_CUSTOMER;
+COMMIT;
+-- 2. 테이블이 내용을 수정하기 위한 UPDATE문
+-- (1) 테이블의 모든 행 변경 : WHERE절을 추가하지 않으면 테이블의 모든 행이 변경된다
+CREATE TABLE EMP
+AS
+SELECT * FROM EMPLOYEES;
+SELECT * FROM EMP;
+-- 모든 사원의 부서번호를 30번으로 수정
+UPDATE EMP
+SET DEPARTMENT_ID = 30;
+-- 모든 사원의 급여를 10% 인상한다.
+UPDATE EMP
+SET SALARY = SALARY*1.1;
+SELECT * FROM EMP;
+-- 입사일을 오늘로 수정한다.
+UPDATE EMP SET HIRE_DATE = SYSDATE;
+--(2) 테이블의 특정 행만 변경
+DROP TABLE EMP;
+CREATE TABLE EMP
+AS
+SELECT * FROM EMPLOYEES;
+-- 부서번호가 10번인 사원의 부서번호를 30번으로 수정
+UPDATE EMP
+SET DEPARTMENT_ID = 30
+WHERE DEPARTMENT_ID = 10;
+-- 급여가 3000 이상인 사원의 급여를 10% 인상
+UPDATE EMP
+SET SALARY = SALARY*1.1
+WHERE SALARY>=3000;
+SELECT * FROM EMP;
+-- 2007년에 입사한 사원의 입사일을 오늘로 수정
+UPDATE EMP
+SET HIRE_DATE = SYSDATE
+WHERE SUBSTR(HIRE_DATE, 1, 2) = '07';
+-- (3) 테이블에서 2개 이상의 칼럼 값 변경
+DROP TABLE EMP;
+CREATE TABLE EMP
+AS
+SELECT * FROM EMPLOYEES;
+-- Susan의 부서번호는 20번으로, 직급은 FI_MGR
+SELECT * FROM EMP WHERE FIRST_NAME = 'Susan';
+UPDATE EMP
+SET DEPARTMENT_ID = 20, JOB_ID = 'FI_MGR'
+WHERE FIRST_NAME = 'Susan';
+-- LAST_NAME이 Russell인 사원의 급여를 17000으로, 커미션 비율이 0.45로 인상된다.
