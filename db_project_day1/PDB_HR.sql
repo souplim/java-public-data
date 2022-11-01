@@ -137,8 +137,6 @@ SELECT * FROM employees
 WHERE job_id LIKE '__\_P%' ESCAPE '\';
 SELECT * FROM employees
 WHERE job_id LIKE '__@_P%' ESCAPE '@';
-
-
 -- NULL을 위한 연산자
 -- NULL은 연산, 할당, 비교가 불가능하고, = 연산자로 판단할 수 없다.
 SELECT employee_id, first_name, commision_pct, job_id FROM employees
@@ -157,7 +155,6 @@ WHERE manager_id IS NULL;
 -- <문제> 커미션을 받는 사원만 출력하되 사원번호, 이름, 급여, 수당율, 수당금액(계산식-급여*수당율)을 출력하라.
 SELECT employee_id, first_name, salary, commission_pct, salary*commission_pct FROM employees
 WHERE commission_pct IS NOT NULL;
-
 -- ORDER BY 정렬하기
 -- 쿼리문 맨 뒤에 기술 : SELECT 컬럼 FROM 테이블 WHERE 조건 ORDER BY 컬럼 ASC/DESC;
 -- 1. 오름차순 정렬을 위한 ASC : 생략 가능
@@ -181,71 +178,56 @@ ORDER BY first_name;
 SELECT first_name, department_id, salary FROM employees
 WHERE department_id IN(20, 50)
 ORDER BY first_name;
-
 -- 기본 SELECT문 연습 예제
 --[문제 1] EMPLOYEES 테이블에서 급여가 3000이상인 사원의 정보를 사원번호, 이름, 담당업무, 급여를 출력하라.
 SELECT employee_id, first_name, job_id, salary FROM employees
 WHERE salary>=3000;
-
 --[문제 2] EMPLOYEES 테이블에서 담당 업무가 ST_MAN인 사원의 정보를 사원번호, 이름, 담당업무, 급여, 부서번호를 출력하라.
 SELECT employee_id, first_name, job_id, salary, department_id FROM employees
 WHERE job_id='ST_MAN';
-
 --[문제 3] EMPLOYEES 테이블에서 입사일자가 2006년 1월 1일 이후에 입사한 사원의 정보를 사원번호, 이름, 담당업무, 급여, 입사일자, 부서번호를 출력하라.
 SELECT employee_id, first_name, job_id, salary, hire_date, department_id FROM employees
 WHERE hire_date>='2006/01/01';
-
 --[문제 4] EMPLOYEES 테이블에서 급여가 3000에서 5000사이의 정보를 이름, 담당업무, 급여, 부서번호를 출력하라.
 SELECT first_name, job_id, salary, department_id FROM employees
 WHERE salary>=3000 AND salary<=5000;
 SELECT first_name, job_id, salary, department_id FROM employees
 WHERE salary BETWEEN 3000 AND 5000;
-
 --[문제 5] EMPLOYEES 테이블에서 입사일자가 05년도에 입사한 사원의 정보를 사원번호, 이름, 담당업무, 급여, 입사일자, 부서번호를 출력하라.
 SELECT employee_id, first_name, job_id, salary, hire_date, department_id FROM employees
 WHERE hire_date>='2005/01/01' AND hire_date<='2005/12/31';
-
 --[문제 6] 사원정보(EMPLOYEES) 테이블에서 사원번호, 이름, 급여, 업무번호, 입사일, 상사의 사원번호를 출력하시오. 이때 이름은 성과 이름을 연결하여 Name이라는 별칭으로 출력하시오
 SELECT employee_id, first_name ||' '||last_name AS Name, salary, job_id, hire_date, manager_id FROM employees;
-
 --[문제 7] 사원정보(EMPLOYEES) 테이블에서 사원의 성과 이름은 Name, 업무번호는 Job, 급여는 Salary, 연봉에 $100 보너스를 추가하여 계산한 값은 Increased Ann_Salary,
 --급여에 $100 보너스를 추가하여 계산한 연봉은 Increased Salary라는 별칭으로 출력하시오.
 SELECT first_name ||' '||last_name AS Name, job_id AS Job, salary AS Salary, salary+100 "Increased Ann_Salary", (salary/12+100)*12 "Increased Salary" FROM employees;
 -- 소수점?
-
 --[문제 8] 사원정보(EMPLOYEES) 테이블에서 모든 사원의 이름(FIRST_NAME)과 연봉을 “이름: 1 Year Salary = $연봉” 형식으로 출력하고, 1 Year Salary라는 별칭을 붙여 출력하시오.
 --(예시) King: 1 Year Salary = $288000
 SELECT first_name||': 1 Year Salary = $'||salary "1 Year Salary" FROM employees;
-
 --[문제 9] 부서별로 담당하는 업무ID를 한 번씩만 출력하시오
 SELECT DISTINCT job_id FROM employees;
-
 --[문제 10] 부서에서 예산 편성 문제로 급여 정보 보고서를 작성하려고 한다. 
 --사원정보(EMPLOYEES) 테이블에서 급여가 $7,000~$10,000 범위 이외인 사람의 성과 이름(Name으로 별칭) 및 급여를 급여가 작은 순서로 출력하시오
 SELECT last_name||' '||first_name AS Name, salary FROM employees
 WHERE salary BETWEEN 7000 AND 10000 
 ORDER BY salary ASC;
-
 -- 테이블 생성하기
 CREATE TABLE EMP01(
     EMPNO NUMBER(4) NOT NULL,
     ENAME VARCHAR2(20) NOT NULL,
     SAL NUMBER(7,2)
 );
-
 SELECT * FROM TAB;
 SELECT * FROM EMP01; 
-
 -- 테이블 구조확인 (주석문 DESC 명령어 옆에 주면 에러 발생. 라인 단위로 읽는 명령어)
 DESC EMP01; 
-
 -- 테이블 복사하기
 CREATE TABLE EMPOYEES02
 AS SELECT * FROM employees;
 SELECT * FROM TAB;
 SELECT * FROM EMPOYEES02;
 DESC EMPOYEES02;
-
 -- 테이블 구조 변경 : ALTER TABLE
 -- 1. ADD 새로운 칼럼 추가
 ALTER TABLE EMP01
@@ -267,7 +249,6 @@ DESC EMP01; -- 변경 확인
 -- 4. DROP 기존 칼럼 삭제
 ALTER TABLE EMP01
 DROP COLUMN job;
-
 -- 테이블 구조 삭제 : DROP TABLE
 DROP TABLE EMP01;
 SELECT * FROM TAB; -- 삭제 확인
@@ -280,22 +261,18 @@ FLASHBACK TABLE EMP01 TO BEFORE DROP;
 -- 새로운 이름으로 복원
 FLASHBACK TABLE EMP01 TO BEFORE DROP
 RENAME TO EMP02;
-
 -- 테이블 이름 변경 : RENAME
 RENAME EMPLOYEES02 TO EMPLOYEES01;
-
 -- 테이블이 갖고 있는 모든 레코드 삭제 : TRUNCATE -> DDL 자동커밋. 복원 불가 
 -- EMPLOYEES01테이블의 모든 로우를 제거
 SELECT * FROM employees01;
 TRUNCATE TABLE employees01;
 SELECT * FROM employees01;
-
 CREATE TABLE EMP01(
     EMPNO NUMBER(4) NOT NULL,
     ENAME VARCHAR2(20) NOT NULL,
     SAL NUMBER(7,2)
 );
-
 -- 고객 테이블 생성
 CREATE TABLE TB_CUSTOMER(
     CUSTOMER_CD CHAR(7)     NOT NULL PRIMARY KEY,
@@ -307,7 +284,6 @@ CREATE TABLE TB_CUSTOMER(
     TOTAL_POINT NUMBER(10),
     REG_DTTM CHAR(14)
 );
-
 -- <문제 1> MEMBER 테이블 생성
 CREATE TABLE MEMBER(
     ID VARCHAR2(20) NOT NULL PRIMARY KEY,
@@ -316,7 +292,6 @@ CREATE TABLE MEMBER(
     HP VARCHAR2(13),
     ADDRESS VARCHAR2(100)
 );
-
 -- <문제 2> BOOK 테이블 생성
 CREATE TABLE BOOK(
     CODE NUMBER(4) NOT NULL PRIMARY KEY,
@@ -325,7 +300,6 @@ CREATE TABLE BOOK(
     PRICE NUMBER(10),
     PUBLISH VARCHAR2(50)
 );
-
 -- <문제 3> BOOK_ORDER 테이블 생성
 CREATE TABLE BOOK_ORDER(
     NO VARCHAR2(10) NOT NULL PRIMARY KEY,
@@ -334,7 +308,6 @@ CREATE TABLE BOOK_ORDER(
     COUNT NUMBER(6),
     OR_DATE DATE
 );
-
 -- SELECT문 함수
 -- 1. DUAL 테이블과 SQL 함수 분류
 -- (1) DUAL 테이블 : 산술 연산이나 가상 칼럼 등의 값을 한 번만 출력하고 싶을 때 사용하는 테이블
@@ -354,7 +327,6 @@ WHERE department_id = 30;
 SELECT department_id, SUM(salary) FROM employees
 GROUP BY department_id
 HAVING department_id = 30;
-
 -- 2. 문자함수
 -- (1) 소문자로 변환하는 LOWER 함수
 -- 사원 테이블에서 부서번호가 20번인 사원명을 모두 소문자로 변환
@@ -445,7 +417,6 @@ SELECT TRIM(LEADING FROM '  ABCD  ') LT, LENGTH(TRIM(LEADING FROM '  ABCD  ')) L
 LENGTH(TRIM(TRAILING FROM '  ABCD  ')) RT_LEN, TRIM(BOTH FROM '  ABCD  ') BOTH1, LENGTH(TRIM(BOTH FROM '  ABCD  ')) BOTH1_LEN, 
 TRIM('  ABCD  ') BOTH2, LENGTH(TRIM ('  ABCD  ')) BOTH2_LEN
 FROM DUAL;
-
 -- 3. 숫자함수
 -- (1) ABS 함수 - 절대값 / CEIL 함수 - 올림 / FLOOR 함수 - 내림
 SELECT ABS(-15) FROM DUAL;
@@ -460,7 +431,6 @@ SELECT MOD(34, 2), MOD(34, 5), MOD(34, 7) FROM DUAL;
 SELECT * FROM employees;
 SELECT employee_id, first_name, job_id FROM employees
 WHERE MOD(employee_id, 2)=0;
-
 -- 4. 날짜 함수
 -- (1) 현재 날짜를 반환하는 SYSDATE
 SELECT SYSDATE FROM DUAL;
@@ -492,7 +462,6 @@ WHERE department_id = 30;
 -- 입사일을 월 기준으로 잘라내기
 SELECT hire_date, TRUNC(hire_date, 'MONTH') FROM employees
 WHERE department_id = 30;
-
 -- 5. 변환 함수
 -- (1) 문자형으로 변환하는 TO_CHAR 함수
 -- 날짜형 -> 문자형
@@ -522,7 +491,6 @@ SELECT TRUNC(SYSDATE-TO_DATE('2015/12/24','YYYY/MM/DD')) FROM DUAL;
 -- 수치 형태의 문자값의 차 구하기 -- 오류
 SELECT '10,000'+'20,000' FROM DUAL; -- 오류
 SELECT TO_NUMBER('10,000','999,999')+TO_NUMBER('20,000','999,999') FROM DUAL;
-
 -- 6. 일반 함수
 -- (1) NULL을 다른 값으로 변환하는 NVL 함수
 SELECT first_name, salary, commission_pct, job_id FROM employees
@@ -578,7 +546,6 @@ ORDER BY department_id;
 -- (4) GREATEST(exp1, exp2...) 가장 큰 값, LEAST(exp1, exp2...) 가장 작은 값
 SELECT GREATEST(1,4,2,5,3,9), LEAST(1,4,2,5,3,9) FROM DUAL;
 SELECT GREATEST('김희수','조현수','홍길동'), LEAST('김희수','조현수','홍길동') FROM DUAL;
-
 -- 무결성 제약조건
 -- 1. 무결성 제약조건 종류
 -- (1) NOT NULL
@@ -594,7 +561,6 @@ VALUES(NULL, NULL, 'salesman', 30);
 SELECT * FROM emp01;
 -- 필수항목에 NULL값 들어갈 수 있으므로 테이블 삭제후 제약조건 부여하여 다시 만들기
 DROP TABLE emp01 PURGE;
-
 CREATE TABLE emp01(
     empno NUMBER(4) NOT NULL,
     ename VARCHAR2(10) NOT NULL,
@@ -699,7 +665,6 @@ CREATE TABLE emp05_2(
 );
 INSERT INTO emp05_2(empno, ename, gender) VALUES(7566,'JONES','M');
 SELECT * FROM emp05_2;
-
 -- 2. 제약 조건명 지정하기
 CREATE TABLE emp06(
     empno NUMBER(4) CONSTRAINT emp06_empno_pk PRIMARY KEY,
@@ -717,7 +682,6 @@ INSERT INTO emp06 VALUES(7499, NULL, 'SALESMAN', 30); -- NULL을 ("HR"."EMP06"."
 INSERT INTO emp06 VALUES(7499, 'ALLEN', 'SALESMAN', 50); -- 무결성 제약 조건(HR.EMP06_EMPNO_PK)에 위배됩니다
 INSERT INTO emp06 VALUES(7500, 'ALLEN', 'SALESMAN', 50); -- 무결성 제약 조건(HR.EMP06_JOB_UK)에 위배됩니다
 INSERT INTO emp06 VALUES(7500, 'ALLEN', 'MANAGER', 50); -- 무결성 제약조건(HR.EMP06_DEPNO_FK)이 위배되었습니다- 부모 키가 없습니다
-
 -- 3. 테이블 레벨 방식으로 제약조건 지정하기
 -- 복합키로 기본키를 지정할 경우 : 반드시 테이블 레벨 방식 사용해야
 -- ALTER TABLE로 제약조건 추가하는 경우 : 테이블 구조 결정된 후에 제약 조건 추가 -> 테이블 레벨 방식으로
@@ -751,7 +715,6 @@ CREATE TABLE emp08_2(
 -- 제약조건 확인
 SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE, TABLE_NAME, R_CONSTRAINT_NAME
 FROM USER_CONSTRAINTS WHERE TABLE_NAME = 'EMP08_2';
-
 -- 4. 제약 조건 변경하기
 -- (1) 제약조건 추가하기
 CREATE TABLE emp09(
@@ -780,7 +743,6 @@ ALTER TABLE EMP06
 DROP CONSTRAINT EMP06_EMPNO_PK;
 ALTER TABLE EMP06
 DROP CONSTRAINT EMP06_DEPNO_FK;
-
 -- 5. 외래키가 설정된 데이터 삭제
 CREATE TABLE DEPT02(
     deptno NUMBER(2),
@@ -830,7 +792,6 @@ INSERT INTO TREATMENT VALUES(1003,'C','순환기내과','02-3452-3009');
 SELECT * FROM TREATMENT;
 DESC TREATMENT;
 COMMIT;
-
 -- 의사 테이블
 CREATE TABLE DOCTOR(
     D_NO NUMBER(4) NOT NULL,
@@ -845,31 +806,25 @@ CREATE TABLE DOCTOR(
 ALTER TABLE DOCTOR
 ADD CONSTRAINT DOCTOR_T_NO_FK FOREIGN KEY(T_NO) REFERENCES TREATMENT(T_NO)
 ON DELETE CASCADE; -- 부모테이블의 데이터가 삭제되면 자식테이블의 데이터도 함께 삭제된다.
-
 INSERT INTO DOCTOR VALUES(1,'홍길동','660606-1234561','javauser@naver.com','척추신경외과','1001');
 INSERT INTO DOCTOR VALUES(2,'이재환','690724-1674536','jaehwan@naver.com','뇌졸중,뇌혈관외과','1003');
 INSERT INTO DOCTOR VALUES(3,'양익환','700129-1328962','sheep@naver.com','인공관절,관절염','1002');
 INSERT INTO DOCTOR VALUES(4,'김승현','720901-1348940','seunghyeon@naver.com','종양외과,외상전문','1002');
 SELECT * FROM DOCTOR;
 COMMIT;
-
 DELETE FROM TREATMENT WHERE T_NO=1002;
 SELECT * FROM TREATMENT;
 SELECT * FROM DOCTOR;
-
 -- DELETE SET NULL 옵션
 ROLLBACK;
 ALTER TABLE DOCTOR
 DROP CONSTRAINT DOCTOR_T_NO_FK; -- 제약조건 삭제
-
 ALTER TABLE DOCTOR
 ADD CONSTRAINT DOCTOR_T_NO_FK FOREIGN KEY(T_NO) REFERENCES TREATMENT(T_NO)
 ON DELETE SET NULL;
-
 DELETE FROM TREATMENT WHERE T_NO = 1002;
 SELECT * FROM TREATMENT;
 SELECT * FROM DOCTOR;
-
 -- 테이블에 내용울 추가, 수정, 삭제하기 위한 DML
 -- 1. 테이블에 새로운 행을 추가하는 INSERT문
 CREATE TABLE DEPT(
@@ -892,13 +847,13 @@ INSERT INTO DEPT VALUES(50,'','CHICAGO');
 SELECT * FROM DEPT;
 -- 기존 데이터 삭제하고 다시 입력작업하기
 DELETE FROM DEPT;
-
 -- 기존 테이블에 존재하는 데이터를 다른 테이블에 입력할 때 삽입 명령문
 -- DEPT 테이블과 DEPARTMENTS 테이블의 컬럼 자릿수 일치하도록 테이블 수정
 ALTER TABLE DEPT MODIFY(DEPTNO NUMBER(4), DNAME VARCHAR2(30));
 INSERT INTO DEPT
 SELECT DEPARTMENT_ID, DEPARTMENT_NAME, LOCATION_ID FROM DEPARTMENTS;
 SELECT * FROM DEPT;
+COMMIT;
 -- <문제> TB_CUSTOMER 테이블에 아래 데이터를 추가하라
 SELECT * FROM TB_CUSTOMER;
 INSERT INTO TB_CUSTOMER(CUSTOMER_CD, CUSTOMER_NM, MW_FLG, BIRTH_DAY, PHONE_NUMBER, EMAIL, TOTAL_POINT, REG_DTTM)
@@ -952,4 +907,22 @@ SELECT * FROM EMP WHERE FIRST_NAME = 'Susan';
 UPDATE EMP
 SET DEPARTMENT_ID = 20, JOB_ID = 'FI_MGR'
 WHERE FIRST_NAME = 'Susan';
+SELECT * FROM EMP WHERE FIRST_NAME = 'Susan';
 -- LAST_NAME이 Russell인 사원의 급여를 17000으로, 커미션 비율이 0.45로 인상된다.
+SELECT * FROM EMP WHERE LAST_NAME='Russell';
+UPDATE EMP
+SET SALARY = 17000, COMMISSION_PCT = 0.45 WHERE LAST_NAME='Russell';
+SELECT * FROM EMP WHERE LAST_NAME='Russell';
+COMMIT;
+-- <문제> TB_CUSTOMER 테이블에서 박승대 고객의 생년월일 19711230을 잘못하여 19711430으로 입력하였다. 생년월일을 수정하라.
+SELECT * FROM TB_CUSTOMER WHERE CUSTOMER_NM = '박승대';
+UPDATE TB_CUSTOMER
+SET BIRTH_DAY='19711230' WHERE CUSTOMER_NM = '박승대';
+SELECT * FROM TB_CUSTOMER WHERE CUSTOMER_NM = '박승대';
+
+-- 3. 테이블에 불필요한 행(레코드)을 삭제하기 위한 DELETE문
+SELECT * FROM DEPT;
+DELETE FROM DEPT;
+ROLLBACK;
+DELETE FROM DEPT WHERE DEPTNO=30;
+SELECT * FROM DEPT;
