@@ -131,12 +131,12 @@ WHERE first_name LIKE '_d%';
 -- '%'나 '_' 앞에 ESCAPE로 특수문자를 지정하면 검색할 수 있다.
 -- 특수문자는 아무거나 상관없이 사용 가능하다.
 -- 구문 마지막에 ESCAPE 에 사용할 문자열만 지정해주면 '_'나 '%'를 검색에 사용할 수 있게 도와준다.
-
 -- 사원테이블(EMPLOYEES)에서 직무ID에 3번째 _를 포함하고 4번째 자리의 값이 P인 레코드를 조회하고자 한다.
 SELECT * FROM employees
 WHERE job_id LIKE '__\_P%' ESCAPE '\';
 SELECT * FROM employees
 WHERE job_id LIKE '__@_P%' ESCAPE '@';
+
 -- NULL을 위한 연산자
 -- NULL은 연산, 할당, 비교가 불가능하고, = 연산자로 판단할 수 없다.
 SELECT employee_id, first_name, commision_pct, job_id FROM employees
@@ -327,6 +327,7 @@ WHERE department_id = 30;
 SELECT department_id, SUM(salary) FROM employees
 GROUP BY department_id
 HAVING department_id = 30;
+
 -- 2. 문자함수
 -- (1) 소문자로 변환하는 LOWER 함수
 -- 사원 테이블에서 부서번호가 20번인 사원명을 모두 소문자로 변환
@@ -344,17 +345,16 @@ WHERE job_id = UPPER('it_prog');
 SELECT employee_id, first_name, job_id FROM employees
 WHERE LOWER(job_id) = 'it_prog';
 -- (3) 첫 글자만 대문자로 나머지는 소문자로 변환하는 INITCAP 함수
-SELECT INITCAP('DATA BASE PROGRAM')
-FROM DUAL;
+SELECT INITCAP('DATA BASE PROGRAM') FROM DUAL;
 -- 사원 테이블의 30번 부서에 소속된 이메일의 첫 글자만 대문자로
 DESC employees;
 SELECT email FROM employees;
 SELECT employee_id, first_name, INITCAP(email) FROM employees
 WHERE department_id = 30;
--- 'jking'이란 이메일을 가진 직원의 이름과 커미션을 출력하라(INITCAP, UPPER 사용)
+-- <문제> 'jking'이란 이메일을 가진 직원의 이름과 커미션을 출력하라(INITCAP, UPPER 사용)
 SELECT first_name, commission_pct FROM employees
-WHERE email = UPPER('jking');
-SELECT first_name, commission_pct, INITCAP(email) FROM employees
+WHERE INITCAP(email) = 'Jking';
+SELECT first_name, commission_pct FROM employees
 WHERE email = UPPER('jking');
 -- (4) 두 문자를 연결하는 CONCAT 함수
 SELECT CONCAT('Data','Base')
@@ -396,8 +396,8 @@ WHERE SUBSTR(hire_date, 1, 2) = '03';
 -- <문제> 이름이 k로 끝나는 직원을 검색(LIKE 연산자의 와일드 카드(%), SUBSTR 함수)
 SELECT first_name FROM employees
 WHERE first_name LIKE '%k';
-SELECT first_name FROM employees -- ?
-WHERE SUBSTR(first_name, );
+SELECT first_name FROM employees 
+WHERE SUBSTR(first_name, -1, 1)='k';
 -- (7) 특정 문자의 위치를 구하는 INSTR/INSTRB 함수
 SELECT INSTR('DataBase', 'B')
 FROM DUAL;
@@ -484,8 +484,12 @@ WHERE department_id = 30;
 -- 2005년 12월 24일에 입사한 직원을 검색
 SELECT first_name, hire_date FROM employees
 WHERE hire_date = TO_DATE(20051224, 'YYYYMMDD');
+-- 문자열 데이터 '210505'를 '2021년 05월 05일'로 표현
+SELECT TO_CHAR('210505', 'YYYY"년" MM"월" DD"일"') FROM DUAL; -- 오류
+SELECT TO_CHAR(TO_DATE('210505','YYMMDD'), 'YYYY"년" MM"월" DD"일"') FROM DUAL;
+SELECT TO_CHAR(TO_DATE('210505','YYMMDD'), 'YYYY"년" fmMM"월" DD"일"') FROM DUAL; -- 0을 제외한 날짜 2021년5월5일
 -- 올해 며칠이 지났는지 날짜 계산
-SELECT SYSDATE-'2015/12/24' FROM DUAL; -- 오류
+SELECT SYSDATE-'2015/12/24' FROM DUAL; -- 날짜 뺄셈 오류. 뒤->날짜가 아니라 문자
 SELECT TRUNC(SYSDATE-TO_DATE('2015/12/24','YYYY/MM/DD')) FROM DUAL; 
 -- (3) 숫자형으로 변환하는 TO-NUMBER 함수
 -- 수치 형태의 문자값의 차 구하기 -- 오류
@@ -926,3 +930,40 @@ DELETE FROM DEPT;
 ROLLBACK;
 DELETE FROM DEPT WHERE DEPTNO=30;
 SELECT * FROM DEPT;
+
+-- <예제> EMP01 테이블을 삭제한 후 다음과 같은 구조로 EMP01 테이블을 생성하라
+DROP TABLE EMP01;
+CREATE TABLE EMP01(
+    EMPNO NUMBER(4) NOT NULL,
+    ENAME VARCHAR2(10) NOT NULL,
+    JOB VARCHAR2(9),
+    MGR NUMBER(4),
+    HIREDATE DATE NOT NULL,
+    SAL NUMBER(7,2) NOT NULL,
+    COMM NUMBER(7,2),
+    DEPTNO NUMBER(2) NOT NULL
+);
+INSERT INTO EMP01 VALUES(7369,'SMITH','CLERK',7836,'80/12/17',800,NULL,20);
+INSERT INTO EMP01 VALUES(7499,'ALLEN','SALESMAN',7369,'87/12/20',1600,300,30);
+INSERT INTO EMP01 VALUES(7839,'KING','PRESIDENT',NULL,'81/02/08',5000,NULL,10);
+
+-- 4. MERGE문 : 조건 비교하여 테이블에 해당 조건에 맍는 데이터 없으면 INSERT문, 있으면 UPDATE 수행
+SELECT * FROM TB_CUSTOMER;
+-- 실습위해 테이블 생성
+CREATE TABLE TB_ADD_CUSTOMER(
+    CUSTOMER_CD CHAR(7) NOT NULL,           -- 고객 코드
+    CUSTOMER_NM VARCHAR2(10) NOT NULL,      -- 고객명
+    MW_FLG CHAR(1) NOT NULL,                -- 성별구분
+    BIRTH_DAY CHAR(8) NOT NULL,             -- 생일
+    PHONE_NUMBER VARCHAR2(16),              -- 전화번호
+    CONSTRAINT TB_ADD_CUSTOMER_CUSTOMER_CD_PK PRIMARY KEY(CUSTOMER_CD)
+);
+INSERT INTO TB_ADD_CUSTOMER(CUSTOMER_CD, CUSTOMER_NM, MW_FLG, BIRTH_DAY, PHONE_NUMBER)
+VALUES('2017108','박승대','M','19711230','010-2580-9919');
+INSERT INTO TB_ADD_CUSTOMER(CUSTOMER_CD, CUSTOMER_NM, MW_FLG, BIRTH_DAY, PHONE_NUMBER)
+VALUES('2019302','전미래','W','19740812','010-8864-0232');
+SELECT * FROM TB_ADD_CUSTOMER; -- TB_CUSTOMER에는 NULL값인 박승대씨 PHONE_NUMBER 있음
+SELECT * FROM TB_CUSTOMER;
+-- TB_ADD_CUSTOMER 테이블의 내용을 TB_CUSTOMER와 비교하여 데이터가 있을 경우 업데이트 하고 없을 경우 추가하도록 쿼리문 작성
+MERGE INTO TB_CUSTOMER CU USING TB_ADD_CUSTOMER ON (CU.CUSTOMER_CD = NC.CUSTOMER_CD)
+    WHEN
