@@ -1,5 +1,18 @@
-DROP TABLE STUDENT;
-DROP TABLE LESSON;
+-- 학과테이블 생성
+CREATE TABLE SUBJECT(
+    NO NUMBER(4) NOT NULL,                       -- 일련번호
+    S_NUM CHAR(2) NOT NULL,                      -- 학과번호
+    S_NAME VARCHAR2(30) NOT NULL,                -- 학과명
+    
+    CONSTRAINT SUBJECT_NO_PK PRIMARY KEY(NO),
+    CONSTRAINT SUBJECT_S_NUM_UK UNIQUE(S_NUM)    -- 학과번호는 유일해야 함(유일키)
+);
+SELECT * FROM SUBJECT;
+INSERT INTO SUBJECT VALUES(1, '01', '컴퓨터학과');
+INSERT INTO SUBJECT VALUES(2, '02', '교육학과');
+INSERT INTO SUBJECT VALUES(3, '03', '신문방송학과');
+INSERT INTO SUBJECT VALUES(4, '04', '인터넷비즈니스과');
+INSERT INTO SUBJECT VALUES(5, '05', '기술경영과');
 
 -- 학생테이블 생성
 CREATE TABLE STUDENT(
@@ -14,9 +27,11 @@ CREATE TABLE STUDENT(
     SD_ADDRESS VARCHAR2(20 CHAR) NOT NULL,  -- 주소
     SD_EMAIL VARCHAR2(30) NOT NULL,         -- 이메일
     SD_DATE DATE NOT NULL,                  -- 등록일자
+   
     CONSTRAINT STUDENT_NO_PK PRIMARY KEY(NO),
-    CONSTRAINT STUDENT_S_NUM_UK UNIQUE(S_NUM),
-    CONSTRAINT STUDENT_SD_NUM_UK UNIQUE(SD_NUM) -- UNIQUE 잡으면 중복허용 안됨...
+    CONSTRAINT STUDENT_SD_NUM_UK UNIQUE(SD_NUM),
+    CONSTRAINT STUDENT_SD_ID UNIQUE(SD_ID), -- 상식적으로 ID도 중복되면 안 됨
+    CONSTRAINT STUDENT_S_NUM_FK FOREIGN KEY(S_NUM) REFERENCES SUBJECT(S_NUM) -- 학과테이블과 연결
 );
 INSERT INTO STUDENT
 VALUES(1,06010001,'김정수','javajsp','1234','01','19920514','010-1234-1234','서울시 서대문구 창전동','kjs@gmail.com',SYSDATE);
@@ -37,30 +52,30 @@ CREATE TABLE LESSON(
     NO NUMBER(4) NOT NULL,              -- 일련번호
     L_ABBRE VARCHAR2(20) NOT NULL,      -- 과목약어
     L_NAME VARCHAR2(20) NOT NULL,       -- 과목명
+    
     CONSTRAINT LESSON_NO_PK PRIMARY KEY(NO),
     CONSTRAINT LESSON_L_ABBRE_UK UNIQUE(L_ABBRE)
 );
 SELECT * FROM LESSON;
-
--- 학과테이블 생성
-CREATE TABLE SUBJECT(
-    NO NUMBER(4) NOT NULL,                                    -- 일련번호
-    S_NUM CHAR(2) NOT NULL,                                   -- 학과번호
-    S_NAME VARCHAR2(20) NOT NULL,                             -- 학과명
-    -- 오류 : 이 열목록에 대해 일치하는 고유 또는 기본 키가 없습니다. 
-    -- 부모 키에 PK를 설정해주지 않아서 생기는 오류. 참조되어지는 속성은 UNIQUE 해야한다!
-    CONSTRAINT SUBJECT_NO_PK PRIMARY KEY(NO),                      
-    CONSTRAINT SUBJECT_S_NUM_FK FOREIGN KEY(S_NUM) REFERENCES STUDENT(S_NUM)
-);
-SELECT * FROM SUBJECT;
+INSERT INTO LESSON VALUES(1,'K','국어');
+INSERT INTO LESSON VALUES(2,'M','수학');
+INSERT INTO LESSON VALUES(3,'E','영어');
+INSERT INTO LESSON VALUES(4,'H','역사');
+INSERT INTO LESSON VALUES(5,'P','프로그래밍');
+INSERT INTO LESSON VALUES(6,'D','데이터베이스');
+INSERT INTO LESSON VALUES(7,'ED','교육학이론');
 
 -- 수강테이블 생성
 CREATE TABLE TRAINEE(
-    NO NUMBER(4) PRIMARY KEY,                                               -- 일련번호, 오류 : 이 열목록에 대해 일치하는 고유 또는 기본 키가 없습니다.
+    NO NUMBER(4) PRIMARY KEY,                                               -- 일련번호
     SD_NUM CHAR(8) NOT NULL,                                                -- 학번
     L_ABBRE VARCHAR2(20) NOT NULL,                                          -- 과목약어
     T_SECTION VARCHAR2(10) CHECK(T_SECTION IN('CULTURE','MAJOR','MINOR')),  -- 과목구분
     T_DATE DATE DEFAULT SYSDATE,                                            -- 등록일자
-    CONSTRAINT TRAINEE_SD_NUM_FK FOREIGN KEY(SD_NUM) REFERENCES STUDENT(SD_NUM), 
-    CONSTRAINT TRAINEE_L_ABBRE_FK FOREIGN KEY(L_ABBRE) REFERENCES LESSON(L_ABBRE)
+    
+    CONSTRAINT TRAINEE_SD_NUM_FK FOREIGN KEY(SD_NUM) REFERENCES STUDENT(SD_NUM), -- 학생테이블과 연결
+    CONSTRAINT TRAINEE_L_ABBRE_FK FOREIGN KEY(L_ABBRE) REFERENCES LESSON(L_ABBRE)-- 과목테이블과 연결
 );
+SELECT * FROM TRAINEE;
+INSERT INTO TRAINEE VALUES(1, 06010001, 'K', 'CULTURE', SYSDATE);
+INSERT INTO TRAINEE VALUES(2, 95010002, 'E', 'MAJOR', SYSDATE);
