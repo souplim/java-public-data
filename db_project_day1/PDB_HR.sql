@@ -585,8 +585,6 @@ ORDER BY employee_id;
 -- (4) GREATEST(exp1, exp2...) 가장 큰 값, LEAST(exp1, exp2...) 가장 작은 값
 SELECT GREATEST(1,4,2,5,3,9), LEAST(1,4,2,5,3,9) FROM DUAL;
 SELECT GREATEST('김희수','조현수','홍길동'), LEAST('김희수','조현수','홍길동') FROM DUAL;
-
-
 -- 무결성 제약조건
 -- 1. 무결성 제약조건 종류
 -- (1) NOT NULL
@@ -1043,12 +1041,17 @@ WHERE SALARY BETWEEN 1500 AND 3000;
 
 -- 문제5) 모든 사원의 실수령액을 계산하여 출력하라. 단, 급여가 많은 순으로 이름, 급여, 실수령액을 출력하라. 
 -- (실수령액은 금여에 대해 10%의 세금을 뺀 금액)
+SELECT FIRST_NAME, SALARY, (SALARY-SALARY*0.1) "After-tax Salary"
+FROM EMPLOYEES
+ORDER BY SALARY DESC;
 
 -- 문제6) 모든 사원의 연봉을 표시하는 보고서를 작성하려고 한다. 
 -- 보고서에 사원의 성과 이름(Name으로 별칭), 급여, 수당여부에 따른 연봉을 포함하여 출력하시오.
 -- 수당여부는 수당이 있으면 “Salary + Commission”, 수당이 없으면 “Salary only”라고 표시하고, 별칭은 적절히 붙인다. 
 -- 또한 출력 시 연봉이 높은 순으로 정렬한다.
-
+SELECT FIRST_NAME||' '||LAST_NAME "Name", SALARY, NVL2(TO_CHAR(COMMISSION_PCT), 'Salary + Commission', 'Salary only') Commission, NVL2(COMMISSION_PCT, SALARY+SALARY*COMMISSION_PCT, SALARY) "ANNUAL SALARY"
+FROM EMPLOYEES
+ORDER BY NVL2(COMMISSION_PCT, SALARY+SALARY*COMMISSION_PCT, SALARY);
 
 -- 그룹함수
 -- 1. 그룹함수의 종류
