@@ -905,7 +905,7 @@ INSERT INTO TB_CUSTOMER(CUSTOMER_CD, CUSTOMER_NM, MW_FLG, BIRTH_DAY, PHONE_NUMBE
 VALUES('2017108','박승대','M','19711430',NULL,'sdpark@haso.com',2345,'20170508203450');
 SELECT * FROM TB_CUSTOMER;
 COMMIT;
--- 2. 테이블이 내용을 수정하기 위한 UPDATE문
+-- 2. 테이블의 내용을 수정하기 위한 UPDATE문
 -- (1) 테이블의 모든 행 변경 : WHERE절을 추가하지 않으면 테이블의 모든 행이 변경된다
 CREATE TABLE EMP
 AS
@@ -1012,3 +1012,207 @@ MERGE INTO TB_CUSTOMER CU USING TB_ADD_CUSTOMER NC ON (CU.CUSTOMER_CD = NC.CUSTO
         INSERT (CU.CUSTOMER_CD,CU.CUSTOMER_NM,CU.MW_FLG,CU.BIRTH_DAY,CU.PHONE_NUMBER,CU.EMAIL,CU.TOTAL_POINT,CU.REG_DTTM)
         VALUES(NC.CUSTOMER_CD,NC.CUSTOMER_NM,NC.MW_FLG,NC.BIRTH_DAY,NC.PHONE_NUMBER,'',0,TO_CHAR(SYSDATE,'YYYYMMDDHHMISS'));
 SELECT * FROM TB_CUSTOMER;    
+
+-- 단일행 함수 예제
+-- 문제1) 각 사원의 성(last_name)이 ‘s’로 끝나는 사원의 이름(이름 성순으로)과 업무를 아래의 예와 같이 출력하고자 한다.
+-- 출력 시 성과 이름은 첫 글자가 대문자, 업무는 모두 소문자로 출력하고 머리글은 Employee JOBs로 표시하시오.
+-- [출력형식] Shelley Higgins is a ac_mgr
+SELECT INITCAP(FIRST_NAME)||' '||INITCAP(LAST_NAME)||' is a '||LOWER(JOB_ID) "Empoyee JOBs"
+FROM EMPLOYEES;
+
+-- 문제2) EMPLOYEES Table에서 이름, 급여, 커미션 금액, 총액(급여 + 커미션)을 구하여 총액이 많은 순서로 출력하라.
+-- 단, 커미션이 NULL인 사람은 제외한다.
+SELECT FIRST_NAME, SALARY, NVL2(COMMISSION_PCT, SALARY*COMMISSION_PCT, 0) COMMISSION, NVL2(COMMISSION_PCT, SALARY+SALARY*COMMISSION_PCT, SALARY) TOTAL
+FROM EMPLOYEES
+WHERE COMMISSION_PCT IS NOT NULL
+ORDER BY NVL2(COMMISSION_PCT, SALARY+SALARY*COMMISSION_PCT, SALARY);
+
+-- 문제3) 이번 분기에 60번 IT 부서에서는 신규 프로그램을 개발하고 보급하여 회사에 공헌하였다. 
+-- 이에 해당 부서의 사원 급여를 12.3% 인상하기로 하였다. 
+-- 60번 IT 부서 사원의 급여를 12.3% 인상하여 정수만(반올림) 표시하는 보고서를 작성하시오. 
+-- 출력 형식은 사번, 이름과 성(Name으로 별칭), 급여, 인상된 급여(Increased Salary로 별칭)순으로 출력한다 
+SELECT EMPLOYEE_ID, FIRST_NAME||' '||LAST_NAME "Name", SALARY, SALARY*1.123 "Increased Salary"
+FROM EMPLOYEES
+WHERE DEPARTMENT_ID = 60;
+
+-- 문제4) 급여가 $1,500부터 $3,000 사이의 사람은 급여의 15%를 회비로 지불하기로 하였다. 
+-- 이를 이름, 급여, 회비(소수점이하 반올림)를 출력하라.
+SELECT FIRST_NAME, SALARY, ROUND(SALARY*0.15)
+FROM EMPLOYEES
+WHERE SALARY BETWEEN 1500 AND 3000;
+
+-- 문제5) 모든 사원의 실수령액을 계산하여 출력하라. 단, 급여가 많은 순으로 이름, 급여, 실수령액을 출력하라. 
+-- (실수령액은 금여에 대해 10%의 세금을 뺀 금액)
+
+-- 문제6) 모든 사원의 연봉을 표시하는 보고서를 작성하려고 한다. 
+-- 보고서에 사원의 성과 이름(Name으로 별칭), 급여, 수당여부에 따른 연봉을 포함하여 출력하시오.
+-- 수당여부는 수당이 있으면 “Salary + Commission”, 수당이 없으면 “Salary only”라고 표시하고, 별칭은 적절히 붙인다. 
+-- 또한 출력 시 연봉이 높은 순으로 정렬한다.
+
+
+-- 그룹함수
+-- 1. 그룹함수의 종류
+-- (1) SUM 함수
+-- 직원의 총급여 구하기
+SELECT SUM(SALARY) FROM EMPLOYEES;
+SELECT TO_CHAR(SUM(SALARY), '$999,999') AS TOTAL FROM EMPLOYEES;
+-- (2) AVG 함수
+-- 직원의 평균 급여 구하기
+SELECT AVG(SALARY) FROM EMPLOYEES;
+SELECT ROUND(AVG(SALARY),1) FROM EMPLOYEES;
+-- (3) MAX/MIN 함수
+-- 최근에 입사한 사원과 가장 오래 전에 입사한 사원의 입사일 출력하기
+SELECT TO_CHAR(MAX(HIRE_DATE),'YYYY-MM-DD'), TO_CHAR(MIN(HIRE_DATE),'YYYY-MM-DD')
+FROM EMPLOYEES;
+-- (4) COUNT 함수
+-- 전체 사원의 수와 커미션 받는 사원의 수
+SELECT COUNT(*), COUNT(EMPLOYEE_ID), COUNT(COMMISSION_PCT) FROM EMPLOYEES;
+-- <문제> JOB의 종류가 몇 개인지 즉, 중복되지 않은 직업의 개수를 구해보자.
+SELECT COUNT(DISTINCT JOB_ID) FROM EMPLOYEES;
+-- 컬럼과 그룹함수 같이 사용할 때 유의할 점
+SELECT FIRST_NAME, MIN(SALARY) FROM EMPLOYEES; -- 오류 : 단일 그룹의 그룹 함수가 아닙니다
+
+-- 2. GROUP BY 절을 사용해 특정 조건으로 세부적인 그룹화하기
+-- 사원들을 부서번호를 기준으로
+SELECT DEPARTMENT_ID FROM EMPLOYEES
+ORDER BY DEPARTMENT_ID;
+SELECT DEPARTMENT_ID FROM EMPLOYEES
+GROUP BY DEPARTMENT_ID
+ORDER BY DEPARTMENT_ID;
+-- 부서별 최대 급여와 최소 급여 구하기
+SELECT DEPARTMENT_ID, MAX(SALARY) "최대 급여", MIN(SALARY) "최소 급여" FROM EMPLOYEES
+GROUP BY DEPARTMENT_ID
+ORDER BY DEPARTMENT_ID;
+-- 소속 부서별 급여의 합과 급여의 평균 구하기
+SELECT DEPARTMENT_ID, SUM(SALARY), FLOOR(AVG(SALARY)),ROUND(AVG(SALARY)), ROUND(AVG(SALARY),1) FROM EMPLOYEES
+GROUP BY DEPARTMENT_ID
+ORDER BY DEPARTMENT_ID;
+-- <문제> 부서별로 직원의 수와 커미션을 받는 직원의 수를 카운트해보자.
+SELECT DEPARTMENT_ID, COUNT(EMPLOYEE_ID), COUNT(COMMISSION_PCT)
+FROM EMPLOYEES
+GROUP BY DEPARTMENT_ID
+ORDER BY DEPARTMENT_ID;
+-- <추가 질문> 급여가 8000이상인 사원들만 카운트 해보자
+SELECT DEPARTMENT_ID, COUNT(EMPLOYEE_ID) FROM EMPLOYEES
+WHERE SALARY>=8000
+GROUP BY DEPARTMENT_ID
+ORDER BY DEPARTMENT_ID;
+-- <문제> 30번 부서에 가장 오랜기간 근무한 사원의 입사일을 출력하라.
+SELECT DEPARTMENT_ID, MAX(HIRE_DATE) FROM EMPLOYEES
+WHERE DEPARTMENT_ID = 30
+GROUP BY DEPARTMENT_ID;
+-- <문제> 부서별 같은 업무를 담당하는 사원 수를 구하라.
+SELECT DEPARTMENT_ID, JOB_ID FROM EMPLOYEES
+ORDER BY DEPARTMENT_ID;                         -- 먼저 부서, 업무를 조회해보기
+SELECT DEPARTMENT_ID, JOB_ID FROM EMPLOYEES
+GROUP BY DEPARTMENT_ID, JOB_ID                  -- 부서와 업무로 묶어보기
+ORDER BY DEPARTMENT_ID;
+-- 그룹함수와 일반칼럼 같이 사용할 경우 일반칼럼 모두 GROUP BY에 와야함
+SELECT DEPARTMENT_ID, JOB_ID, COUNT(EMPLOYEE_ID) FROM EMPLOYEES
+GROUP BY DEPARTMENT_ID, JOB_ID                  -- 부서별 업무별 사원수 구하기 
+ORDER BY DEPARTMENT_ID;
+
+-- 3. HAVING 조건
+SELECT DEPARTMENT_ID, ROUND(AVG(SALARY),1)
+FROM EMPLOYEES
+GROUP BY DEPARTMENT_ID
+ORDER BY DEPARTMENT_ID;
+-- 구한 평균값이 5000 이상인 부서 조회
+SELECT DEPARTMENT_ID, ROUND(AVG(SALARY),1)
+FROM EMPLOYEES
+GROUP BY DEPARTMENT_ID
+HAVING AVG(SALARY)>=5000
+ORDER BY DEPARTMENT_ID;
+-- 부서별로 임금의 최대값, 최소값을 구하고 이 중 최대값이 5000을 넘는 부서만 조회
+SELECT DEPARTMENT_ID, MAX(SALARY), MIN(SALARY)
+FROM EMPLOYEES
+GROUP BY DEPARTMENT_ID
+HAVING MAX(SALARY) > 5000
+ORDER BY DEPARTMENT_ID;
+-- 부서별 인원수를 구하여 그 인원수가 4명 초과하는 부서를 조회하는 쿼리문을 작성하시오
+SELECT DEPARTMENT_ID, COUNT(EMPLOYEE_ID)
+FROM EMPLOYEES
+GROUP BY DEPARTMENT_ID
+HAVING COUNT(EMPLOYEE_ID) > 4
+ORDER BY DEPARTMENT_ID;
+
+-- 4. 각 기준별 소계를 요약해서 보여주는 ROLLUP 함수
+-- 부서와 직무별 급여의 합 및 사원수와
+-- 부서별 급여의 합과 사원수,
+-- 전체 사원의 급여의 합과 사원수를 구하세요.
+-- (1) 따로 따로 구하기
+SELECT DEPARTMENT_ID, JOB_ID, SUM(SALARY), COUNT(EMPLOYEE_ID)
+FROM EMPLOYEES
+GROUP BY DEPARTMENT_ID, JOB_ID
+ORDER BY DEPARTMENT_ID;
+
+SELECT DEPARTMENT_ID, NULL JOB_ID, SUM(SALARY), COUNT(EMPLOYEE_ID)
+FROM EMPLOYEES
+GROUP BY DEPARTMENT_ID
+ORDER BY DEPARTMENT_ID;
+
+SELECT NULL DEPARTMENT_ID, NULL JOB_ID, SUM(SALARY), COUNT(EMPLOYEE_ID)
+FROM EMPLOYEES
+ORDER BY DEPARTMENT_ID;
+-- (2) 집합 연산자 UNION ALL 이용
+SELECT DEPARTMENT_ID, JOB_ID, SUM(SALARY), COUNT(EMPLOYEE_ID)
+FROM EMPLOYEES
+GROUP BY DEPARTMENT_ID, JOB_ID
+UNION ALL
+SELECT DEPARTMENT_ID, NULL JOB_ID, SUM(SALARY), COUNT(EMPLOYEE_ID)
+FROM EMPLOYEES
+GROUP BY DEPARTMENT_ID
+UNION ALL
+SELECT NULL DEPARTMENT_ID, NULL JOB_ID, SUM(SALARY), COUNT(EMPLOYEE_ID)
+FROM EMPLOYEES
+ORDER BY DEPARTMENT_ID;
+-- (3) ROLLUP 함수로 한 번에 구하기
+SELECT DEPARTMENT_ID, JOB_ID, COUNT(EMPLOYEE_ID), SUM(SALARY)
+FROM EMPLOYEES
+GROUP BY ROLLUP(DEPARTMENT_ID, JOB_ID)
+ORDER BY DEPARTMENT_ID;
+-- 직무별 부서별 급여의 합과 사원수, 직무별 급여의 합과 사원수, 전체 사원의 급여와 사원수
+SELECT JOB_ID, DEPARTMENT_ID, COUNT(EMPLOYEE_ID), SUM(SALARY)
+FROM EMPLOYEES
+GROUP BY ROLLUP(JOB_ID, DEPARTMENT_ID)
+ORDER BY JOB_ID;
+
+-- 5. CUBE(exp1, exp2, ...) : 소계와 전체 합계까지 출력하는 함수
+SELECT DEPARTMENT_ID, JOB_ID, COUNT(*), SUM(SALARY)
+FROM EMPLOYEES
+GROUP BY CUBE(DEPARTMENT_ID, JOB_ID)
+ORDER BY DEPARTMENT_ID;
+
+-- 6. 집합연산자 : 여러개의 SELECT 문을 연결해 또 다른 하나의 쿼리를 만드는 역할
+CREATE TABLE exp_goods_asia ( -- 한국과 일본의 10대 수출품 테이블 
+       country VARCHAR2(10),     -- 나라명
+       seq     NUMBER,           -- 번호
+       goods   VARCHAR2(80)     -- 상품명 
+);
+
+INSERT INTO exp_goods_asia VALUES ('한국', 1, '원유제외 석유류');
+INSERT INTO exp_goods_asia VALUES ('한국', 2, '자동차');
+INSERT INTO exp_goods_asia VALUES ('한국', 3, '전자집적회로');
+INSERT INTO exp_goods_asia VALUES ('한국', 4, '선박');
+INSERT INTO exp_goods_asia VALUES ('한국', 5,  'LCD');
+INSERT INTO exp_goods_asia VALUES ('한국', 6,  '자동차부품');
+INSERT INTO exp_goods_asia VALUES ('한국', 7,  '휴대전화');
+INSERT INTO exp_goods_asia VALUES ('한국', 8,  '환식탄화수소');
+INSERT INTO exp_goods_asia VALUES ('한국', 9,  '무선송신기 디스플레이 부속품');
+INSERT INTO exp_goods_asia VALUES ('한국', 10,  '철 또는 비합금강');
+
+INSERT INTO exp_goods_asia VALUES ('일본', 1, '자동차');
+INSERT INTO exp_goods_asia VALUES ('일본', 2, '자동차부품');
+INSERT INTO exp_goods_asia VALUES ('일본', 3, '전자집적회로');
+INSERT INTO exp_goods_asia VALUES ('일본', 4, '선박');
+INSERT INTO exp_goods_asia VALUES ('일본', 5, '반도체웨이퍼');
+INSERT INTO exp_goods_asia VALUES ('일본', 6, '화물차');
+INSERT INTO exp_goods_asia VALUES ('일본', 7, '원유제외 석유류');
+INSERT INTO exp_goods_asia VALUES ('일본', 8, '건설기계');
+INSERT INTO exp_goods_asia VALUES ('일본', 9, '다이오드, 트랜지스터');
+INSERT INTO exp_goods_asia VALUES ('일본', 10, '기계류');
+
+SELECT * FROM EXP_GOODS_ASIA; 
+COMMIT;
+
+-- (1) UNION 합집합
