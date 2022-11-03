@@ -512,14 +512,20 @@ SELECT first_name, salary, commission_pct, NVL2(commission_pct, salary+(salary*c
 -- <문제> 모든 직원은 자신의 상관(manager_id)이 있다. 하지만 employees 테이블에 유일하게 상관이 없는 로우가 있는데 그 사원의 manager_id 칼럼값이 NULL이다.
 -- 상관이 없는 대표이사만 출력하되 manager_id 칼럼 값 NULL 대신 CEO로 출력한다.
 SELECT manager_id FROM employees; -- 자료형 확인하니 숫자형. 'CEO'로 변환하려면 문자형으로 변환해야함
-SELECT employee_id, first_name, NVL(TO_CHAR(manager_id, '999'), 'CEO') AS manager_id FROM employees
-WHERE manager_id IS NULL; 
+SELECT employee_id, first_name, NVL(TO_CHAR(manager_id), 'CEO') AS manager_id FROM employees
+WHERE manager_id IS NULL;
+-- <문제> 커미션 정보가 없는 직원들도 있는데 커미션이 없는 직원 그룹은 '<커미션 없음>'이 출력되게 한다.
+SELECT NVL(TO_CHAR(commission_pct), '<커미션 없음>') AS COMMISSION FROM employees;
 --(2) 선택을 위한 DECODE 함수 (if문이랑 비슷)
 -- 부서명 구하기
 SELECT * FROM departments;
 SELECT department_id, DECODE(department_id, 10, 'Administration', 
-       20, 'Marketing', 30, 'Purchasing', 40, 'Human Resources', 
-       50, 'Shipping', 60, 'IT') AS departments FROM employees
+                                            20, 'Marketing', 
+                                            30, 'Purchasing', 
+                                            40, 'Human Resources', 
+                                            50, 'Shipping', 
+                                            60, 'IT') AS departments 
+FROM employees
 ORDER BY department_id;
 -- (3) 조건에 따라 서로 다른 처리가 가능한 CASE 함수 : switch문이랑 비슷
 -- 부서명 구하기
@@ -530,11 +536,30 @@ SELECT first_name, department_id,
          WHEN department_id=40 THEN 'Human Resources'
          WHEN department_id=50 THEN 'Shipping'
          WHEN department_id=60 THEN 'IT'
-         END DEPAPRTEMENT_NAME
+         END DEPAPRTEMENT_NAME -- 별칭
+FROM employees
+ORDER BY department_id;
+-- 같은 식 다른 표현(대부분은 위 코드처럼 명시)
+SELECT first_name, department_id,
+    CASE department_id WHEN 10 THEN 'admministration'
+                       WHEN 20 THEN 'Marketing'
+                       WHEN 30 THEN 'Purchasing'
+                       WHEN 40 THEN 'Human Resources'
+                       WHEN 50 THEN 'Shipping'
+                       WHEN 60 THEN 'IT'
+    END DEPAPRTEMENT_NAME -- 별칭
 FROM employees
 ORDER BY department_id;
 -- <문제> 부서별에 따라 급여를 인상(직원번호, 직원명, 직급, 급여)
 -- 부서명이 'Marketing'인 직원은 5%, 'Purchasing'인 직원은 10%, 'Human Resources'인 직원 15%, 'IT'인 직원은 20% 인상한다.
+-- DECODE 사용
+SELECT employee_id, first_name, job_id, salary,
+       DECODE(department_id, 20, salary*1.05,
+                             30, salary*1.1
+                             40, salary*1.15,
+                             60, salary*1.2, salary) UPSAL
+FROM employees;
+-- CASE 사용
 SELECT employee_id, first_name, job_id, salary,
     CASE WHEN department_id=10 THEN salary
          WHEN department_id=20 THEN salary*1.05
@@ -542,12 +567,26 @@ SELECT employee_id, first_name, job_id, salary,
          WHEN department_id=40 THEN salary*1.15
          WHEN department_id=50 THEN salary
          WHEN department_id=60 THEN salary*1.2
-         END salary_inc
+         END UPSAL
 FROM employees
 ORDER BY department_id;
+-- 부서명으로 조건 부여
+SELECT employee_id, first_name, e.department_id, job_id, salary,
+        CASE WHEN department_name = 'Marketing' THEN salary*1.05
+             WHEN department_name = 'Marketing' THEN salary*1.05
+             WHEN department_name = 'Marketing' THEN salary*1.05
+             WHEN department_name = 'Marketing' THEN salary*1.05
+             ELSE salary
+        END UPSAL
+FROM employees E INNER JOIN DEPARTMENTS D
+ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
+ORDER BY employee_id;
+             
 -- (4) GREATEST(exp1, exp2...) 가장 큰 값, LEAST(exp1, exp2...) 가장 작은 값
 SELECT GREATEST(1,4,2,5,3,9), LEAST(1,4,2,5,3,9) FROM DUAL;
 SELECT GREATEST('김희수','조현수','홍길동'), LEAST('김희수','조현수','홍길동') FROM DUAL;
+
+
 -- 무결성 제약조건
 -- 1. 무결성 제약조건 종류
 -- (1) NOT NULL
@@ -972,4 +1011,4 @@ MERGE INTO TB_CUSTOMER CU USING TB_ADD_CUSTOMER NC ON (CU.CUSTOMER_CD = NC.CUSTO
     WHEN NOT MATCHED THEN
         INSERT (CU.CUSTOMER_CD,CU.CUSTOMER_NM,CU.MW_FLG,CU.BIRTH_DAY,CU.PHONE_NUMBER,CU.EMAIL,CU.TOTAL_POINT,CU.REG_DTTM)
         VALUES(NC.CUSTOMER_CD,NC.CUSTOMER_NM,NC.MW_FLG,NC.BIRTH_DAY,NC.PHONE_NUMBER,'',0,TO_CHAR(SYSDATE,'YYYYMMDDHHMISS'));
-SELECT * FROM TB_CUSTOMER;        
+SELECT * FROM TB_CUSTOMER;    
