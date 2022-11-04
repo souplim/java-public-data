@@ -95,3 +95,44 @@ INSERT INTO TRAINEE(NO, SD_NUM, L_ABBRE, T_SECTION) VALUES(1, 06010001, 'K', 'CU
 INSERT INTO TRAINEE(NO, SD_NUM, L_ABBRE, T_SECTION) VALUES(2, 95010002, 'E', 'MAJOR');
 
 SELECT * FROM TRAINEE;
+
+-- 1. 학번, 학생명과 학과번호, 학과명을 출력하도록 쿼리문 작성
+SELECT SD_NUM 학번, SD_NAME 학생명, S.S_NUM 학과번호, S_NAME 학과명
+FROM SUBJECT SB, STUDENT S
+WHERE SB.S_NUM = S.S_NUM;
+
+-- 2. 우리 학교 전체 학과명과 그 학과에 소속된 학생명, 아이디를 출력하도록 쿼리문 작성(아직 학생 안 받은 학과 있음)
+SELECT * FROM SUBJECT;
+SELECT * FROM STUDENT;
+SELECT SB.S_NAME 학과명, S.SD_NAME 학생명, S.SD_ID 아이디
+FROM SUBJECT SB, STUDENT S
+WHERE SB.S_NUM = S.S_NUM(+);
+
+-- 3. 학과에 소속된 학생 수를 출력하도록 쿼리문 작성
+SELECT S.S_NUM 학과명, COUNT(S_NAME) 학생수
+FROM SUBJECT SB, STUDENT S
+WHERE  SB.S_NUM = S.S_NUM
+GROUP BY S.S_NUM, S.SD_NAME;
+
+SELECT S.S_NAME 학과명, COUNT(S_NUM) 학생수
+FROM SUBJECT SB INNER JOIN STUDENT S
+ON SB.S_NUM = S.S_NUM
+GROUP BY S.SD_NAME;
+
+-- 4. 전체 학과명에 소속된 학생 수를 출력하도록 쿼리문 작성해주세요(ANSI 조인)
+SELECT S.S_NUM 학과명, COUNT(S_NAME) 학생수
+FROM SUBJECT SB INNER JOIN STUDENT S
+ON  SB.S_NUM = S.S_NUM
+GROUP BY S.S_NUM, S.SD_NAME;
+
+-- 5. 수강테이블(TRAINEE)에서 수강 신청한 학생명, 과목명, 등록일(2018.12.28. 형태)을 출력하도록 쿼리문 작성(테이블3개)
+-- 5-1. 수강테이블(TRAINEE)에서 수강 신청한 학과명, 학생명, 과목명, 등록일(2018.12.28. 형태)을 출력하도록 쿼리문 작성(테이블4개)
+SELECT ST.SD_NAME 학생명, L_NAME 과목명, TO_CHAR(TR.T_DATE,'YYYY.MM.DD') 등록일
+FROM TRAINEE TR INNER JOIN STUDENT ST ON TR.SD_NUM = ST.SD_NUM
+                INNER JOIN LESSON LE ON TR.L_ABBRE = LE.L_ABBRE;
+                
+SELECT ST.S_NUM 학과명, ST.SD_NAME 학생명, L_NAME 과목명, TO_CHAR(TR.T_DATE,'YYYY.MM.DD') 등록일
+FROM STUDENT ST INNER JOIN SUBJECT SB ON ST.S_NUM = SB.S_NUM
+                INNER JOIN TRAINEE TR ON TR.SD_NUM = ST.SD_NUM
+                INNER JOIN LESSON LE ON TR.L_ABBRE = LE.L_ABBRE;                
+        
