@@ -865,6 +865,7 @@ ON DELETE SET NULL;
 DELETE FROM TREATMENT WHERE T_NO = 1002;
 SELECT * FROM TREATMENT;
 SELECT * FROM DOCTOR;
+
 -- 테이블에 내용울 추가, 수정, 삭제하기 위한 DML
 -- 1. 테이블에 새로운 행을 추가하는 INSERT문
 CREATE TABLE DEPT(
@@ -1394,7 +1395,6 @@ GROUP BY DEPARTMENT_ID
 ORDER BY DEPARTMENT_ID;
 
 -- 7. EMPLOYEES 테이블에서 아래의 결과를 출력하는 SELECT 문장을 작성하여라.
-                                COUNT(DECODE(DEPARTMENT_ID, 10, 1))
 SELECT HIRE_DATE FROM EMPLOYEES;
 SELECT SUBSTR(TO_CHAR(HIRE_DATE),1,2) FROM EMPLOYEES;
 SELECT COUNT(DECODE(SUBSTR(TO_CHAR(HIRE_DATE),1,2),'01',1,'02',1,'03',1,'04',1,'05',1,'06',1,'07',1,'08',1)) TOTAL, 
@@ -1537,7 +1537,7 @@ FROM EMPLOYEES E LEFT OUTER JOIN DEPARTMENTS D
 ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
 WHERE HIRE_DATE>='2007/01/01' AND HIRE_DATE<='2007/06/30';
 
--- [조인 예제]
+-- <조인 예제>
 -- 1. Sales 부서 소속 사원의 이름과 입사일을 출력하라.
 SELECT FIRST_NAME, HIRE_DATE
 FROM EMPLOYEES E INNER JOIN DEPARTMENTS D
@@ -1670,7 +1670,7 @@ ORDER BY DEPARTMENT_ID;
 -- EMPLOYEES 테이블에서 Susan 또는 Lex와 월급이 같은 직원의 이름, 업무, 급여를 출력하는 SELECT 문을 작성하라(Susan, Lex는 제외)
 SELECT FIRST_NAME, JOB_ID, SALARY FROM EMPLOYEES
 WHERE SALARY IN (SELECT SALARY FROM EMPLOYEES
-                 WHERE FIRST_NAME IN ('Susan','Lex')) AND (FIRST_NAME <> 'Susan' AND FIRST_NAME <> 'Lex'); --??
+                 WHERE FIRST_NAME IN ('Susan','Lex')) AND (FIRST_NAME <> 'Susan' AND FIRST_NAME <> 'Lex'); -- <>, !=, ^= 같지 않다는 비교연산자
 -- EMPLOYEES 테이블에서 적어도 한 명 이상으로부터 보고를 받을 수 있는 직원의 직원번호, 이름, 업무, 부서번호를 출력하라
 SELECT EMPLOYEE_ID, FIRST_NAME, JOB_ID, DEPARTMENT_ID
 FROM EMPLOYEES
@@ -1797,10 +1797,66 @@ HAVING COUNT(EMPLOYEE_ID) = (SELECT MAX(COUNT(EMPLOYEE_ID)) FROM EMPLOYEES
                           GROUP BY DEPARTMENT_ID);
                           
 -- 4. EMPLOYEES 테이블에서 월급이 자신이 속한 부서의 평균 월급보다 높은 사원의 부서번호, 이름, 급여를 출력하는 SELECT문을 작성하시오.
-SELECT DEPARTMENT_ID, FIRST_NAME, SALARY FROM EMPLOYEES
-WHERE SALARY > (SELECT  AVG(SALARY), DISTINCT DEPARTMENT_ID FROM EMPLOYEES
-                GROUP BY DEPARTMENT_ID);
-    
+SELECT DEPARTMENT_ID, FIRST_NAME, SALARY FROM EMPLOYEES;
+SELECT DEPARTMENT_ID, ROUND(AVG(SALARY)) FROM EMPLOYEES
+GROUP BY DEPARTMENT_ID;
+
+SELECT E.DEPARTMENT_ID, FIRST_NAME, SALARY
+FROM (SELECT DEPARTMENT_ID, AVG(SALARY) 부서평균급여 FROM EMPLOYEES
+      GROUP BY DEPARTMENT_ID) D, EMPLOYEES E
+WHERE E.DEPARTMENT_ID = D.DEPARTMENT_ID(+) AND SALARY > 부서평균급여;
+
+-- 5. 2001년~2005년 사이에 입사한 사원들에 대해 부서번호, 부서명, 
+-- 각 부서별 사원수를 2001년입사인원수, 2002년입사인원수, 2003년입사인원수, 2004년입사인원수, 2005년입사인원수로 출력하라.
+SELECT E.DEPARTMENT_ID 부서번호, (SELECT D.DEPARTMENT_NAME FROM DEPARTMENTS D WHERE E.DEPARTMENT_ID = D.DEPARTMENT_ID) 부서명,
+       COUNT(DECODE(SUBSTR(TO_CHAR(HIRE_DATE,'YYYY-MM-DD'),1,4),'2001',0)) "2001년입사인원수",
+       COUNT(DECODE(SUBSTR(TO_CHAR(HIRE_DATE,'YYYY-MM-DD'),1,4),'2002',0)) "2002년입사인원수",
+       COUNT(DECODE(SUBSTR(TO_CHAR(HIRE_DATE,'YYYY-MM-DD'),1,4),'2003',0)) "2003년입사인원수",
+       COUNT(DECODE(SUBSTR(TO_CHAR(HIRE_DATE,'YYYY-MM-DD'),1,4),'2004',0)) "2004년입사인원수",
+       COUNT(DECODE(SUBSTR(TO_CHAR(HIRE_DATE,'YYYY-MM-DD'),1,4),'2005',0)) "2005년입사인원수"
+FROM EMPLOYEES E
+WHERE E.DEPARTMENT_ID IS NOT NULL
+GROUP BY E.DEPARTMENT_ID
+ORDER BY E.DEPARTMENT_ID;
+
+-- 6. 부서별 급여 합계를 구하고, 그 결과를 가지고 다음과 같이 표현하시오.
+-- Sum Salary > 100000 이면, "Excellent"
+-- Sum Salary > 50000 이면, "Good"
+-- Sum Salary > 10000 이면, "Medium"
+-- Sum Salary <= 10000 이면, "Well" 
+-- <Hint> CASE 문을 사용하는 보통 방법을 사용할 수도 있고, 
+-- 인라인 뷰(INLINE VIEW)를 이용하여 우선 부서별 급여 합계를 구하고, 상위 쿼리에서 CASE 구문을 이용하여 위의 조건 비교를 통해 급여 합계에 따른 표현을 할 수 있다.
+-- 서브쿼리가 FROM 절 안에서 사용되는 경우, 해당 서브쿼리를 '인라인뷰'라고 한다. FROM 절에서 사용된 서브쿼리의 결과가 하나의 테이블에 대한 뷰(View)처럼 사용된다. 
+SELECT DEPARTMENT_ID, SUM(SALARY) SUM_SAL, CASE WHEN SUM(SALARY)>100000 THEN 'Excellent'
+                                                WHEN SUM(SALARY)>50000 THEN 'Good'
+                                                WHEN SUM(SALARY)>10000 THEN 'Medium'
+                                                WHEN SUM(SALARY)<=10000 THEN 'Well'
+                                           END "Department Grade Salary"  
+FROM EMPLOYEES
+GROUP BY DEPARTMENT_ID
+ORDER BY DEPARTMENT_ID;
+
+-- ?
+SELECT DISTINCT DEPARTMENT_ID, SUM(SALARY) "SUM_SAL", CASE WHEN S.SUM_SAL>100000 THEN 'Excellent'
+                                                           WHEN S.SUM_SAL>50000 THEN 'Good'
+                                                           WHEN S.SUM_SAL>10000 THEN 'Medium'
+                                                           WHEN S.SUM_SAL<=10000 THEN 'Well'
+                                                      END "Department Grade Salary" 
+FROM (SELECT SUM(E.SALARY) "SUM_SAL" FROM EMPLOYEES E
+      GROUP BY DEPARTMENT_ID) S, EMPLOYEES E
+GROUP BY DEPARTMENT_ID      
+ORDER BY E.DEPARTMENT_ID;
+
+SELECT DISTINCT E.DEPARTMENT_ID, SUM(E.SALARY) SUM_SAL, CASE WHEN S.SUM_SAL>100000 THEN 'Excellent'
+                                                             WHEN S.SUM_SAL>50000 THEN 'Good'
+                                                             WHEN S.SUM_SAL>10000 THEN 'Medium'
+                                                             WHEN S.SUM_SAL<=10000 THEN 'Well'
+                                                        END "Department Grade Salary" 
+FROM (SELECT SUM(E.SALARY) SUM_SAL 
+      FROM EMPLOYEES E
+      GROUP BY DEPARTMENT_ID) S, EMPLOYEES E
+GROUP BY E.DEPARTMENT_ID  
+ORDER BY E.DEPARTMENT_ID;
                 
 -- 뷰
 -- 1. 뷰의 개념
