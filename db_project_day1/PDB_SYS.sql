@@ -1,36 +1,41 @@
--- »ç¿ëÀÚ °èÁ¤ »ý¼º
--- DBA¸¸ »ç¿ëÀÚ¸¦ »ý¼ºÇÒ ¼ö ÀÖ´Ù. ±×·¡¼­ ÃÖ°í±ÇÇÑÀÚ(SYSDBA)ÀÎ SYS·Î Á¢¼Ó
--- CREATE USER »ç¿ëÀÚ¸í IDENTIFIED BY ºñ¹Ð¹øÈ£;
+-- ì‚¬ìš©ìž ê³„ì • ìƒì„±
+-- DBAë§Œ ì‚¬ìš©ìžë¥¼ ìƒì„±í•  ìˆ˜ ìžˆë‹¤. ê·¸ëž˜ì„œ ìµœê³ ê¶Œí•œìž(SYSDBA)ì¸ SYSë¡œ ì ‘ì†
+-- CREATE USER ì‚¬ìš©ìžëª… IDENTIFIED BY ë¹„ë°€ë²ˆí˜¸;
 CREATE USER javauser IDENTIFIED BY java1234;
 
--- »ç¿ëÀÚ ±ÇÇÑ ºÎ¿©
--- ¿À¶óÅ¬Àº »ç¿ëÀÚ »ý¼º½Ã ¾î¶°ÇÑ ±ÇÇÑµµ °¡Áö°í ÀÖÁö ¾Ê±â¿¡ ±ÇÇÑ ºÎ¿©¸¦ ÇØÁÖ¾î¾ß ÇÑ´Ù.
--- GRANT ±ÇÇÑ TO »ç¿ëÀÚ¸í;
-GRANT CREATE SESSION TO javauser; -- ±ÇÇÑ Á÷Á¢ ÁÙ ¼öµµ ÀÖ°í
-GRANT CONNECT, RESOURCE TO javauser; -- ·Ñ·Î ±ÇÇÑ ºÎ¿©ÇÒ ¼ö ÀÖÀ½
+-- ì‚¬ìš©ìž ê¶Œí•œ ë¶€ì—¬
+-- ì˜¤ë¼í´ì€ ì‚¬ìš©ìž ìƒì„±ì‹œ ì–´ë– í•œ ê¶Œí•œë„ ê°€ì§€ê³  ìžˆì§€ ì•Šê¸°ì— ê¶Œí•œ ë¶€ì—¬ë¥¼ í•´ì£¼ì–´ì•¼ í•œë‹¤.
+-- GRANT ê¶Œí•œ TO ì‚¬ìš©ìžëª…;
+GRANT CREATE SESSION TO javauser; -- ê¶Œí•œ ì§ì ‘ ì¤„ ìˆ˜ë„ ìžˆê³ 
+GRANT CONNECT, RESOURCE TO javauser; -- ë¡¤ë¡œ ê¶Œí•œ ë¶€ì—¬í•  ìˆ˜ ìžˆìŒ
 ALTER USER javauser 
 DEFAULT TABLESPACE USERS QUOTA UNLIMITED ON USERS;
 
--- CONNECT ·Ñ¿¡ Æ÷ÇÔµÈ ±ÇÇÑ - CREATE SESSION ±ÇÇÑÀÌ ¾øÀ¸¸é ÇØ´ç À¯Àú·Î Á¢¼ÓÀÌ µÇÁö ¾ÊÀ½
+-- CONNECT ë¡¤ì— í¬í•¨ëœ ê¶Œí•œ - CREATE SESSION ê¶Œí•œì´ ì—†ìœ¼ë©´ í•´ë‹¹ ìœ ì €ë¡œ ì ‘ì†ì´ ë˜ì§€ ì•ŠìŒ
 SELECT * FROM role_sys_privs
 WHERE role = 'CONNECT';
 
--- RESOURCE ·Ñ¿¡ Æ÷ÇÔµÈ ±ÇÇÑ
--- CREATE Æ®¸®°Å, ½ÃÄö½º, Å¸ÀÔ, ÇÁ·Î½ÃÀú, Å×ÀÌºí µî 8°¡Áö ±ÇÇÑÀÌ ºÎ¿©µÇ¾î ÀÖÀ½
+-- RESOURCE ë¡¤ì— í¬í•¨ëœ ê¶Œí•œ
+-- CREATE íŠ¸ë¦¬ê±°, ì‹œí€€ìŠ¤, íƒ€ìž…, í”„ë¡œì‹œì €, í…Œì´ë¸” ë“± 8ê°€ì§€ ê¶Œí•œì´ ë¶€ì—¬ë˜ì–´ ìžˆìŒ
 SELECT * FROM role_sys_privs
 WHERE role = 'RESOURCE';
 
--- ¸ÕÀú JAVAUSER¿¡°Ô ºÎ¿©µÈ ·Ñ È®ÀÎ
+-- ë¨¼ì € JAVAUSERì—ê²Œ ë¶€ì—¬ëœ ë¡¤ í™•ì¸
 SELECT * FROM dba_role_privs
 WHERE GRANTEE = 'JAVAUSER';
 
--- È¤½Ã °èÁ¤ÀÌ Àá±â°Ô µÇ¸é È®ÀÎÇÏ±â À§ÇÑ Äõ¸®¹®
+-- í˜¹ì‹œ ê³„ì •ì´ ìž ê¸°ê²Œ ë˜ë©´ í™•ì¸í•˜ê¸° ìœ„í•œ ì¿¼ë¦¬ë¬¸
 SELECT username, account_status, lock_date FROM dba_users
 WHERE username = 'JAVAUSER';
 
--- Àá±Ý ÇØÁ¦
+-- ìž ê¸ˆ í•´ì œ
 ALTER USER javauser
 ACCOUNT UNLOCK;
 
--- ºñ¹Ð¹øÈ£ º¯°æ
+-- ë¹„ë°€ë²ˆí˜¸ ë³€ê²½
 ALTER USER javauser IDENTIFIED BY java1234;
+
+
+-- ë·°
+-- ê¶Œí•œ ë¶€ì—¬
+GRANT CREATE VIEW TO HR;
