@@ -1806,6 +1806,14 @@ FROM (SELECT DEPARTMENT_ID, AVG(SALARY) 부서평균급여 FROM EMPLOYEES
       GROUP BY DEPARTMENT_ID) D, EMPLOYEES E
 WHERE E.DEPARTMENT_ID = D.DEPARTMENT_ID(+) AND SALARY > 부서평균급여;
 
+-- 인라인 뷰 이용
+SELECT E.DEPARTMENT_ID, E.FIRST_NAME, E.SALARY
+FROM (SELECT DEPARTMENT_ID, AVG(SALARY) AVG_SALARY  FROM EMPLOYEES
+      GROUP BY DEPARTMENT_ID
+      ORDER BY DEPARTMENT_ID) D RIGHT OUTER JOIN EMPLOYEES E
+ON E.DEPARTMENT_ID = D.DEPARTMENT_ID      
+WHERE SALARY > AVG_SALARY;
+
 -- 5. 2001년~2005년 사이에 입사한 사원들에 대해 부서번호, 부서명, 
 -- 각 부서별 사원수를 2001년입사인원수, 2002년입사인원수, 2003년입사인원수, 2004년입사인원수, 2005년입사인원수로 출력하라.
 SELECT E.DEPARTMENT_ID 부서번호, (SELECT D.DEPARTMENT_NAME FROM DEPARTMENTS D WHERE E.DEPARTMENT_ID = D.DEPARTMENT_ID) 부서명,
@@ -1827,36 +1835,26 @@ ORDER BY E.DEPARTMENT_ID;
 -- <Hint> CASE 문을 사용하는 보통 방법을 사용할 수도 있고, 
 -- 인라인 뷰(INLINE VIEW)를 이용하여 우선 부서별 급여 합계를 구하고, 상위 쿼리에서 CASE 구문을 이용하여 위의 조건 비교를 통해 급여 합계에 따른 표현을 할 수 있다.
 -- 서브쿼리가 FROM 절 안에서 사용되는 경우, 해당 서브쿼리를 '인라인뷰'라고 한다. FROM 절에서 사용된 서브쿼리의 결과가 하나의 테이블에 대한 뷰(View)처럼 사용된다. 
-SELECT DEPARTMENT_ID, SUM(SALARY) SUM_SAL, CASE WHEN SUM(SALARY)>100000 THEN 'Excellent'
-                                                WHEN SUM(SALARY)>50000 THEN 'Good'
-                                                WHEN SUM(SALARY)>10000 THEN 'Medium'
-                                                WHEN SUM(SALARY)<=10000 THEN 'Well'
+SELECT DEPARTMENT_ID, SUM(SALARY) SUM_SAL, CASE WHEN SUM(SALARY) > 100000 THEN 'Excellent'
+                                                WHEN SUM(SALARY) > 50000  THEN 'Good'
+                                                WHEN SUM(SALARY) > 10000  THEN 'Medium'
+                                                WHEN SUM(SALARY) <= 10000 THEN 'Well'
                                            END "Department Grade Salary"  
 FROM EMPLOYEES
 GROUP BY DEPARTMENT_ID
 ORDER BY DEPARTMENT_ID;
 
--- ?
-SELECT DISTINCT DEPARTMENT_ID, SUM(SALARY) "SUM_SAL", CASE WHEN S.SUM_SAL>100000 THEN 'Excellent'
-                                                           WHEN S.SUM_SAL>50000 THEN 'Good'
-                                                           WHEN S.SUM_SAL>10000 THEN 'Medium'
-                                                           WHEN S.SUM_SAL<=10000 THEN 'Well'
-                                                      END "Department Grade Salary" 
-FROM (SELECT SUM(E.SALARY) "SUM_SAL" FROM EMPLOYEES E
+-- 인라인 뷰 이용
+SELECT DISTINCT E.DEPARTMENT_ID, SUM_SAL, CASE WHEN S.SUM_SAL > 100000 THEN 'Excellent'
+                                                 WHEN S.SUM_SAL > 50000  THEN 'Good'
+                                                 WHEN S.SUM_SAL > 10000  THEN 'Medium'
+                                                 WHEN S.SUM_SAL <= 10000 THEN 'Well'
+                                            END "Department Grade Salary" 
+FROM (SELECT DEPARTMENT_ID, SUM(SALARY) SUM_SAL FROM EMPLOYEES
       GROUP BY DEPARTMENT_ID) S, EMPLOYEES E
-GROUP BY DEPARTMENT_ID      
+WHERE E.DEPARTMENT_ID = S.DEPARTMENT_ID(+)   
 ORDER BY E.DEPARTMENT_ID;
-
-SELECT DISTINCT E.DEPARTMENT_ID, SUM(E.SALARY) SUM_SAL, CASE WHEN S.SUM_SAL>100000 THEN 'Excellent'
-                                                             WHEN S.SUM_SAL>50000 THEN 'Good'
-                                                             WHEN S.SUM_SAL>10000 THEN 'Medium'
-                                                             WHEN S.SUM_SAL<=10000 THEN 'Well'
-                                                        END "Department Grade Salary" 
-FROM (SELECT SUM(E.SALARY) SUM_SAL 
-      FROM EMPLOYEES E
-      GROUP BY DEPARTMENT_ID) S, EMPLOYEES E
-GROUP BY E.DEPARTMENT_ID  
-ORDER BY E.DEPARTMENT_ID;
+    
                 
 -- 뷰
 -- 1. 뷰의 개념
@@ -1913,6 +1911,7 @@ WHERE 부서번호 = 10; -- 이제 컬럼명이 부서번호임
 SELECT * FROM VIEW_EMP02
 WHERE EMPLOYEE_ID = 10; -- DEPARTMENT_ID로 하면 오류남(기본 테이블의 컬럼명은 영향 안 받음)
 -- 3) 그룹 함수를 사용한 단순 뷰
+-- 함수 사용하여 뷰를 만들 때는 반드시 별칭을 주어야 함(필수)
 CREATE OR REPLACE VIEW VIEW_SALARY
 AS
 SELECT DEPARTMENT_ID, SUM(SALARY) AS "SalarySum", TRUNC(AVG(SALARY)) AS "SalaryAvg"
@@ -1920,12 +1919,224 @@ FROM EMP01
 GROUP BY DEPARTMENT_ID
 ORDER BY DEPARTMENT_ID;
 SELECT * FROM VIEW_SALARY;
+-- 4) 복합 뷰
+-- 두 개 이상의 기본 테이블에 의해 정의한 뷰 
 -- 사원번호, 사원이름, 급여, 부서번호, 부서명 조회할 수 있는 VIEW_EMP_DEPT 생성하라
+-- 서브쿼리 이용
 CREATE OR REPLACE VIEW VIEW_EMP_DEPT
 AS
-SELECT EMPLOYEE_ID, FIRST_NAME, SALARY, (SELECT DEPARTMENT_NAME FROM DEPARTMENTS D
-                                         WHERE D.DEPARTMENTS = E.EMPLOYEES) 부서명
+SELECT EMPLOYEE_ID, FIRST_NAME, SALARY, DEPARTMENT_ID, (SELECT DEPARTMENT_NAME FROM DEPARTMENTS D
+                                         WHERE E.DEPARTMENT_ID = D.DEPARTMENT_ID) 부서명
 FROM EMPLOYEES E
-ORDER BY 1;  
+ORDER BY DEPARTMENT_ID DESC;  
+-- INNER JOIN 이용
+CREATE OR REPLACE VIEW VIEW_EMP_DEPT1
+AS
+SELECT EMPLOYEE_ID, FIRST_NAME, SALARY, DEPARTMENT_ID, DEPARTMENT_NAME
+FROM EMPLOYEES E INNER JOIN DEPARTMENTS D
+ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
+ORDER BY DEPARTMENT_ID DESC;
+-- 뷰 실행
+SELECT * FROM VIEW_EMP_DEPT;
 
--- 4) 복합 뷰
+-- 5. 뷰 삭제
+-- 뷰는 실체가 없는 가상 테이블이기 때문에 뷰를 삭제한다는 것은 USER_VIEWS 데이터 딕셔너리에 저장되어 있는 뷰의 정의를 삭제하는 것
+SELECT VIEW_NAME, TEXT FROM USER_VIEWS;
+DROP VIEW VIEW_SALARY;
+SELECT VIEW_NAME, TEXT FROM USER_VIEWS;
+
+-- 6. 뷰 수정을 위한 OR REPLACE 옵션
+-- CREATE OR REPLACE VIEW를 사용하면 존재하지 않은 뷰이면 새로운 뷰 생성하고 기존에 존재하면 그 내용을 변경함
+CREATE OR REPLACE VIEW VIEW_EMP03
+AS
+SELECT EMPLOYEE_ID, FIRST_NAME, SALARY, DEPARTMENT_ID
+FROM EMP01
+WHERE EMPLOYEE_ID = 10;
+SELECT VIEW_NAME, TEXT FROM USER_VIEWS;
+-- 수정
+CREATE OR REPLACE VIEW VIEW_EMP03
+AS
+SELECT EMPLOYEE_ID, FIRST_NAME, SALARY, DEPARTMENT_ID
+FROM EMP01
+WHERE DEPARTMENT_ID = 10;
+SELECT VIEW_NAME, TEXT FROM USER_VIEWS;
+
+-- 7. 기본 테이블 없이 뷰를 생성하기 위한 FORCE 옵션
+-- 기본 테이블이 존재하지 않더라도 뷰를 생성하려면 FORCE 옵션 추가
+CREATE OR REPLACE FORCE VIEW VIEW_NOTABLE
+AS
+SELECT EMPLOYEE_ID, FIRST_NAME, DEPARTMENT_ID
+FROM EMP15
+WHERE EMPLOYEE_ID=10; --경고: 컴파일 오류와 함께 뷰가 생성되었습니다.
+
+SELECT VIEW_NAME, TEXT FROM USER_VIEWS; -- 뷰 조회 : 테이블 없어도 VIEW_NOTABLE 생성됨
+
+-- 8. WITH CHECK OPTION
+-- 뷰 생성시 조건으로 지정한 칼럼 값을 변경하지 못하도록 하는 것
+CREATE OR REPLACE VIEW VIEW_CHK
+AS
+SELECT EMPLOYEE_ID, FIRST_NAME, SALARY, DEPARTMENT_ID
+FROM EMP01
+WHERE DEPARTMENT_ID = 20 WITH CHECK OPTION;
+
+SELECT * FROM VIEW_CHK;
+
+-- 급여가 5000 이상이 사원을 10번 부서로 이동하는 쿼리문
+UPDATE VIEW_CHK
+SET DEPARTMENT_ID = 10 
+WHERE SALARY >= 5000; -- 부서번호에 옵션을 지정하였으므로 이 뷰를 통해서는 부서번호를 변경할 수 없음
+
+-- 9. WITH READ ONLY
+-- 뷰를 통해서는 기본 테이블의 어떤 칼럼에 대해서도 내용을 절대 변경할 수 없도록 하는 것
+CREATE OR REPLACE VIEW VIEW_READ
+AS
+SELECT EMPLOYEE_ID, FIRST_NAME, SALARY, DEPARTMENT_ID
+FROM EMP01
+WHERE DEPARTMENT_ID = 30 WITH READ ONLY;
+
+UPDATE VIEW_READ
+SET DEPARTMENT_ID = 1000; -- 오류 발생. ORA-42399: 읽기 전용 뷰에서는 DML 작업을 수행할 수 없습니다.
+
+-- 10. 뷰 활용하기
+-- 사원 중에서 최근에 입사한 사원 5명(TOP-5)만을 얻어 오는 질의문 작성. ROWNUM 칼럼을 이용
+-- ROWNUM 칼럼은 오라클에서 내부적으로 부여되는데 INSERT문에 의해 입력한 순서에 따라 1씩 증가하면서 값이 지정됨
+SELECT ROWNUM, EMPLOYEE_ID, FIRST_NAME, HIRE_DATE
+FROM EMPLOYEES;
+
+-- HIRE_DATE로 내림차순 정렬했는데도 ROWNUM값은 바뀌지 않음
+-- ROWNUM값은 데이터가 입력된 시점에서 결정되며 다시 바뀌지 않음
+SELECT ROWNUM, EMPLOYEE_ID, FIRST_NAME, HIRE_DATE
+FROM EMPLOYEES
+ORDER BY HIRE_DATE DESC;
+-- 정렬하여 뷰를 생성함
+CREATE OR REPLACE VIEW VIEW_HIRE
+AS
+SELECT EMPLOYEE_ID, FIRST_NAME, HIRE_DATE
+FROM EMPLOYEES
+ORDER BY HIRE_DATE DESC;
+
+SELECT ROWNUM, EMPLOYEE_ID, FIRST_NAME, HIRE_DATE
+FROM VIEW_HIRE; -- 최근입사순서대로 정렬됨
+
+SELECT ROWNUM, EMPLOYEE_ID, FIRST_NAME, HIRE_DATE
+FROM VIEW_HIRE
+WHERE ROWNUM <=5; -- 최근 입사순서 상위 5명 추출
+
+-- (1) 인라인 뷰로 TOP-N구하기
+-- 인라인 뷰 : 서브쿼리의 일종으로 보통 FROM 절에 위치해서 테이블처럼 사용하는 것
+-- 인라인 뷰는 CREATE VIEW로 생성하는 것이 아니라 SQL문 내부에 뷰를 정의하고 이를 테이블처럼 사용함
+SELECT ROWNUM, EMPLOYEE_ID, FIRST_NAME, HIRE_DATE
+FROM (SELECT EMPLOYEE_ID, FIRST_NAME, HIRE_DATE FROM EMPLOYEES
+      ORDER BY HIRE_DATE DESC)
+WHERE ROWNUM <= 5;
+
+-- 11. Materialized View(MVIEW) - 구체화된 뷰
+-- 1) VIEW : 요청할 때마다 원본에 가서 조회해오기 때문에 부하 발생. 데이터 적으면 사용. 실체 없음. 
+-- 2) MVIEW : 요청하는 데이터 가지고 있다가 요청 들어오면 사용자에게 보냄. 실체화된 VIEW. 사용자 많고 데이터 많을 수록 사용
+-- MVIEW 사용하기 위해서는 1. QUERY REWRITE 권한과 2. CREATE MATERIALIZED VIEW 권한 필요
+
+-- PDB_SYS 계정으로 사용자 계정에 권한주기
+GRANT QUERY REWRITE TO HR;
+GRANT CREATE MATERIALZIED VIEW TO HR;
+
+-- MVIEW 생성
+CREATE MATERIALIZED VIEW M_EMP
+BUILD IMMEDIATE -- 서브쿼리 부분을 수행해서 데이터 가져오기
+REFRESH
+ON DEMAND -- 원본테이블 변경시 동기화 여부 -> 사용자가 수동으로 동기화 명령 수행하기(ON COMMIT : 자동 동기화)
+COMPLETE -- MVIEW 내의 데이터 전체가 원본 테이블과 동기화 되는 방법
+ENABLE QUERY REWRITE
+AS
+SELECT EMPLOYEE_ID, FIRST_NAME, SALARY FROM EMP01;
+
+-- 수동으로 원본 테이블과 MVIEW 데이터 동기화하기
+-- 레코드 하나 삭제
+DELETE FROM EMP01 WHERE EMPLOYEE_ID = 250;
+-- 원본 테이블과 MVIEW의 데이터 건수 조회하여 비교
+SELECT COUNT(*) FROM EMP01;
+SELECT COUNT(*) FROM M_EMP;
+-- DBMS_MVIEW 패키지의 REFRESH 구문으로 동기화 수행
+BEGIN
+        DBMS_MVIEW.REFRESH('M_EMP');
+END;
+/
+-- 다시 확인
+SELECT COUNT(*) FROM M_EMP;
+
+-- MVIEW 조회하기
+SELECT MVIEW_NAME, QUERY FROM USER_MVIEWS
+WHERE MVIEW_NAME = 'M_EMP';
+
+-- MVIEW 삭제하기
+DROP MATERIALIZED VIEW M_EMP;
+
+-- <뷰 예제>
+-- 1. 사원 번호와 사원명과 부서명과 부서의 위치를 출력하는 뷰(VIEW_LOC)를 작성하라.
+SELECT * FROM DEPARTMENTS; -- LOCATION_ID
+SELECT * FROM LOCATIONS; -- CITY
+
+CREATE OR REPLACE VIEW VIEW_LOC
+AS
+SELECT EMPLOYEE_ID, FIRST_NAME, D.DEPARTMENT_NAME, L.CITY
+FROM DEPARTMENTS D INNER JOIN EMPLOYEES E ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
+                  INNER JOIN LOCATIONS L ON D.LOCATION_ID = L.LOCATION_ID
+ORDER BY EMPLOYEE_ID;                  
+
+SELECT * FROM VIEW_LOC;
+
+-- 2. 30번 부서 소속 사원의 이름과 입사일과 부서명을 출력하는 뷰(VIEW_DEPT30)를 작성하라.
+CREATE OR REPLACE VIEW VIEW_DEPT30
+AS
+SELECT FIRST_NAME, HIRE_DATE, D.DEPARTMENT_NAME
+FROM EMPLOYEES E INNER JOIN DEPARTMENTS D
+ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
+WHERE E.DEPARTMENT_ID = 30;
+
+SELECT * FROM VIEW_DEPT30;
+
+-- 3. 부서별 최대 급여 정보를 가지는 뷰(VIEW_DEPT_MAXSAL)를 생성하라.
+CREATE OR REPLACE VIEW VIEW_DEP_MAXSAL
+AS
+SELECT DEPARTMENT_ID, MAX(SALARY) MAX_SALARY
+FROM EMPLOYEES
+GROUP BY DEPARTMENT_ID
+ORDER BY DEPARTMENT_ID;
+
+SELECT * FROM VIEW_DEP_MAXSAL;
+
+-- 4. 급여를 많이 받는 순서대로 3명만 출력하는 뷰(VIEW_SAL_TOP3)와 인라인 뷰로 작성하라.
+-- 뷰 생성
+CREATE OR REPLACE VIEW VIEW_SAL_TOP3
+AS
+SELECT EMPLOYEE_ID, FIRST_NAME, SALARY
+FROM EMPLOYEES
+ORDER BY SALARY DESC;
+
+SELECT ROWNUM, EMPLOYEE_ID, FIRST_NAME, SALARY FROM VIEW_SAL_TOP3
+WHERE ROWNUM <= 3;
+
+-- 인라인 뷰 사용
+SELECT ROWNUM, EMPLOYEE_ID, FIRST_NAME, SALARY 
+FROM (SELECT EMPLOYEE_ID, FIRST_NAME, SALARY FROM EMPLOYEES
+      ORDER BY SALARY DESC)
+WHERE ROWNUM <= 3;
+
+-- 4_2. 급여를 많이 받는 순서대로 3명만 출력하는 뷰(VIEW_SAL_TOP3)와 인라인 뷰로 작성하라(부서명 추가).
+-- 뷰 생성
+CREATE OR REPLACE VIEW_SAL_TOP3_NAME
+AS
+SELECT E.EMPLOYEE_ID, E.FIRST_NAME, D.DEPARTMENT_NAME, E.SALARY
+FROM EMPLOYEES E INNER JOIN DEPARTMENTS D
+ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
+ORDER BY E.SALARY DESC;
+
+SELECT ROWNUM, EMPLOYEE_ID, FIRST_NAME, DEPARTMENT_NAME, SALARY FROM VIEW_SAL_TOP3_NAME
+WHERE ROWNUM <= 3;
+
+-- 인라인 뷰 사용
+SELECT ROWNUM, EMPLOYEE_ID, FIRST_NAME, DEPARTMENT_NAME, SALARY
+FROM (SELECT EMPLOYEE_ID, FIRST_NAME, DEPARTMENT_NAME, SALARY 
+      FROM EMPLOYEES E INNER JOIN DEPARTMENTS D
+      ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
+      ORDER BY SALARY DESC)
+WHERE ROWNUM <= 3;
