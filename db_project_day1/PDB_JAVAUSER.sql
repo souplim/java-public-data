@@ -126,11 +126,11 @@ ON  SB.S_NUM = S.S_NUM
 GROUP BY S.S_NUM, S.SD_NAME;
 
 -- 5. 수강테이블(TRAINEE)에서 수강 신청한 학생명, 과목명, 등록일(2018.12.28. 형태)을 출력하도록 쿼리문 작성(테이블3개)
--- 5-1. 수강테이블(TRAINEE)에서 수강 신청한 학과명, 학생명, 과목명, 등록일(2018.12.28. 형태)을 출력하도록 쿼리문 작성(테이블4개)
 SELECT ST.SD_NAME 학생명, L_NAME 과목명, TO_CHAR(TR.T_DATE,'YYYY.MM.DD') 등록일
 FROM TRAINEE TR INNER JOIN STUDENT ST ON TR.SD_NUM = ST.SD_NUM
                 INNER JOIN LESSON LE ON TR.L_ABBRE = LE.L_ABBRE;
                 
+-- 5-1. 수강테이블(TRAINEE)에서 수강 신청한 학과명, 학생명, 과목명, 등록일(2018.12.28. 형태)을 출력하도록 쿼리문 작성(테이블4개)                
 SELECT ST.S_NUM 학과명, ST.SD_NAME 학생명, L_NAME 과목명, TO_CHAR(TR.T_DATE,'YYYY.MM.DD') 등록일
 FROM STUDENT ST INNER JOIN SUBJECT SB ON ST.S_NUM = SB.S_NUM
                 INNER JOIN TRAINEE TR ON TR.SD_NUM = ST.SD_NUM
