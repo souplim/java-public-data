@@ -2140,3 +2140,47 @@ FROM (SELECT EMPLOYEE_ID, FIRST_NAME, DEPARTMENT_NAME, SALARY
       ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
       ORDER BY SALARY DESC)
 WHERE ROWNUM <= 3;
+
+
+-- 시퀀스
+-- 1. 시퀀스 생성
+-- 시퀀스 : 유일한 값을 생성해주는 오라클 객체
+-- 시퀀스를 생성하면 기본 키와 같이 순차적으로 증가하는 칼럼을 자동으로 생성할 수 있음
+-- 1) START WITH : 시작값 지정
+-- 2) INCREMENT BY : 시퀀스의 증가값
+-- 3) MAXVALUE n | NOMAXVALUE : 시퀀스의 최대값. NOMAXVALUE는 시퀀스의 값 무한대로 지정
+-- 4) MINVALUE n | NOMINVALUE : 시퀀스의 최소값. NOMINVALUE는 시퀀스의 최소값 무한소
+-- 5) CYCLE | NOCYCLE : 지정된 시퀀스의 값이 최대값까지 증가되면 다시 최소값으로 시퀀스 시작할지 / 오류 발생시킬지(디폴트 : NOCYCLE)
+-- 6) CACHE n | NOCACHE : 오라클 서버가 미리 지정하고 메모리에 유지할 값의 수. 디폴트 값은 20
+
+-- 시퀀스 생성
+CREATE SEQUENCE TEST_SEQ
+START WITH 1
+INCREMENT BY 1
+MINVALUE 1
+MAXVALUE 100000
+NOCYCLE
+CACHE 2;
+
+-- 시퀀스 삭제
+-- DROP SEQUENCE TEST_SEQ;
+
+-- TEST 테이블 생성
+CREATE TABLE TEST(
+    NO NUMBER NOT NULL
+);
+
+-- 테이블에 데이터 4개 입력
+INSERT INTO TEST(NO) VALUES(TEST_SEQ.NEXTVAL);
+INSERT INTO TEST(NO) VALUES(TEST_SEQ.NEXTVAL);
+INSERT INTO TEST(NO) VALUES(TEST_SEQ.NEXTVAL);
+INSERT INTO TEST(NO) VALUES(TEST_SEQ.NEXTVAL);
+
+-- 시퀀스를 사용하지 않았을 경우 자동증가하는 값으로 설정하기 위한 쿼리문
+-- INSERT INTO TEST VALUES ((SELECT MAX(NO)+1 FROM TEST));
+
+SELECT * FROM TEST;
+
+-- 현재 레코드 개수 확인
+SELECT TEST_SEQ.CURRVAL FROM DUAL;
+
