@@ -5,8 +5,8 @@ BEGIN
 END;
 /
 
--- 1. º¯¼ö
--- 1) º¯¼öÀÇ °ª ´ëÀÔ
+-- 1. ë³€ìˆ˜
+-- 1) ë³€ìˆ˜ì˜ ê°’ ëŒ€ìž…
 DECLARE
     val_num NUMBER;
 BEGIN
@@ -15,8 +15,8 @@ BEGIN
 END;
 /
 
--- º¯¼öÀÇ ¼±¾ð ¹× ÇÒ´çÀ» ÇÏ°í ±× º¯¼ö °ªÀ» Ãâ·ÂÇÑ´Ù
-DESC EMPLOYEES; -- º¯¼ö¿¡ ÇÒ´çÇÒ Ä®·³ÀÇ ÀÚ·áÇü È®ÀÎ
+-- ë³€ìˆ˜ì˜ ì„ ì–¸ ë° í• ë‹¹ì„ í•˜ê³  ê·¸ ë³€ìˆ˜ ê°’ì„ ì¶œë ¥í•œë‹¤
+DESC EMPLOYEES; -- ë³€ìˆ˜ì— í• ë‹¹í•  ì¹¼ëŸ¼ì˜ ìžë£Œí˜• í™•ì¸
 DECLARE
     VEMPLOYEE_ID NUMBER(6);
     VFIRST_NAME VARCHAR2(20);
@@ -24,29 +24,29 @@ BEGIN
     VEMPLOYEE_ID := 105;
     VFIRST_NAME := 'David';
     
-    DBMS_OUTPUT.PUT_LINE('»ç¹ø / ÀÌ¸§');
+    DBMS_OUTPUT.PUT_LINE('ì‚¬ë²ˆ / ì´ë¦„');
     DBMS_OUTPUT.PUT_LINE('----------');
     DBMS_OUTPUT.PUT_LINE(VEMPLOYEE_ID||' / '||VFIRST_NAME);
 END;
 /
--- 2) ½ºÄ®¶ó º¯¼ö/ ·¹ÆÛ·±½º º¯¼ö
--- (1) ½ºÄ®¶ó : SQL¿¡¼­ÀÇ ÀÚ·áÇü ÁöÁ¤°ú °ÅÀÇ µ¿ÀÏ
+-- 2) ìŠ¤ì¹¼ë¼ ë³€ìˆ˜/ ë ˆí¼ëŸ°ìŠ¤ ë³€ìˆ˜
+-- (1) ìŠ¤ì¹¼ë¼ : SQLì—ì„œì˜ ìžë£Œí˜• ì§€ì •ê³¼ ê±°ì˜ ë™ì¼
 VEMPLOYEE_ID NUMBER(6);
 VFIRST_NAME VARCHAR2(20);
--- (2) ·¹ÆÛ·±½º : %TYPE ¼Ó¼º°ú %ROWTYPE ¼Ó¼º
+-- (2) ë ˆí¼ëŸ°ìŠ¤ : %TYPE ì†ì„±ê³¼ %ROWTYPE ì†ì„±
 VEMPLOYEE_ID EMPLOYEES.EMPLOYEE_ID%TYPE;
 VFIRST_NAME EMPLOYEES.FIRST_NAME%TYPE;
--- %ROWTYPE : ·Î¿ì ´ÜÀ§ ÂüÁ¶
+-- %ROWTYPE : ë¡œìš° ë‹¨ìœ„ ì°¸ì¡°
 VEMPLOYEES EMLOYEES%ROWTYPE;
 
--- 3) PL/SQL¿¡¼­ SQL¹®Àå
--- Á¶È¸µÈ ÄÃ·³ÀÇ °á°ú¸¦ º¯¼ö¿¡ ´ëÀÔ½Ã INTO Àý »ç¿ë
+-- 3) PL/SQLì—ì„œ SQLë¬¸ìž¥
+-- ì¡°íšŒëœ ì»¬ëŸ¼ì˜ ê²°ê³¼ë¥¼ ë³€ìˆ˜ì— ëŒ€ìž…ì‹œ INTO ì ˆ ì‚¬ìš©
 DECLARE
-    -- %TYPE ¼Ó¼ºÀ¸·Î Ä®·³ ´ÜÀ§·Î µ¥ÀÌÅÍ ÀúÀåÇÒ ¼ö ÀÖ´Â ·¹ÆÛ·±½º º¯¼ö ¼±¾ð
+    -- %TYPE ì†ì„±ìœ¼ë¡œ ì¹¼ëŸ¼ ë‹¨ìœ„ë¡œ ë°ì´í„° ì €ìž¥í•  ìˆ˜ ìžˆëŠ” ë ˆí¼ëŸ°ìŠ¤ ë³€ìˆ˜ ì„ ì–¸
     VEMPLOYEE_ID EMPLOYEES.EMPLOYEE_ID%TYPE;
     VFIRST_NAME EMPLOYEES.FIRST_NAME%TYPE; 
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('»ç¹ø / ÀÌ¸§');
+    DBMS_OUTPUT.PUT_LINE('ì‚¬ë²ˆ / ì´ë¦„');
     DBMS_OUTPUT.PUT_LINE('----------');
     
     SELECT EMPLOYEE_ID, FIRST_NAME 
@@ -58,21 +58,21 @@ BEGIN
 END;
 /
 
--- ÀüÃ¼ ·¹ÄÚµå ÂüÁ¶ÇÏ±â À§ÇØ¼­´Â %rowtypeÀ¸·Î ¼±¾ð
+-- ì „ì²´ ë ˆì½”ë“œ ì°¸ì¡°í•˜ê¸° ìœ„í•´ì„œëŠ” %rowtypeìœ¼ë¡œ ì„ ì–¸
 DECLARE
     VEMPLOYEES EMPLOYEES%ROWTYPE;
 BEGIN
     SELECT * INTO VEMPLOYEES FROM EMPLOYEES
     WHERE FIRST_NAME = 'Lisa';
     
-    DBMS_OUTPUT.PUT_LINE('»ç¿ø¹øÈ£ :'||TO_CHAR(VEMPLOYEES.EMPLOYEE_ID));
-    DBMS_OUTPUT.PUT_LINE('ÀÌ   ¸§ :'||VEMPLOYEES.FIRST_NAME);
-    DBMS_OUTPUT.PUT_LINE('±Þ   ¿© :'||VEMPLOYEES.SALARY);
-    DBMS_OUTPUT.PUT_LINE('ÀÔ»çÀÏÀÚ :'||TO_CHAR(VEMPLOYEES.HIRE_DATE,'YYYY-MM-DD'));
+    DBMS_OUTPUT.PUT_LINE('ì‚¬ì›ë²ˆí˜¸ :'||TO_CHAR(VEMPLOYEES.EMPLOYEE_ID));
+    DBMS_OUTPUT.PUT_LINE('ì´   ë¦„ :'||VEMPLOYEES.FIRST_NAME);
+    DBMS_OUTPUT.PUT_LINE('ê¸‰   ì—¬ :'||VEMPLOYEES.SALARY);
+    DBMS_OUTPUT.PUT_LINE('ìž…ì‚¬ì¼ìž :'||TO_CHAR(VEMPLOYEES.HIRE_DATE,'YYYY-MM-DD'));
 END;
 /
 
--- <¿¹Á¦> employees Å×ÀÌºí¿¡ µî·ÏµÈ ÃÑ»ç¿øÀÇ ¼ö¿Í ±Þ¿©ÀÇ ÇÕ, ±Þ¿©ÀÇ Æò±ÕÀ» º¯¼ö¿¡ ´ëÀÔÇÏ¿© Ãâ·ÂÇÏ¿© º¸ÀÚ.
+-- <ì˜ˆì œ> employees í…Œì´ë¸”ì— ë“±ë¡ëœ ì´ì‚¬ì›ì˜ ìˆ˜ì™€ ê¸‰ì—¬ì˜ í•©, ê¸‰ì—¬ì˜ í‰ê· ì„ ë³€ìˆ˜ì— ëŒ€ìž…í•˜ì—¬ ì¶œë ¥í•˜ì—¬ ë³´ìž.
 DECLARE
     VEMPLOYEENUM NUMBER;
     VSALARYSUM NUMBER;
@@ -82,13 +82,13 @@ BEGIN
     INTO VEMPLOYEENUM, VSALARYSUM, VSALARYAVG 
     FROM EMPLOYEES;
     
-    DBMS_OUTPUT.PUT_LINE('ÃÑ»ç¿ø ¼ö : '||VEMPLOYEENUM);
-    DBMS_OUTPUT.PUT_LINE('±Þ¿©ÀÇ ÇÕ : '||VSALARYSUM);
-    DBMS_OUTPUT.PUT_LINE('±Þ¿©ÀÇ Æò±Õ : '||VSALARYAVG);
+    DBMS_OUTPUT.PUT_LINE('ì´ì‚¬ì› ìˆ˜ : '||VEMPLOYEENUM);
+    DBMS_OUTPUT.PUT_LINE('ê¸‰ì—¬ì˜ í•© : '||VSALARYSUM);
+    DBMS_OUTPUT.PUT_LINE('ê¸‰ì—¬ì˜ í‰ê·  : '||VSALARYAVG);
 END;
 /
 
--- <¿¹Á¦> Jack »ç¿øÀÇ Á÷¹«, ±Þ¿©, ÀÔ»çÀÏÀÚ, ºÎ¼­¸íÀ» º¯¼ö¿¡ ´ëÀÔÇÏ¿© Ãâ·ÂÇÏ¿© º¸ÀÚ.
+-- <ì˜ˆì œ> Jack ì‚¬ì›ì˜ ì§ë¬´, ê¸‰ì—¬, ìž…ì‚¬ì¼ìž, ë¶€ì„œëª…ì„ ë³€ìˆ˜ì— ëŒ€ìž…í•˜ì—¬ ì¶œë ¥í•˜ì—¬ ë³´ìž.
 DECLARE
     JOB VARCHAR2(10);
     SAL NUMBER;
@@ -101,10 +101,10 @@ BEGIN
     ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
     WHERE FIRST_NAME = 'Jack';
     
-    DBMS_OUTPUT.PUT_LINE('Á÷¹« : '||JOB);
-    DBMS_OUTPUT.PUT_LINE('±Þ¿© : '||SAL);
-    DBMS_OUTPUT.PUT_LINE('ÀÔ»çÀÏÀÚ : '||HIREDATE);
-    DBMS_OUTPUT.PUT_LINE('ºÎ¼­¸í : '||DEPARTNAME);
+    DBMS_OUTPUT.PUT_LINE('ì§ë¬´ : '||JOB);
+    DBMS_OUTPUT.PUT_LINE('ê¸‰ì—¬ : '||SAL);
+    DBMS_OUTPUT.PUT_LINE('ìž…ì‚¬ì¼ìž : '||HIREDATE);
+    DBMS_OUTPUT.PUT_LINE('ë¶€ì„œëª… : '||DEPARTNAME);
 END;
 /
 
@@ -118,12 +118,33 @@ BEGIN
     ON E.DEPARTMENT_ID = D.DEPARTMENT_ID 
     WHERE FIRST_NAME = 'Jack';
     
-    DBMS_OUTPUT.PUT_LINE('Á÷¹« : '||VEMPLOYEES.JOB_ID);
-    DBMS_OUTPUT.PUT_LINE('±Þ¿© : '||VEMPLOYEES.SALARY);
-    DBMS_OUTPUT.PUT_LINE('ÀÔ»çÀÏÀÚ : '||VEMPLOYEES.HIRE_DATE);
-    DBMS_OUTPUT.PUT_LINE('ºÎ¼­¸í : '||VDEPARTMENTS.DEPARTMENT_NAME);
+    DBMS_OUTPUT.PUT_LINE('ì§ë¬´ : '||VEMPLOYEES.JOB_ID);
+    DBMS_OUTPUT.PUT_LINE('ê¸‰ì—¬ : '||VEMPLOYEES.SALARY);
+    DBMS_OUTPUT.PUT_LINE('ìž…ì‚¬ì¼ìž : '||VEMPLOYEES.HIRE_DATE);
+    DBMS_OUTPUT.PUT_LINE('ë¶€ì„œëª… : '||VDEPARTMENTS.DEPARTMENT_NAME);
 END;
 /
 
--- <¿¹Á¦> »ç¿ø Å×ÀÌºí(employees01)¿¡¼­ »ç¿ø¹øÈ£°¡ Á¦ÀÏ Å« »ç¿øÀ» Ã£¾Æ³½ µÚ, ÀÌ ¹øÈ£ +3¹øÀ¸·Î ¾Æ·¡ÀÇ »ç¿øÀ» »ç¿øÅ×ÀÌºí¿¡ ½Å±Ô ÀÔ·ÂÇÏ´Â PL/SQLÀ» ¸¸µé¾î º¸ÀÚ.
+-- <ì˜ˆì œ> ì‚¬ì› í…Œì´ë¸”(employees01)ì—ì„œ ì‚¬ì›ë²ˆí˜¸ê°€ ì œì¼ í° ì‚¬ì›ì„ ì°¾ì•„ë‚¸ ë’¤, ì´ ë²ˆí˜¸ +3ë²ˆìœ¼ë¡œ ì•„ëž˜ì˜ ì‚¬ì›ì„ 
+-- ì‚¬ì›í…Œì´ë¸”ì— ì‹ ê·œ ìž…ë ¥í•˜ëŠ” PL/SQLì„ ë§Œë“¤ì–´ ë³´ìž.
+CREATE TABLE EMPLOYEESO1
+AS
+SELECT * FROM EMPLOYEES;
 
+SELECT * FROM EMPLOYEESO1;
+
+DECLARE
+    MAXEMPLOYEE_ID NUMBER;
+BEGIN
+    SELECT MAX(EMPLOYEE_ID) 
+    INTO MAXEMPLOYEE_ID
+    FROM EMPLOYEESO1;
+    
+    INSERT INTO EMPLOYEESO1(EMPLOYEE_ID, FIRST_NAME, LAST_NAME, EMAIL, SALARY, HIRE_DATE, MANAGER_ID, JOB_ID, DEPARTMENT_ID)
+    VALUES(MAXEMPLOYEE_ID+1,'Olivia','Gee','Spring',2800,sysdate,100,'PR_REP',20);
+END;
+/
+
+SELECT * FROM EMPLOYEES;
+DELETE * FROM EMPLOYEES WHERE FIRST_NAME = 'Olivia';
+SELECT * FROM EMPLOYEESO1;
