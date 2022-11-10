@@ -132,7 +132,7 @@ AS
 SELECT * FROM EMPLOYEES;
 
 SELECT * FROM EMPLOYEES01;
-
+-- 스칼라 변수 이용
 DECLARE
     MAXEMPLOYEE_ID NUMBER;
 BEGIN
@@ -144,5 +144,297 @@ BEGIN
     VALUES(MAXEMPLOYEE_ID+1,'Olivia','Gee','Spring',2800,sysdate,100,'PR_REP',20);
 END;
 /
+-- DELETE FROM EMPLOYEES01 WHERE FIRST_NAME = 'Olivia';
 
+-- 레퍼런스 변수 이용
+DECLARE
+    MAX_EMPLOYEE_ID EMPLOYEES01.EMPLOYEE_ID%TYPE;
+BEGIN
+    SELECT MAX(EMPLOYEE_ID) INTO MAX_EMPLOYEE_ID FROM EMPLOYEES01;
+    
+    INSERT INTO EMPLOYEES01(EMPLOYEE_ID, FIRST_NAME, LAST_NAME, EMAIL, SALARY, HIRE_DATE, MANAGER_ID, JOB_ID, DEPARTMENT_ID)
+    VALUES(MAX_EMPLOYEE_ID + 3,'Olivia','Gee','Spring',2800,sysdate,100,'PR_REP',20);
+END;
+/
 SELECT * FROM EMPLOYEES01;
+
+-- 3. 제어문
+-- 1) IF ~ THEN ~ENDIF : 특정 조건 만족하면 어떤 처리하고 그렇지 않으면 아무 처리도 하지 않음
+DECLARE
+    vemployees employees%ROWTYPE;
+    vsalary NUMBER(8,2);
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('사번 / 이름 / 급여');
+    DBMS_OUTPUT.PUT_LINE('------------------------');
+    -- Pat 사원의 전체 정보를 로우 단위로 얻어와 vemployees에 저장
+    SELECT * INTO vemployees FROM employees 
+    WHERE first_name = 'Pat';
+    -- 커미션이 null일 경우 이를 0으로 변경해야 올바른 급여 계산 가능
+    IF(vemployees.commission_pct IS NULL) THEN
+       vemployees.commission_pct := 0;
+    END IF;
+    
+    -- 스칼라 변수에 급여를 계산한 결과를 저장
+    vsalary := vemployees.salary+(vemployees.salary*vemployees.commission_pct);
+    -- 레퍼런스 변수와 스칼라 변수에 저장된 값 출력
+    DBMS_OUTPUT.PUT_LINE('사원번호 : '||vemployees.employee_id||
+                ' / 사원명 : '||vemployees.first_name||
+                ' / 급여 : '||TO_CHAR(vsalary,'$999,999'));
+END;
+/
+
+-- 2) IF ~ THEN ~ ELSE ~ END IF : 조건을 만족할 때의 처리와 그렇지 않을 때의 처리 선택해야 할 경우
+DECLARE
+    -- %ROWTYPE 속성으로 로우를 저장할 수 있는 레퍼런스 변수 선언
+    vemployees employees%ROWTYPE;
+    vsalary NUMBER(8,2);
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('사번 / 이름 / 급여');
+    DBMS_OUTPUT.PUT_LINE('------------------------');
+    -- Jack 사원의 전체 정보를 로우 단위로 얻어와 vemployees에 저장한다.
+    SELECT * INTO vemployees FROM employees
+    WHERE first_name = 'Jack';
+    -- 커미션이 NULL일 경우 이를 0으로 변경해야 올바른 급여 계산이 가능
+    IF(vemployees.commission_pct IS NULL) THEN
+        vsalary := vemployees.salary;
+    ELSE
+        vsalary := vemployees.salary + vemployees.salary*vemployees.commission_pct;
+    END IF;
+    
+    -- 레퍼런스 변수와 스칼라 변수에 저장된 값을 출력한다.
+    DBMS_OUTPUT.PUT_LINE('사원번호 : '||vemployees.employee_id||
+                ' / 사원명 : '||vemployees.first_name||
+                ' / 급여 : '||TO_CHAR(vsalary,'$999,999'));
+END;
+/
+
+-- 3) IF ~ THEN ~ ELSIF ~ ELSE ~ END IF : 여러개 조건에 따라 처리도 여러개일 때 사용하는 다중 IF문
+DECLARE
+    -- %ROWTYPE 속성으로 로우를 저장할 수 있는 레퍼런스 변수 선언
+    vemployees employees%ROWTYPE;
+    vdepartment_name departments.department_name%TYPE;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('사번 / 이름 / 부서번호 / 부서명');
+    DBMS_OUTPUT.PUT_LINE('------------------------');
+    -- 사원번호가 192인 사원의 전체 정보를 로우 단위로 얻어와 vemployees에 저장
+    SELECT * INTO vemployees FROM employees
+    WHERE employee_id = 192;
+    
+    IF (vemployees.department_id = 10) THEN
+        vdepartment_name := 'Administration';
+    ELSIF (vemployees.department_id = 20) THEN
+        vdepartment_name := 'Marketing';
+    ELSIF (vemployees.department_id = 30) THEN
+        vdepartment_name := 'Purchasing';
+    ELSIF (vemployees.department_id = 40) THEN
+        vdepartment_name := 'Human Resources';
+    ELSIF (vemployees.department_id = 50) THEN
+        vdepartment_name := 'Shipping';
+    END IF;
+    DBMS_OUTPUT.PUT_LINE(vemployees.employee_id||' /'||vemployees.first_name||' /'||
+                RPAD(vemployees.department_id,4)||' /'||vdepartment_name);
+END;
+/
+
+-- 랜덤한 숫자 생성
+SELECT DBMS_RANDOM.VALUE(1,5) FROM DUAL;
+-- 랜덤한 문자열 생성
+SELECT DBMS_RANDOM.STRING('U',1) FROM DUAL; -- 1개의 임의의 대문자
+SELECT DBMS_RANDOM.STRING('a',2) FROM DUAL; -- 2개의 대소문자 관계없는 영문자
+SELECT DBMS_RANDOM.STRING('L',1) FROM DUAL; -- 1개의 임의의 소문자
+SELECT DBMS_RANDOM.STRING('x',8) FROM DUAL; -- 8개의 임의의 영문자와 숫자 혼합(임시 비밀번호 발급할 때)
+
+DECLARE
+    vsalary NUMBER := 0;
+    vdepartment_id NUMBER := 0;
+BEGIN
+    -- 10의 자리로 숫자 얻고 싶을 때 1의 자리에서 반올림(부서번호는 1의 자리가 없는 10, 20의 형태)
+    vdepartment_id := ROUND(DBMS_RANDOM.VALUE(10,270),-1); 
+    
+    SELECT salary INTO vsalary
+    FROM employees
+    WHERE department_id = vdepartment_id AND ROWNUM = 1; -- 한 명의 데이터만 가져오기
+    DBMS_OUTPUT.PUT_LINE('부서번호:'||vdepartment_id||'급여:'||vsalary);
+    
+    IF vsalary BETWEEN 1 AND 6000 THEN
+        DBMS_OUTPUT.PUT_LINE('낮음');
+    ELSIF vsalary BETWEEN 6001 AND 10000 THEN
+        DBMS_OUTPUT.PUT_LINE('중간');
+    ELSIF vsalary BETWEEN 10001 AND 20000 THEN
+        DBMS_OUTPUT.PUT_LINE('높음');
+    ELSE    
+        DBMS_OUTPUT.PUT_LINE('최상위');
+    END IF;
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            DBMS_OUTPUT.PUT_LINE(vdepartment_id ||' 부서에 해당 사원이 없습니다.');
+END;
+/
+
+-- 4) 반복문
+-- 5) BASIC LOOP문
+DECLARE
+    vn_base_num NUMBER := 3;
+    vn_cnt NUMBER := 1;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('*****구구단 3단*****');
+    LOOP
+        DBMS_OUTPUT.PUT_LINE(vn_base_num||'*'||vn_cnt||'='||vn_base_num * vn_cnt);
+        vn_cnt := vn_cnt+1;
+        EXIT WHEN vn_cnt>9;
+        -- IF vn_cnt>9 THEN
+        -- EXIT;
+        -- END IF;
+    END LOOP;
+END;
+/
+-- 6) FOR LOOP문
+DECLARE
+    vdepartments departments%ROWTYPE;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('부서번호 / 부서명 / 지역명');
+    DBMS_OUTPUT.PUT_LINE('---------------------------------');
+    -- 변수 cnt는 1부터 1씩 증가하다가 27에 도달하면 반복문에서 벗어난다.
+    FOR cnt IN 1..27 LOOP
+        SELECT * INTO vdepartments FROM departments
+        WHERE department_id = 10*cnt;
+        DBMS_OUTPUT.PUT_LINE(vdepartments.department_id||' / '||
+            vdepartments.department_name||' / '|| vdepartments.location_id);
+    END LOOP;        
+END;
+/
+-- 7) WHILE LOOP문
+DECLARE
+    i NUMBER := 1;
+    vdepartments departments%ROWTYPE;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('부서번호 / 부서명 / 지역명');
+    DBMS_OUTPUT.PUT_LINE('---------------------------------');
+    WHILE i<= 27 LOOP
+        IF i MOD 2 = 0 THEN
+            SELECT * INTO vdepartments FROM departments WHERE department_id = 10*i;
+            DBMS_OUTPUT.PUT_LINE(vdepartments.department_id||' / '|| vdepartments.department_name||' / '||
+            vdepartments.location_id);
+        END IF;
+        i := i + 1;
+    END LOOP;    
+END;
+/
+-- 8) 커서
+DECLARE
+    vdepartments departments%ROWTYPE;
+    CURSOR C1 -- 커서의이름
+    IS
+    SELECT department_id, department_name, location_id FROM departments; -- 커서에 담고 싶은 내용을 가져오는 서브쿼리
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('부서번호 / 부서명 / 지역명');
+    DBMS_OUTPUT.PUT_LINE('-------------------------------');
+    
+    OPEN C1;
+    -- 오픈한 C1 커서가 SELECT문에 의해 검색된 한개의 행의 정보를 읽어온다.
+    LOOP -- 읽어온 정보는 INTO 뒤에 기술한 변수에 저장
+        FETCH C1 INTO vdepartments.department_id, vdepartments.department_name, 
+        vdepartments.location_id;
+        EXIT WHEN C1 %NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE(vdepartments.department_id||''||
+        RPAD(vdepartments.department_name, 20)||''||vdepartments.location_id);
+    END LOOP;
+    CLOSE C1;
+END;
+/
+-- 9) CURSOR와 FOR LOOP(묵시적으로 CURSOR에서 행을 처리한다.)
+DECLARE
+    vdepartments departments%ROWTYPE;
+    CURSOR C1
+    IS
+    SELECT * FROM departments;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('부서번호 / 부서명 / 지역명');
+    DBMS_OUTPUT.PUT_LINE('-----------------------------');
+    FOR vdepartments IN C1 LOOP
+        DBMS_OUTPUT.PUT_LINE(vdepartments.department_id||''||
+        RPAD(vdepartments.department_name,20)||''||vdepartments.location_id);
+    END LOOP;        
+END;
+/
+--커서 정의 부분을 FOR문에서 직접 명시
+DECLARE
+    vdepartments departments%ROWTYPE;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('부서번호 / 부서명 / 지역명');
+    DBMS_OUTPUT.PUT_LINE('-----------------------------');
+    FOR vdepartments IN (SELECT * FROM departments) LOOP
+        DBMS_OUTPUT.PUT_LINE(vdepartments.department_id||''||
+        RPAD(vdepartments.department_name,20)||''||vdepartments.location_id);
+    END LOOP;    
+END;
+/
+-- 부서 번호를 임의의 수로 얻어 레코드를 출력하도록 쿼리 작성
+DECLARE
+    vrandomid employees.department_id%TYPE;
+    vsalarystring VARCHAR2(20);
+    CURSOR cur_employees(vdepartment_id employees.department_id%TYPE)
+    IS
+    SELECT salary, first_name FROM employees WHERE department_id = vdepartment_id; -- 위에 선언
+BEGIN
+    vrandomid := ROUND(DBMS_RANDOM.VALUE(10,270),-1);
+    DBMS_OUTPUT.PUT_LINE('부서번호 : '||vrandomid);
+    IF vrandomid BETWEEN 120 AND 270 THEN
+        DBMS_OUTPUT.PUT_LINE(vrandomid||' 부서에 해당 사원이 없습니다.');
+        RETURN;
+    END IF;
+    
+    DBMS_OUTPUT.PUT_LINE('사원명 / 급여 / 급여수준');
+    DBMS_OUTPUT.PUT_LINE('-----------------------------');
+    
+    FOR vemployees IN cur_employees(vrandomid) LOOP 
+        IF vemployees.salary BETWEEN 1 AND 6000 THEN 
+            vsalarystring := '낮음';
+        ELSIF vemployees.salary BETWEEN 6001 AND 10000 THEN 
+            vsalarystring := '중간'; 
+        ELSIF vemployees.salary BETWEEN 10001 AND 20000 THEN 
+            vsalarystring := '높음';    
+        ELSE
+            vsalarystring := '최상위';  
+        END IF;
+        
+        DBMS_OUTPUT.PUT_LINE(RPAD(vemployees.first_name,6)||'/'||RPAD(vemployees.salary,5)||'/'||
+        vsalarystring);
+    END LOOP;    
+END;
+/
+
+-- 10) 커서변수
+-- 한 개 이상의 레코드를 가진 쿼리를 연결해 사용할 수 있음
+-- 변수처럼 커서 변수를 함수나 프로시저의 매개변수로 전달할 수 있음
+
+-- 커서 변수 선언
+-- TYPE 커서_타입명 IS REF CURSOR;
+-- 커서_변수명 커서_타입명;
+
+-- 오라클이 제공하는 커서 타입 이용 -> 커서변수 SYS_REFCURSOR;
+
+-- 커서 변수의 사용
+-- (1) 커서 변수와 커서 정의 쿼리문 연결
+-- OPEN 커서변수명 FOR SELECT문;
+-- (2) 커서 변수에서 결과집합 가져오기
+-- FETCH 커서변수명 INTO 변수1, 변수2, ...;
+
+DECLARE
+    vfirst_name employees.first_name%TYPE;
+    --TYPE employeescursor IS REF CURSOR; -- 커서 타입 선언
+    --vemployees employeescursor; -- 커서 변수 선언
+    vemployees SYS_REFCURSOR;
+BEGIN
+    -- 커서 변수를 사용한 커서 정의 및 오픈
+    OPEN vemployees FOR SELECT first_name FROM employees WHERE department_id = 10;
+    
+    -- LOOP문
+    LOOP
+        --커서 변수를 사용해 결과 집합을 EMPNAME 변수에 할당
+        FETCH vemployees INTO vfirst_name;
+        EXIT WHEN vemployees%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('사원명:'||vfirst_name); -- 사원명을 출력
+    END LOOP;    
+END;
+/
