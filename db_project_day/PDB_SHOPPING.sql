@@ -1,6 +1,6 @@
 CREATE TABLE address(
     zip_code VARCHAR2(5),
-    address_detail VARCHAR2(50), NOT NULL
+    address_detail VARCHAR2(50) NOT NULL
 );
 
 ALTER TABLE address
@@ -11,7 +11,7 @@ CREATE TABLE customer(
     customer_id VARCHAR2(10),
     customer_name VARCHAR2(20) NOT NULL,
     phone_number VARCHAR2(15) NOT NULL,
-    email VARCHAR2(50) NOT NULL
+    email VARCHAR2(50) NOT NULL,
     first_reg_date DATE,
     sex_code VARCHAR2(2),
     birth VARCHAR2(8),
