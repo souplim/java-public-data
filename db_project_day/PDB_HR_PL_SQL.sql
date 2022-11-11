@@ -438,3 +438,179 @@ BEGIN
     END LOOP;    
 END;
 /
+
+-- 저장 프로시저, 트리거, 함수
+-- 1. 저장 프로시저
+-- 지정된 특정 처리를 실행하는 서브 프로그램의 한 유형으로 자주 사용하는 쿼리문을 모듈화시켜 필요할 때마다 호출하여 사용하는 것
+CREATE OR REPLACE PROCEDURE EMPPROC
+IS
+    vword VARCHAR2(1);
+    vemployees employees%ROWTYPE;
+    CURSOR C1(vword VARCHAR2)
+    IS
+    SELECT employee_id, first_name, salary
+    FROM employees WHERE first_name LIKE '%'||vword||'%';
+BEGIN
+    vword := DBMS_RANDOM.STRING('U',1);
+    DBMS_OUTPUT.PUT_LINE('임의의 문자:'||vword);
+    OPEN C1(vword);
+    DBMS_OUTPUT.PUT_LINE('사번 / 사원명 / 급여');
+    DBMS_OUTPUT.PUT_LINE('--------------------------');
+    LOOP
+        FETCH C1 INTO vemployees.employee_id, vemployees.first_name, vemployees.salary;
+        IF C1%ROWCOUNT = 0 THEN
+            DBMS_OUTPUT.PUT_LINE('해당 사원이 존재하지 않습니다');
+        END IF;
+        EXIT WHEN C1 %NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE(vemployees.employee_id||' / '||vemployees.first_name||' / '||
+        vemployees.salary);
+    END LOOP;    
+END;
+/
+
+-- 명령어로 실행하면 됨
+EXEC EMPPROC;
+
+-- 저장 프로시저 작성 후 사용자가 저장 프로시저가 생성되었는지 확인하려면 USER_SOURCE 살펴보면 됨
+SELECT * FROM USER_SOURCE;
+
+-- 상세 오류 메시지 확인하려면 새로운 워크시트에 프로시저 생성 쿼리문 복사하고 바로 아래 SHOW ERROR; 추가하여
+-- 전체 블록 후 실행하면 됨
+
+-- 1) 매개변수
+-- 프로시저 이름 뒤에 ()를 기술하여 그 내부에 매개변수를 정의
+-- 프로시저 생성               프로시저명 ( 변수명       모드          자료형)으로 기술
+CREATE OR REPLACE PROCEDURE EMPPROC02(vdepartment_id IN employees.department_id%TYPE)
+IS
+    CURSOR C1
+    IS
+    SELECT * FROM employees WHERE department_id = vdepartment_id;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('사원번호 / 사원명 / 급여');
+    DBMS_OUTPUT.PUT_LINE('-----------------------------');
+    FOR vemployees IN C1 LOOP
+        DBMS_OUTPUT.PUT_LINE(vemployees.employee_id||' / '||vemployees.first_name||' / '||
+        vemployees.salary);
+    END LOOP;    
+END;
+/
+SHOW ERROR;
+
+-- 프로시저 실행(라인 단위 실행이기 때문에 코드 옆에 주석달면 에러남)
+EXECUTE EMPPROC02(10);
+
+-- (1) IN MODE 매개변수
+-- 실행환경에서 서브 프로시저로 값을 전달
+-- 부서별로 salary 인상. 부서코드가 10이면 10% 인상, 20이면 20% 인상, 나머지는 동결하는 쿼리문 작성
+
+-- 그 전에 변경 전 데이터확인
+SELECT department_id, first_name, salary FROM employees01 WHERE department_id=20;
+
+-- 제약조건 삭제
+-- ALTER TABLE 테이블명
+-- DROP CONSTRAINT 제약조건명;
+
+-- 기존테이블 삭제
+DROP TABLE DEPT10;
+
+-- 테이블 생성
+CREATE TABLE DEPT10(
+    DEPTNO NUMBER(2),
+    DNAME VARCHAR2(30) NOT NULL,
+    LOC VARCHAR2(15) NOT NULL,
+    CONSTRAINT DEPT10_DEPTNO_PK PRIMARY KEY(DEPTNO)
+);
+-- DROP TABLE DEPT10;
+
+-- 시퀀스 생성
+CREATE SEQUENCE DEPT10_SEQ
+START WITH 10
+INCREMENT BY 10
+MINVALUE 10
+MAXVALUE 100000
+NOCYCLE
+CACHE 2;
+-- DROP SEQUENCE DEPT10_SEQ;
+
+-- 데이터 입력
+INSERT INTO DEPT10(DEPTNO, DNAME, LOC) VALUES(DEPT10_SEQ.NEXTVAL, '인사과', '서울');
+INSERT INTO DEPT10(DEPTNO, DNAME, LOC) VALUES(DEPT10_SEQ.NEXTVAL, '총무과', '대전');
+INSERT INTO DEPT10(DEPTNO, DNAME, LOC) VALUES(DEPT10_SEQ.NEXTVAL, '교육팀', '서울');
+INSERT INTO DEPT10(DEPTNO, DNAME, LOC) VALUES(DEPT10_SEQ.NEXTVAL, '기술팀', '인천');
+INSERT INTO DEPT10(DEPTNO, DNAME, LOC) VALUES(DEPT10_SEQ.NEXTVAL, '시설관리팀', '광주');
+
+-- 시퀀스 만들지 않았다면 
+-- INSERT INTO DEPT10 VALUES(SELECT MAX(DEPTNO)+10 FROM DEPT10), '시설관리팀', '광주');
+
+-- 자료구조 변경(컬럼 추가) : DEPT10 테이블에 CREDATE라는 이름의 컬럼을 날짜 자료형으로 추가
+ALTER TABLE DEPT10 
+ADD(CREDATE DATE DEFAULT SYSDATE); -- 이전에 입력했더 레코드들에 기본값이 추가됨
+
+SELECT * FROM DEPT10;
+
+-- 프로시저 생성
+CREATE OR REPLACE PROCEDURE DEPTPROC_INMODE
+(DNAME IN DEPT10.DNAME%TYPE,
+ LOC IN DEPT10.LOC%TYPE)
+IS
+BEGIN
+    INSERT INTO DEPT10(DEPTNO, DNAME, LOC, CREDATE)
+    VALUES(DEPT10_SEQ.NEXTVAL, DNAME, LOC, SYSDATE);
+    COMMIT;
+    
+    DBMS_OUTPUT.PUT_LINE('부서번호 / 부서명 / 지역명 / 등록일');
+    DBMS_OUTPUT.PUT_LINE('-----------------------------');
+    
+    FOR VDEPT IN (SELECT DEPTNO, DNAME, LOC, CREDATE FROM DEPT10 ORDER BY DEPTNO) LOOP
+        DBMS_OUTPUT.PUT_LINE(VDEPT.DEPTNO||' / '||RPAD(VDEPT.DNAME,10)||' / '||
+            VDEPT.LOC||' / '||TO_CHAR(VDEPT.CREDATE,'YYYY-MM-DD'));
+    END LOOP;        
+END;
+/
+SHOW ERROR;
+
+-- 프로시저 실행 -> 데이터 입력 코드 짧아짐
+EXECUTE DEPTPROC_INMODE('기획부','부산');
+
+SELECT * FROM DEPT10;
+
+-- DEPTPROC_INUP 프로시저 생성
+-- 프로시저 실행시 인수로 부서번호, 부서명, 지역명을 얻어 현재 DEPT10 테이블에 부서번호가 존재하면 수정을 실행하고 
+-- 부서번호가 존재하지 않는다면 입력을 실행하도록 생성
+CREATE OR REPLACE PROCEDURE deptproc_inup
+(pdeptno IN dept10.deptno%TYPE,
+ pdname IN dept10.dname%TYPE,
+ ploc IN dept10.loc%TYPE)
+IS
+    cnt NUMBER := 0;
+    vdept dept10%ROWTYPE;
+BEGIN
+    SELECT COUNT(*) INTO CNT FROM dept10 WHERE deptno = pdeptno;
+    IF cnt = 0 THEN
+        INSERT INTO DEPT10(deptno, dname, loc, credate)
+        VALUES(pdeptno, pdname, ploc, sysdate);
+    ELSE
+        UPDATE DEPT10
+        SET dname = pdname, loc = ploc, credate = sysdate
+        WHERE deptno = pdeptno;
+    END IF;
+    COMMIT;
+    
+    DBMS_OUTPUT.PUT_LINE('부서번호 / 부서명 / 지역명 / 등록일');
+    DBMS_OUTPUT.PUT_LINE('----------------------------');
+    SELECT deptno, dname, loc, credate INTO vdept
+    FROM DEPT10 WHERE deptno = pdeptno;
+    DBMS_OUTPUT.PUT_LINE(vdept.deptno||' , '||RPAD(vdept.dname,10)||' , '||
+    vdept.loc||' , '||TO_CHAR(vdept.credate,'YYYY-MM-DD'));
+END;
+/
+SHOW ERROR;
+--프로시저 실행
+EXECUTE deptproc_inup(60,'기획부','전주');
+
+
+
+
+
+-- <예제> 사원번호(in)을 입력받아 해당 사원의 사원명(out), 급여(out)와 해당 사원이 소속된 부서명(out) 및
+-- 부서의 평균 급여(out)를 구하는 프로시저를 작성하여보자(EMPPROC02_OUTMODE).
