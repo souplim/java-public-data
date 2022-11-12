@@ -505,6 +505,21 @@ EXECUTE EMPPROC02(10);
 
 -- 그 전에 변경 전 데이터확인
 SELECT department_id, first_name, salary FROM employees01 WHERE department_id=20;
+-- 프로시저 생성
+CREATE OR REPLACE PROCEDURE EMPPROC_INMODE(vdepartment_id IN employees01.department_id%TYPE)
+IS
+BEGIN
+    UPDATE employees01 SET salary = DECODE(vdepartment_id, 10, salary*1.1, 20, salary*1.2, salary)
+    WHERE department_id = vdepartment_id;
+    COMMIT;
+    DBMS_OUTPUT.PUT_LINE('수정이 완료되었습니다.');
+END EMPPROC_INMODE;
+/
+SHOW ERROR;
+-- 프로시저 실행
+EXECUTE EMPPROC_INMODE(20);
+-- 인상되었는지 조회
+SELECT department_id, first_name, salary FROM employees01 WHERE department_id=20;
 
 -- 제약조건 삭제
 -- ALTER TABLE 테이블명
@@ -607,10 +622,93 @@ END;
 SHOW ERROR;
 --프로시저 실행
 EXECUTE deptproc_inup(60,'기획부','전주');
+EXECUTE deptproc_inup(70,'영업부','서울');
 
+-- (2) OUT MODE 매개변수
+-- 프로시저 호출 후 해당 매개변수 값을 받아 사용 가능(출력)
+-- 프로시저 내에서 로직 처리 후, 해당 매개변수에 값을 할당해 프로시저 호출 부분에서 이 결과값을 참조할 수 있음
 
+-- 사원 번호로 특정 고객을 조회하기 때문에 사원번호는 IN으로 지정하고 조회해서 얻은 고객의 정보 중 고객의 이름과 급여와 담당 업무를 출력하기 위해 이들은 OUT으로 지정
+CREATE OR REPLACE PROCEDURE EMPPROC_OUTMODE
+(vemployee_id IN employees.employee_id%TYPE,
+ vfirst_name OUT employees.first_name%TYPE,
+ vsalary OUT employees.salary%TYPE,
+ vjob_id OUT employees.job_id%TYPE)
+IS
+BEGIN
+    SELECT first_name, salary, job_id INTO vfirst_name, vsalary, vjob_id
+    FROM employees
+    WHERE employee_id = vemployee_id;
+END;
+/
+SHOW ERROR;
 
+-- 익명블록 내 프로시저 호출은 EXECUTE 생략하고 프로시저명만 명시하면 됨
+DECLARE
+    vemployee employees%ROWTYPE;
+BEGIN
+    EMPPROC_OUTMODE(120, vemployee.first_name, vemployee.salary, vemployee.job_id);
+    DBMS_OUTPUT.PUT_LINE('사원명:'||vemployee.first_name);
+    DBMS_OUTPUT.PUT_LINE('급여:'||vemployee.salary);
+    DBMS_OUTPUT.PUT_LINE('직무:'||vemployee.job_id);
+END;
+/
 
+-- 해당 급여를 초과하는 사원들을 커서로 반환받도록 프로시저 생성
+CREATE OR REPLACE PROCEDURE EMP_SAL_DATA
+(vsalary IN employees.salary%TYPE, 
+ vemployees OUT SYS_REFCURSOR) -- 오라클 지정 커서타입의 커서변수 선언
+IS
+BEGIN
+    OPEN vemployees FOR SELECT employee_id, first_name, salary 
+    FROM employees
+    WHERE salary > vsalary;
+END;
+/
+SHOW ERROR;
+
+-- 프로시저 실행 -> 정렬 방법?
+DECLARE
+    pemployees SYS_REFCURSOR;
+    vemployees employees%ROWTYPE;
+BEGIN
+    EMP_SAL_DATA(12000, pemployees);
+    LOOP
+        FETCH pemployees INTO vemployees.employee_id, vemployees.first_name, vemployees.salary;
+        EXIT WHEN pemployees%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE(vemployees.employee_id||'. '||vemployees.first_name||' '||vemployees.salary);
+    END LOOP;    
+END;
+/
 
 -- <예제> 사원번호(in)을 입력받아 해당 사원의 사원명(out), 급여(out)와 해당 사원이 소속된 부서명(out) 및
 -- 부서의 평균 급여(out)를 구하는 프로시저를 작성하여보자(EMPPROC02_OUTMODE).
+CREATE OR REPLACE PROCEDURE EMPPROC02_OUTMODE
+(vemployee_id IN employees.employee_id%TYPE,
+ vfirst_name OUT employees.first_name%TYPE,
+ vdepartment_name OUT departments.department_name%TYPE,
+ vdepartment_avg_sal OUT NUMBER)
+IS
+BEGIN
+    SELECT ROUND(AVG(salary)) INTO vdepartment_avg_sal
+    FROM employees WHERE employee_id = vemployee_id;
+    SELECT E.first_name, D.department_name INTO vfirst_name, vdepartment_name 
+    FROM employees E INNER JOIN departments D ON E.department_id = D.department_id
+    WHERE employee_id = vemployee_id;    
+    COMMIT;
+END;
+/
+SHOW ERROR;
+
+DECLARE
+    vemployee employees%ROWTYPE;
+    vfirst_name employees.first_name%TYPE;
+    vdepartment_name departments.department_name%TYPE;
+    vdepartment_avg_sal NUMBER;
+BEGIN
+    EMPPROC02_OUTMODE(145, vfirst_name, vdepartment_name, vdepartment_avg_sal);
+    DBMS_OUTPUT.PUT_LINE('사원명 :'||vfirst_name);
+    DBMS_OUTPUT.PUT_LINE('부서명 :'||vdepartment_name);
+    DBMS_OUTPUT.PUT_LINE('부서평균급여 :'||vdepartment_avg_sal);
+END;
+/
