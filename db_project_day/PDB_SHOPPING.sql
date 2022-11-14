@@ -77,11 +77,9 @@ FROM order_info;
 -- 2) 비교 분석(판매량과 매출액 비교)
 -- 전체 상품의 총 판매량과 총 매출액, 온라인 전용 상품의 판매량과 매출액을 출력한다.
 -- INSERT INTO item VALUES ('M0001','SPECIAL_SET','온라인_전용상품','COMBO',24000);
-SELECT COUNT(quantity), SUM(sales), OL.quantity_online, OL.sales_online
-FROM order_info O, (SELECT COUNT(quantity) quantity_online, SUM(sales) sales_online
-                    FROM order_info O INNER JOIN item I ON O.item_id = I.item_id
-                    WHERE product_desc = '온라인_전용상품') OL;
-item_id
+SELECT COUNT(quantity), SUM(sales), COUNT(DECODE(item_id, 'M0001', quantity)), SUM(DECODE(item_id, 'M0001', sales))
+FROM order_info;
+
 -- 3) 그룹화 분석(상품별 매출 계산 및 정렬)
 -- 각 상품별 전체 매출액을 내림차순으로 출력한다.
 
