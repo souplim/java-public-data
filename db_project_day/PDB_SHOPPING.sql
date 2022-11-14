@@ -71,10 +71,17 @@ ADD CONSTRAINT fk_order_info_reserv_no FOREIGN KEY(reserv_no) REFERENCES reserva
 
 -- 1) 특정 통계값 계산
 -- 전체 상품의 주문 완료 건, 총 매출, 평균 매출, 최고 매출, 최저 매출을 출력한다.
+SELECT COUNT(order_no), SUM(sales), ROUND(AVG(sales)), MAX(sales), MIN(sales)
+FROM order_info;
 
 -- 2) 비교 분석(판매량과 매출액 비교)
 -- 전체 상품의 총 판매량과 총 매출액, 온라인 전용 상품의 판매량과 매출액을 출력한다.
-
+-- INSERT INTO item VALUES ('M0001','SPECIAL_SET','온라인_전용상품','COMBO',24000);
+SELECT COUNT(quantity), SUM(sales), OL.quantity_online, OL.sales_online
+FROM order_info O, (SELECT COUNT(quantity) quantity_online, SUM(sales) sales_online
+                    FROM order_info O INNER JOIN item I ON O.item_id = I.item_id
+                    WHERE product_desc = '온라인_전용상품') OL;
+item_id
 -- 3) 그룹화 분석(상품별 매출 계산 및 정렬)
 -- 각 상품별 전체 매출액을 내림차순으로 출력한다.
 
