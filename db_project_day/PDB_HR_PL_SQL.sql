@@ -690,27 +690,6 @@ CREATE OR REPLACE PROCEDURE EMPPROC02_OUTMODE
  vdepartment_name OUT departments.department_name%TYPE,
  vdepartment_avg_sal OUT NUMBER)
 IS
-    vdepartment_id NUMBER(2);
-BEGIN
-    SELECT first_name, salary, department_id  INTO vfirst_name, vsalary, vdepartment_id 
-    FROM employees 
-    WHERE employee_id = vemployee_id;    
-    
-    SELECT D.department_name, A.AVG_SAL INTO vdepartment_name, vdepartment_avg_sal
-    FROM departments D, (SELECT ROUND(AVG(salary)) AVG_SAL FROM employees WHERE department_id = vdepartment_id) A 
-    WHERE D.department_id = vdepartment_id;
-    COMMIT;
-END;
-/
-SHOW ERROR;
--- 강사님 코드
-CREATE OR REPLACE PROCEDURE EMPPROC02_OUTMODE
-(vemployee_id IN employees.employee_id%TYPE,
- vfirst_name OUT employees.first_name%TYPE,
- vsalary OUT employees.salary%TYPE,
- vdepartment_name OUT departments.department_name%TYPE,
- vdepartment_avg_sal OUT NUMBER)
-IS
     v_department_id NUMBER(2);
 BEGIN
     SELECT first_name, salary, department_id INTO vfirst_name, vsalary, v_department_id 
@@ -808,13 +787,87 @@ SELECT * FROM SAL03;
 -- <실습하기> 입고 트리거 작성하기
 -- 입고 테이블에 상품이 입력되면 입고 수량을 상품 테이블의 재고 수량에 추가하는 트리거 작성
 -- 1. 상품 테이블을 생성
--- 2. 입고 테이블을 생성
--- 3. 
--- 4.
--- 5.
+CREATE TABLE PRODUCT(
+    pcode CHAR(6),                      -- 상품코드
+    pname VARCHAR2(12) NOT NULL,        -- 상품명
+    pcompany VARCHAR2(12),              -- 제조사
+    pprice NUMBER(8),                   -- 가격
+    STOCK NUMBER DEFAULT 0,             -- 재고수량
+    CONSTRAINT PRODUCT_PCODE_PK PRIMARY KEY(pcode)
+);
 
+-- 2. 입고 테이블을 생성
+CREATE TABLE RECEIVING(
+    rno NUMBER(6),                          -- 입고번호
+    pcode CHAR(6),                          -- 상품코드
+    rdate DATE DEFAULT SYSDATE,             -- 입고날짜
+    rqty NUMBER(8),                         -- 입고수량
+    rprice NUMBER(6),                       -- 입고가격
+    ramount NUMBER(8),                      -- 입고단가
+    CONSTRAINT RECEIVING_RNO_PK PRIMARY KEY(rno),
+    CONSTRAINT RECEIVING_PCODE_FK FOREIGN KEY(pcode) REFERENCES PRODUCT(pcode)
+);
+-- 3. 상품테이블의 재고수량 컬럼을 통해서 실질적인 트리거의 적용 예를 살펴본다. 
+-- 우선 상품 테이블에 다음과 같은 샘플 데이터를 입력하자
+INSERT INTO PRODUCT(pcode, pname, pcompany, pprice) VALUES('A00001','세탁기','LG',1500000);
+INSERT INTO PRODUCT(pcode, pname, pcompany, pprice) VALUES('A00002','컴퓨터','LG',1000000);
+INSERT INTO PRODUCT(pcode, pname, pcompany, pprice) VALUES('A00003','냉장고','삼성',4500000);
+
+SELECT * FROM PRODUCT;
+-- 4. 입고테이블에 상품이 입력되면 입고수량을 상품 테이블의 재고수량에 추가하는 트리거 작성
+CREATE OR REPLACE TRIGGER TRG_IN
+AFTER INSERT ON RECEIVING
+FOR EACH ROW
+BEGIN
+    UPDATE PRODUCT
+    SET STOCK = STOCK + :NEW.rqty -- 재고수량 = 재고수량 + 입고수량
+    WHERE pcode = :NEW.pcode;
+END;
+/
+-- 5. 트리거를 실행시킨 후 입고 테이블에 행을 추가. 입고 테이블은 물론 상품테이블의 재고 수량이 변경됨을 확일할 수 있음
+INSERT INTO RECEIVING(rno, pcode, rqty, rprice, ramount) VALUES(1, 'A00001', 5, 850000, 950000);
+
+SELECT * FROM RECEIVING;
+SELECT * FROM PRODUCT;
+-- 6. 입고 테이블에 상품이 입력되면 자동으로 상품 테이블의 재고 수량이 증가하게 됨. 입고테이블에 또 다른 상품을 입력
+INSERT INTO RECEIVING(rno, pcode, rqty, rprice, ramount) VALUES(2, 'A00002', 10, 680000, 780000);
+INSERT INTO RECEIVING(rno, pcode, rqty, rprice, ramount) VALUES(3, 'A00003', 10, 250000, 300000);
+
+SELECT * FROM RECEIVING;
+SELECT * FROM PRODUCT;
 -- <실습하기> 갱신 트리거 작성하기
+-- 이미 입고된 상품에 대해서 입고 수량이 변경되면 상품 테이블의 재고수량 역시 변경되어야 함. 이를 위한 갱신 트리거 작성
+-- 1. 갱신 트리거 생성
+CREATE OR REPLACE TRIGGER TRG_UP
+AFTER UPDATE ON RECEIVING
+FOR EACH ROW
+BEGIN
+    UPDATE PRODUCT
+    SET STOCK = STOCK +(-:OLD.rqty+:NEW.rqty)
+    WHERE pcode = :NEW.pcode;
+END;
+/
+-- 2. 입고 번호 3번은 냉장고가 입고된 정보를 기록한 것으로서 입고 번호 3번의 입고수량을 8로 변경했더니 냉장고의 재고 수량 역시 8로 변경됨
+UPDATE RECEIVING SET rqty = 8, ramount = 280000 -- 입고수량과 입고금액
+WHERE rno = 3;
+
+SELECT * FROM RECEIVING;
 -- <실습하기> 삭제 트리거 작성하기
+-- 입고 테이블에서 입고되었던 상황이 삭제되면 상품 테이블의 재고수량에서 삭제된 입고수량만큼을 빼는 삭제트리거 작성
+-- 1. 삭제 트리거 생성
+CREATE OR REPLACE TRIGGER TRG_DEL
+AFTER DELETE ON RECEIVING
+FOR EACH ROW
+BEGIN
+    UPDATE PRODUCT
+    SET STOCK = STOCK -:OLD.rqty
+    WHERE pcode = :OLD.pcode;
+END;
+/
+-- 2. 입고 번호 3번은 냉장고가 입고된 정보를 기록한 것으로 입고 번호가 3번인 행을 삭제하였더니 냉장고의 재고수량 역시 0으로 변경됨
+DELETE RECEIVING WHERE rno = 3;
+SELECT * FROM RECEIVING;
+SELECT * FROM PRODUCT;
 
 -- 3. FUNCTION 이란?
 -- PL/SQL로 오라클 내장 함수와 같이 SQL 표현식의 일부로 복잡한 SQL문을 간단한 형태로 사용 가능
