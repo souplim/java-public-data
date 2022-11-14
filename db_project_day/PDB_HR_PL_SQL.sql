@@ -686,29 +686,251 @@ END;
 CREATE OR REPLACE PROCEDURE EMPPROC02_OUTMODE
 (vemployee_id IN employees.employee_id%TYPE,
  vfirst_name OUT employees.first_name%TYPE,
+ vsalary OUT employees.salary%TYPE,
  vdepartment_name OUT departments.department_name%TYPE,
  vdepartment_avg_sal OUT NUMBER)
 IS
+    vdepartment_id NUMBER(2);
 BEGIN
-    SELECT ROUND(AVG(salary)) INTO vdepartment_avg_sal
-    FROM employees WHERE employee_id = vemployee_id;
-    SELECT E.first_name, D.department_name INTO vfirst_name, vdepartment_name 
-    FROM employees E INNER JOIN departments D ON E.department_id = D.department_id
+    SELECT first_name, salary, department_id  INTO vfirst_name, vsalary, vdepartment_id 
+    FROM employees 
     WHERE employee_id = vemployee_id;    
+    
+    SELECT D.department_name, A.AVG_SAL INTO vdepartment_name, vdepartment_avg_sal
+    FROM departments D, (SELECT ROUND(AVG(salary)) AVG_SAL FROM employees WHERE department_id = vdepartment_id) A 
+    WHERE D.department_id = vdepartment_id;
     COMMIT;
+END;
+/
+SHOW ERROR;
+-- 강사님 코드
+CREATE OR REPLACE PROCEDURE EMPPROC02_OUTMODE
+(vemployee_id IN employees.employee_id%TYPE,
+ vfirst_name OUT employees.first_name%TYPE,
+ vsalary OUT employees.salary%TYPE,
+ vdepartment_name OUT departments.department_name%TYPE,
+ vdepartment_avg_sal OUT NUMBER)
+IS
+    v_department_id NUMBER(2);
+BEGIN
+    SELECT first_name, salary, department_id INTO vfirst_name, vsalary, v_department_id 
+    FROM employees 
+    WHERE employee_id = vemployee_id;  
+    
+    SELECT D.department_name, A.AVG_SAL INTO vdepartment_name, vdepartment_avg_sal
+    FROM departments D, (SELECT ROUND(AVG(salary)) AVG_SAL FROM employees WHERE department_id = v_department_id) A
+    WHERE D.department_id = v_department_id;
 END;
 /
 SHOW ERROR;
 
 DECLARE
-    vemployee employees%ROWTYPE;
     vfirst_name employees.first_name%TYPE;
+    vsalary employees.salary%TYPE;
     vdepartment_name departments.department_name%TYPE;
     vdepartment_avg_sal NUMBER;
 BEGIN
-    EMPPROC02_OUTMODE(145, vfirst_name, vdepartment_name, vdepartment_avg_sal);
+    EMPPROC02_OUTMODE(145, vfirst_name, vsalary, vdepartment_name, vdepartment_avg_sal);
     DBMS_OUTPUT.PUT_LINE('사원명 :'||vfirst_name);
+    DBMS_OUTPUT.PUT_LINE('급여 :'||vsalary);
     DBMS_OUTPUT.PUT_LINE('부서명 :'||vdepartment_name);
     DBMS_OUTPUT.PUT_LINE('부서평균급여 :'||vdepartment_avg_sal);
 END;
 /
+
+-- 2. 트리거
+DROP TABLE EMP03;
+-- 테이블 생성
+CREATE TABLE EMP03(
+    empno NUMBER(4) PRIMARY KEY,
+    ename VARCHAR2(20),
+    job VARCHAR2(50)
+);
+-- 사원 테이블에 로우가 추가되면 자동 수행할 트리거 생성
+CREATE OR REPLACE TRIGGER EMP_TRG01
+AFTER INSERT
+ON EMP03
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('신입사원이 입사했습니다.');
+END;
+/
+-- 사원 테이블에 로우를 추가
+INSERT INTO EMP03(empno, ename, job) VALUES(1, '홍길동','경영지원직(기획/전략)');
+
+-- 사원테이블에 새로운 데이터(즉 신입사원) 들어오면 급여 테이블에 새로운 데이터를 자동으로 생성하고 싶을 경우,
+-- 사원 테이블에 트리거를 설정하여 구현한다
+CREATE TABLE SAL03(
+    salno NUMBER(4),
+    sal NUMBER,
+    empno NUMBER(4),
+    CONSTRAINT SAL03_salno_pk PRIMARY KEY(salno),
+    CONSTRAINT SAL03_empno_fk FOREIGN KEY(empno) REFERENCES EMP03(empno)
+);
+-- 시퀀스 생성
+CREATE SEQUENCE SAL03_SEQ
+START WITH 1
+INCREMENT BY 1
+MINVALUE 1
+MAXVALUE 100000
+NOCYCLE
+CACHE 2;
+-- 트리거 생성
+CREATE OR REPLACE TRIGGER EMP_TRG02
+AFTER INSERT
+ON EMP03
+FOR EACH ROW
+BEGIN
+    INSERT INTO SAL03(salno, sal, empno) VALUES(SAL03_SEQ.NEXTVAL, 2000000, :NEW.empno);
+END;
+/
+-- 사원테이블에 로우 추가
+DELETE FROM EMP03 WHERE empno = 1;
+INSERT INTO EMP03(empno, ename, job) VALUES(1,'김철수','경영지원직(구매/자재)');
+
+SELECT * FROM EMP03;
+SELECT * FROM SAL03;
+
+INSERT INTO EMP03(empno, ename, job) VALUES(2,'이영희','경영지원직(인사)');
+SELECT * FROM SAL03;
+
+-- 사원의 정보가 제거될 때 그 사원의 급여 정보도 함께 삭제하는 트리거 생성
+CREATE OR REPLACE TRIGGER EMP_TRG03
+AFTER DELETE ON EMP03
+FOR EACH ROW
+BEGIN
+    DELETE FROM SAL03 WHERE empno=:old.empno;
+END;
+/
+-- 사원 테이블의 로우 삭제
+DELETE FROM EMP03 WHERE empno = 2;
+SELECT * FROM SAL03;
+
+-- <실습하기> 입고 트리거 작성하기
+-- 입고 테이블에 상품이 입력되면 입고 수량을 상품 테이블의 재고 수량에 추가하는 트리거 작성
+-- 1. 상품 테이블을 생성
+-- 2. 입고 테이블을 생성
+-- 3. 
+-- 4.
+-- 5.
+
+-- <실습하기> 갱신 트리거 작성하기
+-- <실습하기> 삭제 트리거 작성하기
+
+-- 3. FUNCTION 이란?
+-- PL/SQL로 오라클 내장 함수와 같이 SQL 표현식의 일부로 복잡한 SQL문을 간단한 형태로 사용 가능
+-- 값을 반환하는 RETURN이 포함되며 반드시 하나의 값을 반환함
+
+-- 1) 부서 번호->부서 이름 변환 함수 첫번째 방법
+CREATE OR REPLACE FUNCTION GETNAME(vdepartment_id IN departments.department_id%TYPE)
+RETURN VARCHAR2
+IS
+    vdepartment_name departments.department_name%TYPE;
+    vcount NUMBER := 0;
+BEGIN
+    SELECT COUNT(*) INTO vcount FROM departments
+    WHERE department_id = vdepartment_id;
+    
+    IF vcount = 0 THEN
+        vdepartment_name := '해당 부서 없음';
+    ELSE
+        SELECT department_name INTO vdepartment_name FROM departments
+        WHERE department_id = vdepartment_id;
+    END IF;
+    RETURN vdepartment_name;    
+END;
+/
+
+SELECT first_name, job_id, NVL(commission_pct,0) commission_pct, salary, GETNAME(department_id) DNAME
+FROM employees
+WHERE first_name = 'Lisa';
+
+SELECT GETNAME(500) FROM DUAL;
+
+-- 2) 부서 번호->부서 이름 변환 함수 두번째 방법
+CREATE OR REPLACE FUNCTION GETDNAME(vdepartment_id IN departments.department_id%TYPE)
+RETURN VARCHAR2
+IS
+    vdepartment_name departments.department_name%TYPE;
+BEGIN
+    SELECT department_name INTO vdepartment_name FROM departments
+    WHERE department_id = vdepartment_id;
+    RETURN vdepartment_name;
+    
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            vdepartment_name := '해당부서 없음';
+    RETURN vdepartment_name;        
+END;
+/
+
+SELECT employee_id, first_name, TO_CHAR(hire_date, 'YYYY-MM-DD') HIREDATE, GETNAME(department_id) department_name
+FROM employees;
+SELECT GETNAME(400) FROM DUAL;
+
+-- 3) 부서번호를 매개변수로 해당 부서의 평균 급여를 반환하는 함수를 생성하라
+CREATE OR REPLACE FUNCTION GETAVGDEPT(vdepartment_id IN employees.department_id%TYPE)
+RETURN VARCHAR2
+IS
+    vavgsalary VARCHAR2(50);
+BEGIN
+    SELECT NVL(TO_CHAR(ROUND(AVG(salary)),'9999999'),'해당 부서 없음') INTO vavgsalary
+    FROM employees
+    WHERE department_id = vdepartment_id;
+    RETURN vavgsalary;
+END;
+/
+-- 사원번호를 조건으로 사원의 이름, 급여, 부서명 및 부서 평균 급여 출력
+SELECT first_name, salary, department_id, GETNAME(department_id) department_name,
+        GETAVGDEPT(department_id) avgsalary
+FROM employees
+WHERE employee_id = 178;   
+
+-- PL/SQL 예외란?
+-- 오타 등으로 인하여 발생하는 에러를 컴파일 에러, 실행되는 동안에 발생하는 에러를 런타임 에러
+-- 이 런타임 에러를 오라클에서 예외라 함
+
+-- 미리 정의 되어 있는 오라클 예외들
+-- NO_DATA_FOUND, PROGRAM_ERROR, TOO_MANY_ROWS, VALUE_ERROR
+DECLARE
+    vfirst_name employees.first_name%TYPE;
+BEGIN
+    SELECT first_name INTO vfirst_name
+    FROM employees
+    WHERE first_name LIKE 'O%';
+    DBMS_OUTPUT.PUT_LINE('사원명은 '||vfirst_name||'입니다');
+    
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            DBMS_OUTPUT.PUT_LINE('해당 사원이 존재하지 않습니다.');
+        WHEN TOO_MANY_ROWS THEN
+            DBMS_OUTPUT.PUT_LINE('현재 단어를 포함한 사원이 두 명 이상 존재합니다');
+END;
+/
+
+-- RAISE를 사용하여 예외 처리하기
+DROP TABLE EMP04;
+CREATE TABLE EMP04
+AS
+SELECT employee_id, first_name FROM employees;
+SELECT employee_id, first_name FROM employees
+ORDER BY employee_id;
+
+CREATE OR REPLACE PROCEDURE NOEMPNO_EXCEPTION(vemployee_id EMP04.employee_id%TYPE)
+IS
+    exempid EXCEPTION;
+BEGIN
+    DELETE FROM EMP04 WHERE employee_id = vemployee_id;
+    IF SQL%NOTFOUND THEN
+        RAISE exempid;
+    ELSE
+        DBMS_OUTPUT.PUT_LINE(CONCAT(vemployee_id,'사원이 삭제되었습니다'));
+    END IF;
+    
+    EXCEPTION
+        WHEN exempid THEN
+            DBMS_OUTPUT.PUT_LINE('입력하신 번호는 없는 사원번호입니다.');
+END;
+/
+
+EXEC NOEMPNO_EXCEPTION(800);
+EXEC NOEMPNO_EXCEPTION(100);
