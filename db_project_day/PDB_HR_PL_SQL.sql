@@ -987,3 +987,107 @@ END;
 
 EXEC NOEMPNO_EXCEPTION(800);
 EXEC NOEMPNO_EXCEPTION(100);
+
+-- <PL/SQL 예제>
+-- 1. 오라클에서 성적처리 테이블(SUNG)을 생성하라
+CREATE TABLE SUNG(
+    hakbun NUMBER(4),
+    hakname VARCHAR2(20) NOT NULL,
+    kor NUMBER(4) NOT NULL,
+    eng NUMBER(4) NOT NULL,
+    mat NUMBER(4) NOT NULL,
+    tot NUMBER(4) DEFAULT 0,
+    ave NUMBER(5,1) DEFAULT 0,
+    rank NUMBER(4),
+    CONSTRAINT SUNG_HAKBUN_PK PRIMARY KEY(hakbun)
+);
+
+CREATE SEQUENCE SUNG_SEQ
+START WITH 1
+INCREMENT BY 1
+MINVALUE 1
+MAXVALUE 100000
+NOCYCLE
+CACHE 2;
+
+-- 2. 테이블에 학번, 이름, 국어, 영어, 수학 점수를 입력하면 총점과 평균이 자동 계산되어 입력되도록
+-- 프로시저(SUNG_INPUT)를 작성하라
+CREATE OR REPLACE TRIGGER SUNG_INPUT
+AFTER INSERT ON SUNG
+FOR EACH ROW
+BEGIN
+    UPDATE SUNG
+    SET tot = :NEW.kor + :NEW.eng + :NEW.mat
+    WHERE hakbun = :NEW.hakbun;
+    UPDATE SUNG
+    SET ave = ROUND((:NEW.kor + :NEW.eng + :NEW.mat)/3, 1)
+    WHERE hakbun = :NEW.hakbun;
+END;
+/
+SHOW ERROR;
+
+INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('홍길동', 99,80,85);
+INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('김희진', 95,84,79);
+INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('이현수', 83,89,99);
+INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('김철수', 99,83,89);
+INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('조현정', 80,75,88);
+SELECT * FROM sung;
+
+-- 매개변수 선언하여 성적 테이블에 입력처리 프로시저 생성(SUNG_INPUT).
+-- 프로시저 실행 시 인수를 전달하여 성적 테이블에 입력을 처리하는 프로시저를 생성하여 보자.
+-- 입력이 완료된 후에는 DBMS 출력 영역에 '학생등록완료'라는 문자열이 출력되도록 한다.
+CREATE OR REPLACE PROCEDURE SUNG_INPUT
+(HAKNAME IN SUNG.HAKNAME%TYPE,
+ KOR SUNG.KOR%TYPE,
+ ENG SUNG.ENG%TYPE,
+ MAT SUNG.MAT%TYPE)
+IS 
+BEGIN
+    INSERT INTO SUNG(HAKBUN, HAKNAME, KOR, ENG, MAT, TOT, AVE)
+    VALUES(SUNG_SEQ.NEXTVAL, HAKNAME, KOR, ENG, MAT, KOR+ENG+MAT, (KOR+ENG+MAT)/3);
+    COMMIT;
+    
+    DBMS_OUTPUT.PUT_LINE('학생 등록 완료');
+END;
+/
+
+EXECUTE SUNG_INPUT('홍길동',99,80,85);
+EXECUTE SUNG_INPUT('김희진', 95,84,79);
+EXECUTE SUNG_INPUT('이현수', 83,89,99);
+EXECUTE SUNG_INPUT('김철수', 99,83,89);
+EXECUTE SUNG_INPUT('조현정', 80,75,88);
+
+SELECT * FROM SUNG;
+
+-- 3. 등수(SUNG_RANK)를 구하는 저장프로시저를 작성하고 이를 호출하여 등수가 제대로 구해지는지 확인하자
+-- 다음은 등수를 구하는 저장프로시저 SUNG_RAN가 성공적으로 작성되었다는 가정 하에 실습한 결과이다
+
+-- RANK() : 중복 순위 개수반큼 다음 순위 값을 증가시킴
+-- RANK() OVER(ORDER BY 컬럼명 (ASC|DESC) (AS 별칭)
+-- DENSE_RANK() : 중복순위가 존재해도 순차적으로 다음 순위값을 표시함
+-- ROW_NUMBER() OVER() : 중복값에 관계없이 SEQUENCE(순차적인 순위값) RKQTDMF 반환
+SELECT * FROM SUNG ORDER BY TOT DESC;
+SELECT HAKBUN, HAKNAME, KOR, ENG, MAT, TOT, AVE, RANK() OVER (ORDER BY TOT DESC) RANK,
+                                                 DENSE_RANK() OVER (ORDER BY TOT DESC) DENSE_RANK,
+                                                 ROW_NUMBER() OVER (ORDER BY TOT DESC) ROW_NUMBER
+FROM SUNG
+ORDER BY tot DESC;
+
+CREATE OR REPLACE PROCEDURE SUN_RANK
+IS
+    vsung SUNG%ROWTYPE;
+    CURSOR C1
+    IS
+    SELECT HAKBUN, HAKNAME, KOR, ENG, MAT, TOT, AVE, RANK() OVER (ORDER BY TOT DESC) RANK
+    FROM SUNG ORDER BY TOT DESC;
+BEGIN
+    FOR vsung IN C1 LOOP
+        UPDATE SUNG SET RANK = vsung.rank
+        WHERE hakbun = vsung.hakbun;
+    END LOOP;    
+END;
+/
+
+EXECUTE SUN_RANK;
+SELECT * FROM SUNG
+ORDER BY rank ASC, kor DESC, eng DESC, mat DESC;
