@@ -23,7 +23,7 @@ public class BooksSelectTest {
             StringBuffer sql = new StringBuffer();
             sql.append("SELECT book_id, title, publisher, year, price FROM BOOKS");
 //            sql.append(" WHERE title = '"+title+"'"); // 정확한 제목
-            sql.append(" WHERE title LIKE '%"+title+"%'"); // 단어 포함
+//            sql.append(" WHERE title LIKE '%"+title+"%'"); // 단어 포함
             rs = stmt.executeQuery(sql.toString());
 
             System.out.println("**** BOOKS 테이블 데이터 출력 ****\n");
