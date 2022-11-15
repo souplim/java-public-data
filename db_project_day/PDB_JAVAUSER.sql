@@ -207,3 +207,37 @@ FROM STUDENT S INNER JOIN SUBJECT B ON S.S_NUM = B.S_NUM
 ORDER BY SD_NAME;  
 -- DROP VIEW VIEW_TRAINEE;
 SELECT * FROM VIEW_TRAINEE;
+
+-- <예제> 아래의 내용으로 도서테이블(books) 및 시퀀스(books_seq)를 생성하시오(사용자: JAVAUSER)
+-- BOOKS 테이블 생성
+CREATE TABLE BOOKS(
+    book_id NUMBER,                     -- 책번호
+    title VARCHAR2(80) NOT NULL,        -- 책제목    
+    publisher VARCHAR2(60) NOT NULL,    -- 출판사
+    year VARCHAR2(4) NOT NULL,          -- 출간년도
+    price NUMBER NOT NULL,               -- 책가격
+    CONSTRAINT BOOKS_BOOK_ID_PK PRIMARY KEY(book_id)
+);
+-- 시퀀스 생성
+CREATE SEQUENCE BOOKS_SEQ
+START WITH 1
+INCREMENT BY 1
+MINVALUE 1
+MAXVALUE 100000
+NOCYCLE
+CACHE 2;
+-- BOOKS 테이블에 데이터 입력
+INSERT INTO BOOKS(book_id, title, publisher, year, price) 
+VALUES(BOOKS_SEQ.NEXTVAL, 'Operating System Concepts', 'Wiley', 2003, 30700);
+INSERT INTO BOOKS(book_id, title, publisher, year, price) 
+VALUES(BOOKS_SEQ.NEXTVAL, 'Head First PHP and MYSQL', 'OReilly', 2009, 58000);
+INSERT INTO BOOKS(book_id, title, publisher, year, price) 
+VALUES(BOOKS_SEQ.NEXTVAL, 'C Programming Language', 'Prentice-Hall', 1989, 35000);
+INSERT INTO BOOKS(book_id, title, publisher, year, price) 
+VALUES(BOOKS_SEQ.NEXTVAL, 'Head First SQL', 'OReilly', 2007, 43000);
+INSERT INTO BOOKS(book_id, title, publisher, year, price) 
+VALUES(BOOKS_SEQ.NEXTVAL, '실용주의 프로그래머', '인사이트', 2022, 33000);
+
+SELECT * FROM BOOKS;
+DELETE FROM BOOKS WHERE title = '이것이 우분투 리눅스다';
+COMMIT;
