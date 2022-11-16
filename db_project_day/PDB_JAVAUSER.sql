@@ -264,9 +264,18 @@ BEGIN
 END;
 /
 
--- BOOKS 테이블의 전체 데이터를 외부로 반환하는 프로시저를 생성하라(BOOKS_SELECT).
-CREATE OR REPLACE PROCEDURE BOOKS_SELECT(vbooks OUT books%ROWTYPE)
+-- BOOKS 테이블의 전체 데이터를 외부로 반환하는 프로시저를 생성하라(BOOKS_SELECT). 커서변수
+CREATE OR REPLACE PROCEDURE BOOKS_SELECT(vbooks OUT SYS_REFCURSOR)
 IS
 BEGIN
+    -- 커서 변수를 사용한 커서 정의 및 오픈
+    OPEN vemployees FOR SELECT first_name FROM employees WHERE department_id = 10;
+    -- LOOP문
+    LOOP
+        --커서 변수를 사용해 결과 집합을 EMPNAME 변수에 할당
+        FETCH vemployees INTO vfirst_name;
+        EXIT WHEN vemployees%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('사원명:'||vfirst_name); -- 사원명을 출력
+    END LOOP;    
 END;
 /
