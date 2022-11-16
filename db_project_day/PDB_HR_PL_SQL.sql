@@ -1012,26 +1012,6 @@ CACHE 2;
 
 -- 2. 테이블에 학번, 이름, 국어, 영어, 수학 점수를 입력하면 총점과 평균이 자동 계산되어 입력되도록
 -- 프로시저(SUNG_INPUT)를 작성하라
-CREATE OR REPLACE TRIGGER SUNG_INPUT
-AFTER INSERT ON SUNG
-FOR EACH ROW
-BEGIN
-    UPDATE SUNG
-    SET tot = :NEW.kor + :NEW.eng + :NEW.mat
-    WHERE hakbun = :NEW.hakbun;
-    UPDATE SUNG
-    SET ave = ROUND((:NEW.kor + :NEW.eng + :NEW.mat)/3, 1)
-    WHERE hakbun = :NEW.hakbun;
-END;
-/
-SHOW ERROR;
-
-INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('홍길동', 99,80,85);
-INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('김희진', 95,84,79);
-INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('이현수', 83,89,99);
-INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('김철수', 99,83,89);
-INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('조현정', 80,75,88);
-SELECT * FROM sung;
 
 -- 매개변수 선언하여 성적 테이블에 입력처리 프로시저 생성(SUNG_INPUT).
 -- 프로시저 실행 시 인수를 전달하여 성적 테이블에 입력을 처리하는 프로시저를 생성하여 보자.
@@ -1059,6 +1039,28 @@ EXECUTE SUNG_INPUT('조현정', 80,75,88);
 
 SELECT * FROM SUNG;
 
+-- 트리거로 작성하는 방법은 없을까?
+CREATE OR REPLACE TRIGGER SUNG_INPUT
+AFTER INSERT ON SUNG
+FOR EACH ROW
+BEGIN
+    UPDATE SUNG
+    SET tot = :NEW.kor + :NEW.eng + :NEW.mat
+    WHERE hakbun = :NEW.hakbun;
+    UPDATE SUNG
+    SET ave = ROUND((:NEW.kor + :NEW.eng + :NEW.mat)/3, 1)
+    WHERE hakbun = :NEW.hakbun;
+END;
+/
+SHOW ERROR;
+
+INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('홍길동', 99,80,85);
+INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('김희진', 95,84,79);
+INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('이현수', 83,89,99);
+INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('김철수', 99,83,89);
+INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('조현정', 80,75,88);
+SELECT * FROM sung;
+
 -- 3. 등수(SUNG_RANK)를 구하는 저장프로시저를 작성하고 이를 호출하여 등수가 제대로 구해지는지 확인하자
 -- 다음은 등수를 구하는 저장프로시저 SUNG_RAN가 성공적으로 작성되었다는 가정 하에 실습한 결과이다
 
@@ -1076,7 +1078,7 @@ ORDER BY tot DESC;
 CREATE OR REPLACE PROCEDURE SUN_RANK
 IS
     vsung SUNG%ROWTYPE;
-    CURSOR C1
+    CURSOR C1 -- 명시적 커서
     IS
     SELECT HAKBUN, HAKNAME, KOR, ENG, MAT, TOT, AVE, RANK() OVER (ORDER BY TOT DESC) RANK
     FROM SUNG ORDER BY TOT DESC;
@@ -1091,3 +1093,63 @@ END;
 EXECUTE SUN_RANK;
 SELECT * FROM SUNG
 ORDER BY rank ASC, kor DESC, eng DESC, mat DESC;
+
+-- 5. 패키지
+-- 관련있는 프로시저를 보다 효율적으로 관리하기 위해 패키지 단위로 배포
+-- 패키지 선언부의 역할은 해당 패키지에 사용될 함수나 프로시저, 변수들 정의 선언
+-- 패키지 몸체부에서는 선언부에서 선언된 함수나 프로시저 등이 실제 구현됨
+
+DROP TABLE EMP02;
+CREATE TABLE EMP02
+AS
+SELECT employee_id, first_name, hire_date FROM employees;
+ALTER TABLE EMP02
+ADD(retire_date date);
+SELECT employee_id, first_name, hire_date, retire_date FROM EMP02;
+
+-- 패키지 선언부
+CREATE OR REPLACE PACKAGE EMP02_PKG
+IS
+    -- 사번을 받아 이름을 반환하는 함수
+    FUNCTION FN_GET_EM02_NAME(vemployee_id IN NUMBER)
+    RETURN VARCHAR2;
+    -- 신규 사원 입력
+    PROCEDURE NEW_EMP02_PROC
+    (vfirst_name IN EMP02.first_name%TYPE, vhire_date EMP02.hire_date%TYPE);
+    -- 퇴사 사원 처리
+    PROCEDURE RETIRE_EMP02_PROC(vemployee_id IN EMP02.employee_id%TYPE);
+END;
+/
+
+-- 패키지 본문
+CREATE OR REPLACE PACKAGE BODY EMP02_PKG
+IS
+    -- 사번을 받아 이름을 반환하는 함수
+    FUNCTION FN_GET_EM02_NAME(vemployee_id IN NUMBER)
+    RETURN VARCHAR2
+    IS
+        vfirst_name EMP02.first_name%TYPE;
+    BEGIN
+        -- 사원명을 가져온다
+        SELECT first_name INTO vfirst_name
+        FROM EMP02 WHERE employee_id = vemployee_id;
+        -- 사원명 반환
+        RETURN vfirst_name;
+        
+        EXCEPTION WHEN NO_DATA_FOUND THEN
+            vfirst
+    END;
+    
+    -- 신규 사원 입력
+    PROCEDURE NEW_EMP02_PROC
+    (vfirst_name IN EMP02.first_name%TYPE, vhire_date EMP02.hire_date%TYPE)
+    IS
+    BEGIN
+    END;
+    
+    -- 퇴사 사원 처리
+    PROCEDURE RETIRE_EMP02_PROC(vemployee_id IN EMP02.employee_id%TYPE)
+    IS
+    
+    BEGIN
+    END;
