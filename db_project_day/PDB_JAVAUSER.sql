@@ -228,16 +228,45 @@ NOCYCLE
 CACHE 2;
 -- BOOKS 테이블에 데이터 입력
 INSERT INTO BOOKS(book_id, title, publisher, year, price) 
-VALUES(BOOKS_SEQ.NEXTVAL, 'Operating System Concepts', 'Wiley', 2003, 30700);
+VALUES(BOOKS_SEQ.NEXTVAL, 'Operating System Concepts', 'Wiley', '2003', 30700);
 INSERT INTO BOOKS(book_id, title, publisher, year, price) 
-VALUES(BOOKS_SEQ.NEXTVAL, 'Head First PHP and MYSQL', 'OReilly', 2009, 58000);
+VALUES(BOOKS_SEQ.NEXTVAL, 'Head First PHP and MYSQL', 'OReilly', '2009', 58000);
 INSERT INTO BOOKS(book_id, title, publisher, year, price) 
-VALUES(BOOKS_SEQ.NEXTVAL, 'C Programming Language', 'Prentice-Hall', 1989, 35000);
+VALUES(BOOKS_SEQ.NEXTVAL, 'C Programming Language', 'Prentice-Hall', '1989', 35000);
 INSERT INTO BOOKS(book_id, title, publisher, year, price) 
-VALUES(BOOKS_SEQ.NEXTVAL, 'Head First SQL', 'OReilly', 2007, 43000);
+VALUES(BOOKS_SEQ.NEXTVAL, 'Head First SQL', 'OReilly', '2007', 43000);
 INSERT INTO BOOKS(book_id, title, publisher, year, price) 
-VALUES(BOOKS_SEQ.NEXTVAL, '실용주의 프로그래머', '인사이트', 2022, 33000);
-
-SELECT * FROM BOOKS;
-DELETE FROM BOOKS WHERE title = '이것이 우분투 리눅스다';
+VALUES(BOOKS_SEQ.NEXTVAL, '실용주의 프로그래머', '인사이트', '2022', 33000);
 COMMIT;
+
+SELECT * FROM BOOKS ORDER BY book_id;
+
+-- 프로시저 생성
+-- BOOKS_PROC 라는 이름으로 프로시저를 생성하라.
+-- 책번호를 매개변수로 프로시저에 전달하면 책제목으로 외부로 반환하는 프로시저를 생성한다.
+CREATE OR REPLACE PROCEDURE BOOKS_PROC(vbook_id IN books.book_id%TYPE, vtitle OUT books.title%TYPE)
+IS
+BEGIN
+    SELECT title INTO vtitle FROM books
+    WHERE book_id = vbook_id;    
+    
+    EXCEPTION 
+        WHEN OTHERS THEN
+            vtitle := '해당하는 책이 존재하지 않습니다.';
+END BOOKS_PROC;
+/
+
+DECLARE
+    vtitle books.title%TYPE;
+BEGIN
+    BOOKS_PROC(100, vtitle);
+    DBMS_OUTPUT.PUT_LINE('책제목:'||vtitle);
+END;
+/
+
+-- BOOKS 테이블의 전체 데이터를 외부로 반환하는 프로시저를 생성하라(BOOKS_SELECT).
+CREATE OR REPLACE PROCEDURE BOOKS_SELECT(vbooks OUT books%ROWTYPE)
+IS
+BEGIN
+END;
+/
