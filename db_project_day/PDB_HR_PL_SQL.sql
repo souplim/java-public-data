@@ -439,6 +439,113 @@ BEGIN
 END;
 /
 
+-- <PL/SQL 예제>
+-- 1. 오라클에서 성적처리 테이블(SUNG)을 생성하라
+CREATE TABLE SUNG(
+    hakbun NUMBER(4),
+    hakname VARCHAR2(20) NOT NULL,
+    kor NUMBER(4) NOT NULL,
+    eng NUMBER(4) NOT NULL,
+    mat NUMBER(4) NOT NULL,
+    tot NUMBER(4) DEFAULT 0,
+    ave NUMBER(5,1) DEFAULT 0,
+    rank NUMBER(4),
+    CONSTRAINT SUNG_HAKBUN_PK PRIMARY KEY(hakbun)
+);
+
+CREATE SEQUENCE SUNG_SEQ
+START WITH 1
+INCREMENT BY 1
+MINVALUE 1
+MAXVALUE 100000
+NOCYCLE
+CACHE 2;
+
+-- 2. 테이블에 학번, 이름, 국어, 영어, 수학 점수를 입력하면 총점과 평균이 자동 계산되어 입력되도록
+-- 프로시저(SUNG_INPUT)를 작성하라
+
+-- 매개변수 선언하여 성적 테이블에 입력처리 프로시저 생성(SUNG_INPUT).
+-- 프로시저 실행 시 인수를 전달하여 성적 테이블에 입력을 처리하는 프로시저를 생성하여 보자.
+-- 입력이 완료된 후에는 DBMS 출력 영역에 '학생등록완료'라는 문자열이 출력되도록 한다.
+CREATE OR REPLACE PROCEDURE SUNG_INPUT
+(HAKNAME IN SUNG.HAKNAME%TYPE,
+ KOR SUNG.KOR%TYPE,
+ ENG SUNG.ENG%TYPE,
+ MAT SUNG.MAT%TYPE)
+IS 
+BEGIN
+    INSERT INTO SUNG(HAKBUN, HAKNAME, KOR, ENG, MAT, TOT, AVE)
+    VALUES(SUNG_SEQ.NEXTVAL, HAKNAME, KOR, ENG, MAT, KOR+ENG+MAT, (KOR+ENG+MAT)/3);
+    COMMIT;
+    
+    DBMS_OUTPUT.PUT_LINE('학생 등록 완료');
+END;
+/
+
+EXECUTE SUNG_INPUT('홍길동',99,80,85);
+EXECUTE SUNG_INPUT('김희진', 95,84,79);
+EXECUTE SUNG_INPUT('이현수', 83,89,99);
+EXECUTE SUNG_INPUT('김철수', 99,83,89);
+EXECUTE SUNG_INPUT('조현정', 80,75,88);
+
+SELECT * FROM SUNG;
+
+-- 트리거로 작성하는 방법은 없을까?
+CREATE OR REPLACE TRIGGER SUNG_INPUT
+AFTER INSERT ON SUNG
+FOR EACH ROW
+BEGIN
+    UPDATE SUNG
+    SET tot = :NEW.kor + :NEW.eng + :NEW.mat
+    WHERE hakbun = :NEW.hakbun;
+    UPDATE SUNG
+    SET ave = ROUND((:NEW.kor + :NEW.eng + :NEW.mat)/3, 1)
+    WHERE hakbun = :NEW.hakbun;
+END;
+/
+SHOW ERROR;
+
+INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('홍길동', 99,80,85);
+INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('김희진', 95,84,79);
+INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('이현수', 83,89,99);
+INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('김철수', 99,83,89);
+INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('조현정', 80,75,88);
+SELECT * FROM sung;
+
+-- 3. 등수(SUNG_RANK)를 구하는 저장프로시저를 작성하고 이를 호출하여 등수가 제대로 구해지는지 확인하자
+-- 다음은 등수를 구하는 저장프로시저 SUNG_RAN가 성공적으로 작성되었다는 가정 하에 실습한 결과이다
+
+-- RANK() : 중복 순위 개수반큼 다음 순위 값을 증가시킴
+-- RANK() OVER(ORDER BY 컬럼명 (ASC|DESC) (AS 별칭)
+-- DENSE_RANK() : 중복순위가 존재해도 순차적으로 다음 순위값을 표시함
+-- ROW_NUMBER() OVER() : 중복값에 관계없이 SEQUENCE(순차적인 순위값) RKQTDMF 반환
+SELECT * FROM SUNG ORDER BY TOT DESC;
+SELECT HAKBUN, HAKNAME, KOR, ENG, MAT, TOT, AVE, RANK() OVER (ORDER BY TOT DESC) RANK,
+                                                 DENSE_RANK() OVER (ORDER BY TOT DESC) DENSE_RANK,
+                                                 ROW_NUMBER() OVER (ORDER BY TOT DESC) ROW_NUMBER
+FROM SUNG
+ORDER BY tot DESC;
+
+CREATE OR REPLACE PROCEDURE SUN_RANK
+IS
+    vsung SUNG%ROWTYPE;
+    CURSOR C1 -- 명시적 커서
+    IS
+    SELECT HAKBUN, HAKNAME, KOR, ENG, MAT, TOT, AVE, RANK() OVER (ORDER BY TOT DESC) RANK
+    FROM SUNG ORDER BY TOT DESC;
+BEGIN
+    FOR vsung IN C1 LOOP
+        UPDATE SUNG SET RANK = vsung.rank
+        WHERE hakbun = vsung.hakbun;
+    END LOOP;    
+END;
+/
+
+EXECUTE SUN_RANK;
+SELECT * FROM SUNG
+ORDER BY rank ASC, kor DESC, eng DESC, mat DESC;
+
+
 -- 저장 프로시저, 트리거, 함수
 -- 1. 저장 프로시저
 -- 지정된 특정 처리를 실행하는 서브 프로그램의 한 유형으로 자주 사용하는 쿼리문을 모듈화시켜 필요할 때마다 호출하여 사용하는 것
@@ -869,6 +976,7 @@ DELETE RECEIVING WHERE rno = 3;
 SELECT * FROM RECEIVING;
 SELECT * FROM PRODUCT;
 
+
 -- 3. FUNCTION 이란?
 -- PL/SQL로 오라클 내장 함수와 같이 SQL 표현식의 일부로 복잡한 SQL문을 간단한 형태로 사용 가능
 -- 값을 반환하는 RETURN이 포함되며 반드시 하나의 값을 반환함
@@ -938,7 +1046,7 @@ SELECT first_name, salary, department_id, GETNAME(department_id) department_name
 FROM employees
 WHERE employee_id = 178;   
 
--- PL/SQL 예외란?
+-- 4. PL/SQL 예외란?
 -- 오타 등으로 인하여 발생하는 에러를 컴파일 에러, 실행되는 동안에 발생하는 에러를 런타임 에러
 -- 이 런타임 에러를 오라클에서 예외라 함
 
@@ -988,112 +1096,6 @@ END;
 EXEC NOEMPNO_EXCEPTION(800);
 EXEC NOEMPNO_EXCEPTION(100);
 
--- <PL/SQL 예제>
--- 1. 오라클에서 성적처리 테이블(SUNG)을 생성하라
-CREATE TABLE SUNG(
-    hakbun NUMBER(4),
-    hakname VARCHAR2(20) NOT NULL,
-    kor NUMBER(4) NOT NULL,
-    eng NUMBER(4) NOT NULL,
-    mat NUMBER(4) NOT NULL,
-    tot NUMBER(4) DEFAULT 0,
-    ave NUMBER(5,1) DEFAULT 0,
-    rank NUMBER(4),
-    CONSTRAINT SUNG_HAKBUN_PK PRIMARY KEY(hakbun)
-);
-
-CREATE SEQUENCE SUNG_SEQ
-START WITH 1
-INCREMENT BY 1
-MINVALUE 1
-MAXVALUE 100000
-NOCYCLE
-CACHE 2;
-
--- 2. 테이블에 학번, 이름, 국어, 영어, 수학 점수를 입력하면 총점과 평균이 자동 계산되어 입력되도록
--- 프로시저(SUNG_INPUT)를 작성하라
-
--- 매개변수 선언하여 성적 테이블에 입력처리 프로시저 생성(SUNG_INPUT).
--- 프로시저 실행 시 인수를 전달하여 성적 테이블에 입력을 처리하는 프로시저를 생성하여 보자.
--- 입력이 완료된 후에는 DBMS 출력 영역에 '학생등록완료'라는 문자열이 출력되도록 한다.
-CREATE OR REPLACE PROCEDURE SUNG_INPUT
-(HAKNAME IN SUNG.HAKNAME%TYPE,
- KOR SUNG.KOR%TYPE,
- ENG SUNG.ENG%TYPE,
- MAT SUNG.MAT%TYPE)
-IS 
-BEGIN
-    INSERT INTO SUNG(HAKBUN, HAKNAME, KOR, ENG, MAT, TOT, AVE)
-    VALUES(SUNG_SEQ.NEXTVAL, HAKNAME, KOR, ENG, MAT, KOR+ENG+MAT, (KOR+ENG+MAT)/3);
-    COMMIT;
-    
-    DBMS_OUTPUT.PUT_LINE('학생 등록 완료');
-END;
-/
-
-EXECUTE SUNG_INPUT('홍길동',99,80,85);
-EXECUTE SUNG_INPUT('김희진', 95,84,79);
-EXECUTE SUNG_INPUT('이현수', 83,89,99);
-EXECUTE SUNG_INPUT('김철수', 99,83,89);
-EXECUTE SUNG_INPUT('조현정', 80,75,88);
-
-SELECT * FROM SUNG;
-
--- 트리거로 작성하는 방법은 없을까?
-CREATE OR REPLACE TRIGGER SUNG_INPUT
-AFTER INSERT ON SUNG
-FOR EACH ROW
-BEGIN
-    UPDATE SUNG
-    SET tot = :NEW.kor + :NEW.eng + :NEW.mat
-    WHERE hakbun = :NEW.hakbun;
-    UPDATE SUNG
-    SET ave = ROUND((:NEW.kor + :NEW.eng + :NEW.mat)/3, 1)
-    WHERE hakbun = :NEW.hakbun;
-END;
-/
-SHOW ERROR;
-
-INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('홍길동', 99,80,85);
-INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('김희진', 95,84,79);
-INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('이현수', 83,89,99);
-INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('김철수', 99,83,89);
-INSERT INTO SUNG(hakname, kor, eng, mat) VALUES('조현정', 80,75,88);
-SELECT * FROM sung;
-
--- 3. 등수(SUNG_RANK)를 구하는 저장프로시저를 작성하고 이를 호출하여 등수가 제대로 구해지는지 확인하자
--- 다음은 등수를 구하는 저장프로시저 SUNG_RAN가 성공적으로 작성되었다는 가정 하에 실습한 결과이다
-
--- RANK() : 중복 순위 개수반큼 다음 순위 값을 증가시킴
--- RANK() OVER(ORDER BY 컬럼명 (ASC|DESC) (AS 별칭)
--- DENSE_RANK() : 중복순위가 존재해도 순차적으로 다음 순위값을 표시함
--- ROW_NUMBER() OVER() : 중복값에 관계없이 SEQUENCE(순차적인 순위값) RKQTDMF 반환
-SELECT * FROM SUNG ORDER BY TOT DESC;
-SELECT HAKBUN, HAKNAME, KOR, ENG, MAT, TOT, AVE, RANK() OVER (ORDER BY TOT DESC) RANK,
-                                                 DENSE_RANK() OVER (ORDER BY TOT DESC) DENSE_RANK,
-                                                 ROW_NUMBER() OVER (ORDER BY TOT DESC) ROW_NUMBER
-FROM SUNG
-ORDER BY tot DESC;
-
-CREATE OR REPLACE PROCEDURE SUN_RANK
-IS
-    vsung SUNG%ROWTYPE;
-    CURSOR C1 -- 명시적 커서
-    IS
-    SELECT HAKBUN, HAKNAME, KOR, ENG, MAT, TOT, AVE, RANK() OVER (ORDER BY TOT DESC) RANK
-    FROM SUNG ORDER BY TOT DESC;
-BEGIN
-    FOR vsung IN C1 LOOP
-        UPDATE SUNG SET RANK = vsung.rank
-        WHERE hakbun = vsung.hakbun;
-    END LOOP;    
-END;
-/
-
-EXECUTE SUN_RANK;
-SELECT * FROM SUNG
-ORDER BY rank ASC, kor DESC, eng DESC, mat DESC;
-
 -- 5. 패키지
 -- 관련있는 프로시저를 보다 효율적으로 관리하기 위해 패키지 단위로 배포
 -- 패키지 선언부의 역할은 해당 패키지에 사용될 함수나 프로시저, 변수들 정의 선언
@@ -1111,21 +1113,21 @@ SELECT employee_id, first_name, hire_date, retire_date FROM EMP02;
 CREATE OR REPLACE PACKAGE EMP02_PKG
 IS
     -- 사번을 받아 이름을 반환하는 함수
-    FUNCTION FN_GET_EM02_NAME(vemployee_id IN NUMBER)
+    FUNCTION FN_GET_EMP02_NAME(vemployee_id IN NUMBER)
     RETURN VARCHAR2;
     -- 신규 사원 입력
     PROCEDURE NEW_EMP02_PROC
     (vfirst_name IN EMP02.first_name%TYPE, vhire_date EMP02.hire_date%TYPE);
     -- 퇴사 사원 처리
     PROCEDURE RETIRE_EMP02_PROC(vemployee_id IN EMP02.employee_id%TYPE);
-END;
+END EMP02_PKG;
 /
 
 -- 패키지 본문
 CREATE OR REPLACE PACKAGE BODY EMP02_PKG
 IS
     -- 사번을 받아 이름을 반환하는 함수
-    FUNCTION FN_GET_EM02_NAME(vemployee_id IN NUMBER)
+    FUNCTION FN_GET_EMP02_NAME(vemployee_id IN NUMBER)
     RETURN VARCHAR2
     IS
         vfirst_name EMP02.first_name%TYPE;
@@ -1137,19 +1139,65 @@ IS
         RETURN vfirst_name;
         
         EXCEPTION WHEN NO_DATA_FOUND THEN
-            vfirst
-    END;
+            vfirst_name := '해당사원없음';
+            RETURN vfirst_name;
+    END FN_GET_EMP02_NAME;
     
     -- 신규 사원 입력
     PROCEDURE NEW_EMP02_PROC
-    (vfirst_name IN EMP02.first_name%TYPE, vhire_date EMP02.hire_date%TYPE)
+    (vfirst_name IN EMP02.first_name%TYPE, vhire_date IN EMP02.hire_date%TYPE)
     IS
+        vemployee_id emp02.employee_id%TYPE;
     BEGIN
-    END;
+        -- 신규사원의 사번 = 최대사번 + 1
+        SELECT NVL(MAX(employee_id),0)+1 INTO vemployee_id FROM emp02;
+        INSERT INTO emp02(employee_id, first_name, hire_date)
+        VALUES(vemployee_id, vfirst_name, NVL(vhire_date,SYSDATE));
+        COMMIT;
+        
+        -- INSERT 실행할 때 발생하는 모든 예외처리
+        EXCEPTION WHEN OTHERS THEN 
+            DBMS_OUTPUT.PUT_LINE(SQLERRM);
+            ROLLBACK;    
+    END NEW_EMP02_PROC;
     
     -- 퇴사 사원 처리
     PROCEDURE RETIRE_EMP02_PROC(vemployee_id IN EMP02.employee_id%TYPE)
     IS
-    
+        CNT NUMBER := 0;
+        E_NO_DATA EXCEPTION;
     BEGIN
-    END;
+        -- 퇴사한 사원은 사원테이블에서 삭제하지 않고 일단 퇴사일자를 NULL에서 갱신한다.
+        UPDATE emp02 SET retire_date = sysdate
+        WHERE employee_id = vemployee_id AND retire_date IS NULL;
+        
+        -- UPDATE된 건수를 가져온다.
+        CNT := SQL%ROWCOUNT;
+        
+        -- 갱신된 건수가 없으면 사용자 예외처리
+        IF CNT = 0 THEN
+            RAISE E_NO_DATA;
+        END IF;
+        COMMIT;
+        
+        EXCEPTION
+            WHEN E_NO_DATA THEN
+                DBMS_OUTPUT.PUT_LINE(vemployee_id||'에 해당되는 퇴사처리할 사원이 없습니다.');
+                ROLLBACK;
+            WHEN OTHERS THEN
+                DBMS_OUTPUT.PUT_LINE(SQLERRM);
+                ROLLBACK;           
+    END RETIRE_EMP02_PROC;
+END EMP02_PKG;     
+/
+
+-- 실행하기
+SELECT EMP02_PKG.FN_GET_EMP02_NAME(150) AS NAME FROM DUAL;
+SELECT EMP02_PKG.FN_GET_EMP02_NAME(60) AS NAME FROM DUAL;
+
+EXECUTE EMP02_PKG.NEW_EMP02_PROC('Roberts',NULL);
+SELECT * FROM EMP02; -- 신입사원 들어감
+
+EXECUTE EMP02_PKG.RETIRE_EMP02_PROC(203);
+SELECT * FROM EMP02;
+EXECUTE EMP02_PKG.RETIRE_EMP02_PROC(500);
