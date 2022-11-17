@@ -241,7 +241,7 @@ COMMIT;
 
 SELECT * FROM BOOKS ORDER BY book_id;
 
--- 프로시저 생성
+-- 프로시저 생성 1
 -- BOOKS_PROC 라는 이름으로 프로시저를 생성하라.
 -- 책번호를 매개변수로 프로시저에 전달하면 책제목으로 외부로 반환하는 프로시저를 생성한다.
 CREATE OR REPLACE PROCEDURE BOOKS_PROC(vbook_id IN books.book_id%TYPE, vtitle OUT books.title%TYPE)
@@ -264,13 +264,13 @@ BEGIN
 END;
 /
 
+-- 프로시저 생성 2
 -- BOOKS 테이블의 전체 데이터를 외부로 반환하는 프로시저를 생성하라(BOOKS_SELECT). 커서변수
--- 프로시저 생성
 CREATE OR REPLACE PROCEDURE BOOKS_SELECT(v1 OUT SYS_REFCURSOR)
 IS
 BEGIN
     -- 커서 변수와 커서 정의 쿼리문 연결
-    OPEN v1 FOR SELECT book_id, title, publisher, year, price FROM books;
+    OPEN v1 FOR SELECT book_id, title, publisher, year, price FROM books ORDER BY book_id;
 END;
 /
 SHOW ERROR;
@@ -291,3 +291,18 @@ BEGIN
     END LOOP;    
 END;
 /
+
+-- 프로시저 생성 3
+-- 책테이블에 데이터 입력하는 프로시저 생성(BOOKS_INPUT)
+CREATE OR REPLACE PROCEDURE BOOKS_INPUT
+ (vtitle IN books.title%TYPE, vpublisher IN books.publisher%TYPE,
+  vyear IN books.year%TYPE, vprice IN books.price%TYPE)
+IS
+BEGIN
+    INSERT INTO BOOKS(book_id, title, publisher, year, price)
+    VALUES(books_seq.nextval, vtitle, vpublisher, vyear, vprice);
+    COMMIT;
+END;
+/
+
+EXECUTE BOOKS_INPUT('HEAD FIRST SQL','OREILLY','2007',43000);
