@@ -265,18 +265,29 @@ END;
 /
 
 -- BOOKS 테이블의 전체 데이터를 외부로 반환하는 프로시저를 생성하라(BOOKS_SELECT). 커서변수
+-- 프로시저 생성
 CREATE OR REPLACE PROCEDURE BOOKS_SELECT(v1 OUT SYS_REFCURSOR)
 IS
-    vbooks books%ROWTYPE;
 BEGIN
-    -- 커서 변수를 사용한 커서 정의 및 오픈
+    -- 커서 변수와 커서 정의 쿼리문 연결
     OPEN v1 FOR SELECT book_id, title, publisher, year, price FROM books;
+END;
+/
+SHOW ERROR;
+
+-- 프로시저 확인
+DECLARE
+    vbooks books%ROWTYPE;
+    v1 SYS_REFCURSOR;
+BEGIN
+    -- 프로시저 실행
+    books_select(v1); 
     -- LOOP문
     LOOP
-        --커서 변수를 사용해 결과 집합을 EMPNAME 변수에 할당
+        --커서 변수를 사용해 결과 집합을 변수에 할당
         FETCH v1 INTO vbooks.book_id, vbooks.title, vbooks.publisher, vbooks.year, vbooks.price;
         EXIT WHEN v1%NOTFOUND;
-        DBMS_OUTPUT.PUT_LINE('책번호:'||vbooks.book_id||', 책제목:'||vbooks.title||', 출판사:'||vbooks.publisher||', 출간연도:'||vbooks.year||', 가격:'||vbooks.price); -- 사원명을 출력
+        DBMS_OUTPUT.PUT_LINE(vbooks.book_id||' '||vbooks.title||' '||vbooks.publisher||' '||vbooks.year||' '||vbooks.price);
     END LOOP;    
 END;
 /
