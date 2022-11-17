@@ -208,6 +208,11 @@ ORDER BY SD_NAME;
 -- DROP VIEW VIEW_TRAINEE;
 SELECT * FROM VIEW_TRAINEE;
 
+-- <jdbc 예제>
+commit;
+SELECT * FROM SUBJECT;
+
+
 -- <예제> 아래의 내용으로 도서테이블(books) 및 시퀀스(books_seq)를 생성하시오(사용자: JAVAUSER)
 -- BOOKS 테이블 생성
 CREATE TABLE BOOKS(
@@ -296,13 +301,33 @@ END;
 -- 책테이블에 데이터 입력하는 프로시저 생성(BOOKS_INPUT)
 CREATE OR REPLACE PROCEDURE BOOKS_INPUT
  (vtitle IN books.title%TYPE, vpublisher IN books.publisher%TYPE,
-  vyear IN books.year%TYPE, vprice IN books.price%TYPE)
+  vyear IN books.year%TYPE, vprice IN books.price%TYPE,
+  msg OUT VARCHAR2)
 IS
+    NODATA EXCEPTION;
 BEGIN
     INSERT INTO BOOKS(book_id, title, publisher, year, price)
     VALUES(books_seq.nextval, vtitle, vpublisher, vyear, vprice);
+    
+    IF SQL%NOTFOUND THEN -- 삽입 적용된 행의 수 1인데 NOTFOUND라면
+        RAISE NODATA;
+    ELSE
+        msg := '데이터 입력이 완료되었습니다';
+    END IF;
     COMMIT;
+    
+    EXCEPTION
+        WHEN NODATA THEN
+            msg := '책 정보 입력시 문제가 생겨 정상적으로 처리하지 못했습니다';
+        ROLLBACK;    
 END;
 /
-
-EXECUTE BOOKS_INPUT('HEAD FIRST SQL','OREILLY','2007',43000);
+SHOW ERROR;
+-- 프로시저 확인
+-- OUT 매개변수 받아와야 하니 변수가 필요하여 DECLARE로 실행
+DECLARE
+    msg VARCHAR2(70);
+BEGIN
+    BOOKS_INPUT('HEAD FIRST SQL','OREILLY','2007',43000);
+END;
+/
