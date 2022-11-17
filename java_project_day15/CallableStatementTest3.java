@@ -19,15 +19,8 @@ public class CallableStatementTest3 {
             cstmt.setString(3, year);
             cstmt.setInt(4, price);
             cstmt.registerOutParameter(5, Types.VARCHAR);
-//            cstmt.executeQuery();
-
-            int insertCount = cstmt.executeUpdate();
-
-            if(insertCount==1) // 입력이 정상적으로 완료되면 반환값 1
-                System.out.println("레코드 추가 성공");
-            else
-                System.out.println("레코드 추가 실패");
-
+            
+            cstmt.executeQuery();
             System.out.println(cstmt.getString(5));
         } catch (InputMismatchException i) {
             System.out.println("입력값이 잘못되었습니다.");
