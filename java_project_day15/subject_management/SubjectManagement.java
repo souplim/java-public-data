@@ -11,6 +11,8 @@ public class SubjectManagement {
         System.out.println("\n**** subject 테이블 데이터 출력 ****");
         System.out.println("번호\t학과번호\t학과명");
         if(svo.size()>0){
+//            for(int i=0; i<svo.size(); i++){
+//                SubjectVO sub = svo.get(i);
             for(SubjectVO sub : svo){
                 System.out.print(sub.getNo()+"\t"+sub.getS_num()+"\t"+sub.getS_name()+"\n");
             }
