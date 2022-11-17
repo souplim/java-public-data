@@ -9,14 +9,17 @@ public class CallableStatementTest3 {
     static void books_input(String title, String publisher, String year, int price){
         Connection con = null;
         CallableStatement cstmt = null;
+        ResultSet rs;
         try {
             con = ConnectDatabase.makeConnection("javauser","java1234");
 
-            cstmt = con.prepareCall("{call books_input(?, ?, ?, ?)}");
+            cstmt = con.prepareCall("{call books_input(?, ?, ?, ?, ?)}");
             cstmt.setString(1, title);
             cstmt.setString(2, publisher);
             cstmt.setString(3, year);
             cstmt.setInt(4, price);
+            cstmt.registerOutParameter(5, Types.VARCHAR);
+//            cstmt.executeQuery();
 
             int insertCount = cstmt.executeUpdate();
 
@@ -25,6 +28,7 @@ public class CallableStatementTest3 {
             else
                 System.out.println("레코드 추가 실패");
 
+            System.out.println(cstmt.getString(5));
         } catch (InputMismatchException i) {
             System.out.println("입력값이 잘못되었습니다.");
         } catch (SQLException s){
