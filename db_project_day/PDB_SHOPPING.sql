@@ -134,6 +134,6 @@ SELECT SUBSTR(R.reserv_date,5,2) month, SUM(O.sales) sales, SUM(DECODE(I.product
         ROUND((SUM(DECODE(I.product_desc, '온라인_전용상품', O.sales))/SUM(O.sales)*100),1) "전용상품 매출 기여율",
         COUNT(R.reserv_no) "총 예약 건수", COUNT(DECODE(R.cancel, 'Y', R.cancel)) "예약 취소 건수"
 FROM order_info O RIGHT OUTER JOIN reservation R ON O.reserv_no = R.reserv_no
-                  INNER JOIN item I ON O.item_id = I.item_id                
+                  LEFT OUTER JOIN item I ON O.item_id = I.item_id                
 GROUP BY SUBSTR(R.reserv_date,5,2)
 ORDER BY SUBSTR(R.reserv_date,5,2);
