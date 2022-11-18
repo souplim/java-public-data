@@ -30,5 +30,4 @@ public class SubjectVO {
     public String toString(){
         return "Subject [no="+no+", s_num="+s_num+", s_name="+s_name+"]";
     }
-
 }
