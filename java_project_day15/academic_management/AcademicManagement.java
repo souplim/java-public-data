@@ -31,23 +31,29 @@ public class AcademicManagement {
             if(topMenuChoice == 1){
                 switch(subMenuChoice){
                     case 1:
-                        subject.read();
+                        subject.read("select");
                         break;
                     case 2:
+                        subject.create();
                         break;
                     case 3:
+                        subject.update();
                         break;
                     case 4:
+                        subject.delete();
                         break;
                     case 5:
+                        subject.read("search");
                         break;
                     default :
-                        System.out.println("검색, 입력, 수정, 삭제, 검색 중에 하나를 선택해주세요");
+                        System.out.println("조회, 입력, 수정, 삭제, 검색 중에 하나를 선택해주세요");
                 }
             } else if (topMenuChoice == 2){
                 System.out.println("준비중");
+            } else {
+                System.out.println("프로그램 종료");
+                System.exit(0);
             }
         }
-
     }
 }
