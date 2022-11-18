@@ -212,6 +212,32 @@ SELECT * FROM VIEW_TRAINEE;
 commit;
 SELECT * FROM SUBJECT;
 
+-- 학과번호 자동 구하기
+SELECT '0'||(NVL(MAX(S_NUM),'01')+1) AS subjectNum FROM SUBJECT;
+-- 다른 방법
+SELECT NVL(LPAD(MAX(TO_NUMBER(LTRIM(S_NUM,'0')))+1,2,'0'),'01') AS subjectNum 
+FROM SUBJECT;
+-- 로직 확인
+SELECT NVL(LPAD(MAX(TO_NUMBER(LTRIM(NULL,'0')))+1,2,'0'),'01') FROM DUAL;
+-- 학과 테이블에 데이터 입력
+INSERT INTO SUBJECT(no, s_num, s_name) VALUES(?,?);
+-- 학과 테이블 데이터 수정
+UPDATE SUBJECT SET s_name = ? WHERE s_name = ?;
+-- 학과에 소속된 학생이 있는지 확인
+SELECT COUNT(*) 
+FROM STUDENT ST INNER JOIN SUBJECT SB ON ST.s_num = SB.s_num
+WHERE SB.no = ?;
+-- 학과 테이블의 데이터 삭제
+DELETE FROM SUBJECT WHERE no = ?;
+
+
+
+
+
+
+
+
+
 
 -- <예제> 아래의 내용으로 도서테이블(books) 및 시퀀스(books_seq)를 생성하시오(사용자: JAVAUSER)
 -- BOOKS 테이블 생성
