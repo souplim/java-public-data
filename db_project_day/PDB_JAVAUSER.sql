@@ -58,17 +58,17 @@ CREATE TABLE STUDENT(
 
 -- 학생테이블 데이터 입력
 INSERT INTO STUDENT(NO, SD_NUM, SD_NAME, SD_ID, SD_PASSWD, S_NUM, SD_BIRTH, SD_PHONE, SD_ADDRESS, SD_EMAIL)
-VALUES(1,06010001,'김정수','javajsp','1234','01','19920514','010-1234-1234','서울시 서대문구 창전동','kjs@gmail.com');
+VALUES(1,'06010001','김정수','javajsp','1234','01','19920514','010-1234-1234','서울시 서대문구 창전동','kjs@gmail.com');
 INSERT INTO STUDENT(NO, SD_NUM, SD_NAME, SD_ID, SD_PASSWD, S_NUM, SD_BIRTH, SD_PHONE, SD_ADDRESS, SD_EMAIL)
-VALUES(2,95010002,'김수현','jdbcmania','4321','01','19840403','010-1234-1234','서울시 서초구 양재동','ksh@gmail.com');
+VALUES(2,'95010002','김수현','jdbcmania','4321','01','19840403','010-1234-1234','서울시 서초구 양재동','ksh@gmail.com');
 INSERT INTO STUDENT(NO, SD_NUM, SD_NAME, SD_ID, SD_PASSWD, S_NUM, SD_BIRTH, SD_PHONE, SD_ADDRESS, SD_EMAIL)
-VALUES(3,98040001,'공지영','gonji','1111','04','19870506','010-1234-1234','부산광역시 해운대구 반송동','kjy@gmail.com');
+VALUES(3,'98040001','공지영','gonji','1111','04','19870506','010-1234-1234','부산광역시 해운대구 반송동','kjy@gmail.com');
 INSERT INTO STUDENT(NO, SD_NUM, SD_NAME, SD_ID, SD_PASSWD, S_NUM, SD_BIRTH, SD_PHONE, SD_ADDRESS, SD_EMAIL)
-VALUES(4,02050001,'조수영','water','9987','05','19801213','010-1234-1234','대전광역시 중구 은행동','jsy@gmail.com');
+VALUES(4,'02050001','조수영','water','9987','05','19801213','010-1234-1234','대전광역시 중구 은행동','jsy@gmail.com');
 INSERT INTO STUDENT(NO, SD_NUM, SD_NAME, SD_ID, SD_PASSWD, S_NUM, SD_BIRTH, SD_PHONE, SD_ADDRESS, SD_EMAIL)
-VALUES(5,94040002,'최경란','novel','8765','04','19760708','010-1234-1234','경기도 수원시 장안구 이목동','ckr@gmail.com');
+VALUES(5,'94040002','최경란','novel','8765','04','19760708','010-1234-1234','경기도 수원시 장안구 이목동','ckr@gmail.com');
 INSERT INTO STUDENT(NO, SD_NUM, SD_NAME, SD_ID, SD_PASSWD, S_NUM, SD_BIRTH, SD_PHONE, SD_ADDRESS, SD_EMAIL)
-VALUES(6,08020001,'안익태','korea','4565','02','19881104','010-1234-1234','서울시 역삼동','ait@gmail.com');
+VALUES(6,'08020001','안익태','korea','4565','02','19881104','010-1234-1234','서울시 역삼동','ait@gmail.com');
 
 SELECT * FROM STUDENT;
 
@@ -211,7 +211,8 @@ SELECT * FROM VIEW_TRAINEE;
 -- <jdbc 예제>
 commit;
 SELECT * FROM SUBJECT;
-
+-- 학과 정보 모두 조회
+SELECT no, s_num, s_name FROM subject ORDER BY no;
 -- 학과번호 자동 구하기
 SELECT '0'||(NVL(MAX(S_NUM),'01')+1) AS subjectNum FROM SUBJECT;
 -- 다른 방법
@@ -229,6 +230,19 @@ FROM STUDENT ST INNER JOIN SUBJECT SB ON ST.s_num = SB.s_num
 WHERE SB.no = ?;
 -- 학과 테이블의 데이터 삭제
 DELETE FROM SUBJECT WHERE no = ?;
+
+
+-- 학번(연도2자리 학과2자리 일련번호) 자동 생성
+SELECT SUBSTR(SUBSTR(sd_birth,1,4)+19,3,2)||S_NUM||LPAD(NO,4,'0') AS studentNum FROM student;
+-- 학생 테이블에 데이터 입력
+INSERT INTO STUDENT(NO, SD_NUM, SD_NAME, SD_ID, SD_PASSWD, S_NUM, SD_BIRTH, SD_PHONE, SD_ADDRESS, SD_EMAIL) 
+VALUES(STUDENT_SEQ.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+INSERT INTO STUDENT(NO, SD_NUM, SD_NAME, SD_ID, SD_PASSWD, S_NUM, SD_BIRTH, SD_PHONE, SD_ADDRESS, SD_EMAIL) 
+VALUES(STUDENT_SEQ.nextval, SUBSTR(SUBSTR(sd_birth,1,4)+19,3,2)||S_NUM||LPAD(NO,4,'0'), '임은재', 'ej0514', '1234', '01', '19920514', '010-4355-8742', '서울시 강남구', 'ej0514@hanmail.net');
+
+
+
+
 
 
 
