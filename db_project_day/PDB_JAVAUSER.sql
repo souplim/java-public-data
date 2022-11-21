@@ -239,7 +239,8 @@ INSERT INTO STUDENT(NO, SD_NUM, SD_NAME, SD_ID, SD_PASSWD, S_NUM, SD_BIRTH, SD_P
 VALUES(STUDENT_SEQ.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 INSERT INTO STUDENT(NO, SD_NUM, SD_NAME, SD_ID, SD_PASSWD, S_NUM, SD_BIRTH, SD_PHONE, SD_ADDRESS, SD_EMAIL) 
 VALUES(STUDENT_SEQ.nextval, SUBSTR(SUBSTR(sd_birth,1,4)+19,3,2)||S_NUM||LPAD(NO,4,'0'), '임은재', 'ej0514', '1234', '01', '19920514', '010-4355-8742', '서울시 강남구', 'ej0514@hanmail.net');
-
+-- 학생 테이블 데이터 수정
+UPDATE STUDENT SET sd_passwd = ? WHERE sd_num = ?;
 
 
 
