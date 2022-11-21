@@ -41,16 +41,39 @@ public class StudentManagement {
             sd_email = MenuViewer.keyboard.nextLine();
         }
 
+        if(!mode.equals("delete")){ // 수정할 내용
+            System.out.print("학번 입력 : ");
+            sd_num = MenuViewer.keyboard.nextLine();
+        }
 
-
-        StudentVO sub = new StudentVO(sd_num, sd_name, sd_id, sd_passwd, s_num, sd_birth, sd_phone, sd_address, sd_email, sd_date);
+        StudentVO sub = new StudentVO(sd_num, sd_name, sd_id, sd_passwd, s_num, sd_birth, sd_phone, sd_address, sd_email);
         return sub;
     }
 
     private int inputDataNo(){
-        int no;
-        System.out.print("일련변호 입력 : ");
-        no = MenuViewer.keyboard.nextInt();
-        return no;
+        int sd_num;
+        System.out.print("학번 입력 : "); // 해당 학번을 가진 학생의 정보 수정
+        sd_num = MenuViewer.keyboard.nextInt();
+        return sd_num;
+    }
+
+    public void create() {
+        StudentVO svo = inputData("input");
+        if(dao.studentInsert(svo))
+            System.out.println("학생 데이터 입력 성공");
+        else
+            System.out.println("학생 데이터 입력 실패");
+    }
+
+    public void update() {
+        StudentVO svo = inputData("update");
+
+        int no = inputDataNo(); // 번호
+        svo.setNo(no);
+
+        if(dao.studentUpdate(svo))
+            System.out.println("학과 데이터 수정 성공");
+        else
+            System.out.println("학과 데이터 수정 실패");
     }
 }
