@@ -159,5 +159,8 @@ public class StudentDAO {
         return success;
     }
 
-
+    public boolean studentUpdate(StudentVO svo) { // 어떤 부분을 수정하게 만들것인가?
+        StringBuffer sql = new StringBuffer();
+        sql.append("UPDATE STUDENT SET sd_passwd = ? WHERE sd_num = ?"); // 일단 패스워드 수정하게 하기
+    }
 }
