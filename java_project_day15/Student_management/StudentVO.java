@@ -1,4 +1,4 @@
-package Student_management;
+package student_management;
 
 import java.util.Date;
 
@@ -19,6 +19,9 @@ public class StudentVO {
     private Date sd_date;       // 등록일자
 
     public StudentVO(){ }
+    public StudentVO(String sd_num, String sd_name, String sd_id, String sd_passwd, String s_num, String sd_birth, String sd_phone, String sd_address, String sd_email){
+        this(0, sd_num, sd_name, sd_id, sd_passwd, s_num, sd_birth, sd_phone, sd_address, sd_email, null);
+    }
     public StudentVO(int no, String sd_num, String sd_name, String sd_id, String sd_passwd, String s_num, String sd_birth, String sd_phone, String sd_address, String sd_email, Date sd_date) {
         this.no = no;
         this.sd_num = sd_num;
