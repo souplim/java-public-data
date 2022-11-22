@@ -50,8 +50,8 @@ public class AcademicManagement {
                     default :
                         System.out.println("조회, 입력, 수정, 삭제, 검색 중에 하나를 선택해주세요");
                 }
-            } else if (topMenuChoice == 2){
-                switch(subMenuChoice){
+            } else if (topMenuChoice == 2) {
+                switch (subMenuChoice) {
                     case 1:
                         student.read("select");
                         break;
@@ -67,8 +67,9 @@ public class AcademicManagement {
                     case 5:
                         student.read("search");
                         break;
-                    default :
+                    default:
                         System.out.println("조회, 입력, 수정, 삭제, 검색 중에 하나를 선택해주세요");
+                }
             } else {
                 System.out.println("프로그램 종료");
                 System.exit(0);
