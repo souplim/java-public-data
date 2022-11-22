@@ -38,7 +38,7 @@ public class StudentDAO {
     // 학생테이블에서 모든 레코드 반환하는 메서드
     public ArrayList<StudentVO> getStudentTotal(StudentVO vo){
         StringBuffer sql = new StringBuffer();
-        sql.append("SELECT no, sd_num, sd_id, sd_passwd, s_num, sd_birth, sd_phone, sd_address, sd_email, sd_date FROM STUDENT ");
+        sql.append("SELECT no, sd_num, sd_name, sd_id, sd_passwd, s_num, sd_birth, sd_phone, sd_address, sd_email, sd_date FROM STUDENT ");
         if(vo != null)
             sql.append("WHERE sd_num LIKE ? ");
         sql.append("ORDER BY no");
@@ -60,6 +60,7 @@ public class StudentDAO {
                 svo = new StudentVO();
                 svo.setNo(rs.getInt("no"));
                 svo.setSd_num(rs.getString("sd_num"));
+                svo.setSd_name(rs.getString("sd_name"));
                 svo.setSd_id(rs.getString("sd_id"));
                 svo.setSd_passwd(rs.getString("sd_passwd"));
                 svo.setS_num(rs.getString("s_num"));
@@ -69,7 +70,7 @@ public class StudentDAO {
                 svo.setSd_email(rs.getString("sd_email"));
                 svo.setSd_date(rs.getDate("sd_date"));
 
-                list.add(vo);
+                list.add(svo);
             }
         } catch (SQLException se){
             System.out.println("조회에 문제가 있어 잠시 후에 다시 진행해주세요");
@@ -88,35 +89,44 @@ public class StudentDAO {
     }
 
     // 학번 자동 구하기
-    public String getStudentNum(){
-        StringBuffer sql = new StringBuffer();
-        sql.append("SELECT SUBSTR(SUBSTR(sd_birth,1,4)+19,3,2)||S_NUM||LPAD(NO,4,'0') AS studentNum FROM student");
+    public String getStudentNum(int no, String s_num, String sd_birth){
+        String ss_birth = Integer.parseInt(sd_birth.substring(0,4))+19+"";
+        String sss_birth = ss_birth.substring(2,4);
+        String ss_no = String.format("%04d", no);
 
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        String sdnum = "";
+        String sdnum = sss_birth+s_num+ss_no;
 
-        try {
-            conn = getConnection(); // 여기서 만든 메서드 호출하여 서버연결
-            pstmt = conn.prepareStatement(sql.toString());
-            rs = pstmt.executeQuery();
-
-            while(rs.next())
-                sdnum = rs.getString("studentNum");
-        } catch (SQLException e){
-            System.out.println("조회에 문제가 있어 잠시 후에 다시 진행해주세요");
-        } finally {
-            try {
-                if(rs != null) rs.close();
-                if(pstmt != null) pstmt.close();
-                if(conn != null) conn.close();
-            } catch (SQLException e){
-                System.out.println("DB 연동 해제 ERROR = ["+e+"]");
-            }
-        }
         return sdnum;
     }
+//    public String getStudentNum(){
+//        StringBuffer sql = new StringBuffer();
+//        sql.append("SELECT SUBSTR(SUBSTR(sd_birth,1,4)+19,3,2)||S_NUM||LPAD(NO,4,'0') AS studentNum FROM student");
+//
+//        Connection conn = null;
+//        PreparedStatement pstmt = null;
+//        ResultSet rs = null;
+//        String sdnum = "";
+//
+//        try {
+//            conn = getConnection(); // 여기서 만든 메서드 호출하여 서버연결
+//            pstmt = conn.prepareStatement(sql.toString());
+//            rs = pstmt.executeQuery();
+//
+//            while(rs.next())
+//                sdnum = rs.getString("studentNum");
+//        } catch (SQLException e){
+//            System.out.println("조회에 문제가 있어 잠시 후에 다시 진행해주세요");
+//        } finally {
+//            try {
+//                if(rs != null) rs.close();
+//                if(pstmt != null) pstmt.close();
+//                if(conn != null) conn.close();
+//            } catch (SQLException e){
+//                System.out.println("DB 연동 해제 ERROR = ["+e+"]");
+//            }
+//        }
+//        return sdnum;
+//    }
 
     public boolean studentInsert(StudentVO svo){
         StringBuffer sql = new StringBuffer();
@@ -159,8 +169,77 @@ public class StudentDAO {
         return success;
     }
 
-    public boolean studentUpdate(StudentVO svo) { // 어떤 부분을 수정하게 만들것인가?
+    public boolean studentUpdate(StudentVO svo) { // 어떤 부분을 수정하게 만들것인가? 일단 전부 수정하게 하기
         StringBuffer sql = new StringBuffer();
-        sql.append("UPDATE STUDENT SET sd_passwd = ? WHERE sd_num = ?"); // 일단 패스워드 수정하게 하기
+        sql.append("UPDATE STUDENT SET sd_name=?, sd_id=?, sd_passwd=?, s_num=?, sd_birth=?, sd_phone=?, sd_address=?, sd_email=? WHERE sd_num = ?");
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        boolean success = false;
+
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql.toString());
+
+            pstmt.setString(1, svo.getSd_name());
+            pstmt.setString(2, svo.getSd_id());
+            pstmt.setString(3, svo.getSd_passwd());
+            pstmt.setString(4, svo.getS_num());
+            pstmt.setString(5, svo.getSd_birth());
+            pstmt.setString(6, svo.getSd_phone());
+            pstmt.setString(7, svo.getSd_address());
+            pstmt.setString(8, svo.getSd_email());
+            pstmt.setString(9, svo.getSd_num());
+
+            int updateCount = pstmt.executeUpdate();
+
+            if(updateCount==1) {
+                success = true;
+                System.out.println("수정이 정상적으로 완료되었습니다.");
+            }
+        } catch (SQLException e){
+            System.out.println("수정에 문제가 있어 잠시 후에 다시 진행해주세요");
+        } finally {
+            try {
+                if(pstmt != null) pstmt.close();
+                if(conn != null) conn.close();
+            } catch (SQLException e){
+                System.out.println("DB 연동 해제 ERROR = ["+e+"]");
+            }
+        }
+        return success;
+    }
+
+    public boolean studentDelete(StudentVO svo) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("DELETE FROM STUDENT WHERE sd_num = ?");
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        boolean success = false;
+
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql.toString());
+
+            pstmt.setString(1, svo.getSd_num()); // update, delete의 기준은 기본키
+
+            int insertCount = pstmt.executeUpdate();
+
+            if (insertCount == 1) // 삭제가 정상적으로 완료되면 적용된 행의 수인 1 반환
+                success = true;
+        } catch(SQLException se){
+            System.out.println("삭제에 문제가 있어 잠시 후에 다시 진행해주세요");
+        } catch(Exception e){
+            System.out.println("ERROR=[" + e + "]");
+        } finally{
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.out.println("DB 연동 해제 ERROR = [" + e + "]");
+            }
+        }
+        return success;
     }
 }
