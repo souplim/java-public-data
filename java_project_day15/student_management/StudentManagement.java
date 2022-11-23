@@ -34,6 +34,12 @@ public class StudentManagement {
         String sd_num = null, sd_name = null, sd_id = null, sd_passwd = null, s_num = null, sd_birth = null, sd_phone = null, sd_address = null, sd_email = null;
 
         if(mode.equals("input")){
+            System.out.print("학과코드 입력 : ");
+            s_num = MenuViewer.keyboard.nextLine();
+            StudentVO s = new StudentVO(sd_num, sd_name, sd_id, sd_passwd, s_num, sd_birth, sd_phone, sd_address, sd_email);
+            sd_num = dao.getStudentNum(s);
+            System.out.println(sd_num);
+
             System.out.print("이름 입력 : ");
             sd_name = MenuViewer.keyboard.nextLine();
             System.out.print("아이디 입력 : ");
@@ -50,10 +56,7 @@ public class StudentManagement {
             sd_address = MenuViewer.keyboard.nextLine();
             System.out.print("이메일 주소 입력 : ");
             sd_email = MenuViewer.keyboard.nextLine();
-            System.out.print("학번 : ");
-//            sd_num = dao.getStudentNum(); // 자동으로 학번 부여 --?
-//            sd_num = dao.getStudentNum(no, s_num, sd_birth); -- no를 여기서 부여?
-            System.out.println(sd_num);
+
         }
 
         if(mode.equals("search")){
@@ -66,8 +69,8 @@ public class StudentManagement {
             System.out.print("학번 : ");
             sd_num = MenuViewer.keyboard.nextLine();
         }
-        StudentVO sub = new StudentVO(sd_num, sd_name, sd_id, sd_passwd, s_num, sd_birth, sd_phone, sd_address, sd_email);
-        return sub;
+        StudentVO stu = new StudentVO(sd_num, sd_name, sd_id, sd_passwd, s_num, sd_birth, sd_phone, sd_address, sd_email);
+        return stu;
     }
 
     private String inputDataNum(){
@@ -108,6 +111,5 @@ public class StudentManagement {
             System.out.println("학과 데이터 삭제 성공");
         else
             System.out.println("학과 데이터 삭제 실패");
-
     }
 }
