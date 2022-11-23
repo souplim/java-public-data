@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>신청서 작성</title>
+		<style type="text/css"> /* css 적용 */
+			table{ border-collapse: collapse; }
+			#course { border-top: 1px solid #000; 
+					  border-bottom: 1px solid #000; }
+		    #course th, #course td {
+		    		  border-bottom: 1px dotted #000; }
+    		#application th, #application td {border: 1px solid #000;}   
+		</style>
+	</head>
+	<body>
+		<h3>강좌 소개</h3>
+		<table id="course">
+			<tr>
+				<th>번호</th>
+				<th>프로그램명</th>
+				<th>접수기간<br/>교육기간</th>
+				<th>교육동</th>
+				<th>교육장소</th>
+				<th>수강료</th>
+				<th>선정방법</th>
+				<th>정원/대기/접수</th>
+				<th>접수상태</th>
+			</tr>
+			<tr>
+				<td>1</td>
+				<td>2022년 성인기초영어교육 1기</td>
+				<td>2022-04-15 ~ 2022-04-28</br>2022-05-03 ~2022-07-19</td>
+				<td>평생학습센터마포구</td>
+				<td>평생학습센터 제2강의실</td>
+				<td>15,000원</td>
+				<td>선착순</td>
+				<td>20/20/0</td>
+				<td><button type="button">접수예정</button></td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td>파크골프교실(1기)</td>
+				<td>2022-04-01 ~ 2022-04-10</br>2022-05-10 ~2022-06-09</td>
+				<td>생활체육교실</td>
+				<td>노을공원 파크골프장</td>
+				<td>무료</td>
+				<td>무작위추첨</td>
+				<td>20/40/0</td>
+				<td><button type="button">접수마감</button></td>
+			</tr>
+			<tr>
+				<td>3</td>
+				<td>[기초]재미있는 세상을 여는 창, 윈도우</td>
+				<td>2022-03-28 ~ 2022-03-31</br>2022-04-05 ~2022-04-28</td>
+				<td>정보화교육</td>
+				<td>실시간 온라인 강의</td>
+				<td>무료</td>
+				<td>선착순</td>
+				<td>30/50/8</td>
+				<td><button type="button">교육중</button></td>
+			</tr>
+		</table>
+		<h3>수강 신청서 작성</h3>
+		<form>
+			<table id="application">
+				<tr>
+					<td colspan="2">인적사항</td>
+				</tr>
+				<tr>
+					<td>성명</td>
+					<td><input type="text" name="name" /></td>
+				</tr>
+				<tr>
+					<td>주소</td>
+					<td><input type="text" name="address" /></td>
+				</tr>
+				<tr>
+					<td>성별</td>
+					<td><input type="radio" name="gender" value="male" checked="checked" /><label>남성</label>
+						<input type="radio" name="gender" value="female" /><label>여성</label>
+					</td>
+				</tr>
+				<tr>
+					<td>강좌명</td>
+					<td><select name="lesson">
+							<option value="2022년 성인기초영어교육 1기">2022년 성인기초영어교육 1기</option>
+							<option value="파크골프교실 (1기)" selected="selected">파크골프교실 (1기)</option> /*첫번째로 보여지는 항목 설정*/
+							<option value="[기초]재미있는 세상을 여는 창, 윈도우">[기초]재미있는 세상을 여는 창, 윈도우</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>비고</td>
+					<td><textarea name="comments" rows="4" cols="40"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center">
+						<input type="submit" value="신청"/>
+						<input type="reset" value="취소"/>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</body>
+</html>
