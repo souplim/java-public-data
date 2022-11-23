@@ -89,44 +89,37 @@ public class StudentDAO {
     }
 
     // 학번 자동 구하기
-    public String getStudentNum(int no, String s_num, String sd_birth){
-        String ss_birth = Integer.parseInt(sd_birth.substring(0,4))+19+"";
-        String sss_birth = ss_birth.substring(2,4);
-        String ss_no = String.format("%04d", no);
+    public String getStudentNum(StudentVO vo){
+        StringBuffer sql = new StringBuffer();
+        sql.append("SELECT SUBSTR(TO_CHAR(sd_date,'YYYY-MM-DD'),3,2)||NVL(LPAD(MAX(TO_NUMBER(LTRIM(?,'0')))+1,2,'0'),'01')||LPAD(NVL(MAX(no),1),4,'0') AS studentNum FROM student");
 
-        String sdnum = sss_birth+s_num+ss_no;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        String sdnum = "";
 
+        try {
+            conn = getConnection(); // 여기서 만든 메서드 호출하여 서버연결
+            pstmt = conn.prepareStatement(sql.toString());
+            if(vo!=null)
+                pstmt.setString(1, vo.getS_num());
+            rs = pstmt.executeQuery();
+
+            while(rs.next())
+                sdnum = rs.getString("studentNum");
+        } catch (SQLException e){
+            System.out.println("조회에 문제가 있어 잠시 후에 다시 진행해주세요");
+        } finally {
+            try {
+                if(rs != null) rs.close();
+                if(pstmt != null) pstmt.close();
+                if(conn != null) conn.close();
+            } catch (SQLException e){
+                System.out.println("DB 연동 해제 ERROR = ["+e+"]");
+            }
+        }
         return sdnum;
     }
-//    public String getStudentNum(){
-//        StringBuffer sql = new StringBuffer();
-//        sql.append("SELECT SUBSTR(SUBSTR(sd_birth,1,4)+19,3,2)||S_NUM||LPAD(NO,4,'0') AS studentNum FROM student");
-//
-//        Connection conn = null;
-//        PreparedStatement pstmt = null;
-//        ResultSet rs = null;
-//        String sdnum = "";
-//
-//        try {
-//            conn = getConnection(); // 여기서 만든 메서드 호출하여 서버연결
-//            pstmt = conn.prepareStatement(sql.toString());
-//            rs = pstmt.executeQuery();
-//
-//            while(rs.next())
-//                sdnum = rs.getString("studentNum");
-//        } catch (SQLException e){
-//            System.out.println("조회에 문제가 있어 잠시 후에 다시 진행해주세요");
-//        } finally {
-//            try {
-//                if(rs != null) rs.close();
-//                if(pstmt != null) pstmt.close();
-//                if(conn != null) conn.close();
-//            } catch (SQLException e){
-//                System.out.println("DB 연동 해제 ERROR = ["+e+"]");
-//            }
-//        }
-//        return sdnum;
-//    }
 
     public boolean studentInsert(StudentVO svo){
         StringBuffer sql = new StringBuffer();
