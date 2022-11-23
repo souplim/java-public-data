@@ -231,9 +231,14 @@ WHERE SB.no = ?;
 -- 학과 테이블의 데이터 삭제
 DELETE FROM SUBJECT WHERE no = ?;
 
-
 -- 학번(연도2자리 학과2자리 일련번호) 자동 생성
-SELECT SUBSTR(SUBSTR(sd_birth,1,4)+19,3,2)||S_NUM||LPAD(NO,4,'0') AS studentNum FROM student;
+SELECT * FROM STUDENT;
+SELECT SUBSTR(TO_CHAR(sd_date,'YYYY-MM-DD'),3,2) FROM STUDENT;
+SELECT NVL(LPAD(MAX(TO_NUMBER(LTRIM(s_num,'0')))+1,2,'0'),'01') FROM STUDENT;
+SELECT LPAD(NVL(MAX(no),1),4,'0') FROM STUDENT;
+
+SELECT SUBSTR(TO_CHAR(sd_date,'YYYY-MM-DD'),3,2)||NVL(LPAD(MAX(TO_NUMBER(LTRIM(s_num,'0')))+1,2,'0'),'01')||LPAD(NVL(MAX(no),1),4,'0') AS studentNum FROM student;
+
 -- 학생 테이블에 데이터 입력
 INSERT INTO STUDENT(NO, SD_NUM, SD_NAME, SD_ID, SD_PASSWD, S_NUM, SD_BIRTH, SD_PHONE, SD_ADDRESS, SD_EMAIL) 
 VALUES(STUDENT_SEQ.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?);
@@ -241,6 +246,10 @@ INSERT INTO STUDENT(NO, SD_NUM, SD_NAME, SD_ID, SD_PASSWD, S_NUM, SD_BIRTH, SD_P
 VALUES(STUDENT_SEQ.nextval, SUBSTR(SUBSTR(sd_birth,1,4)+19,3,2)||S_NUM||LPAD(NO,4,'0'), '임은재', 'ej0514', '1234', '01', '19920514', '010-4355-8742', '서울시 강남구', 'ej0514@hanmail.net');
 -- 학생 테이블 데이터 수정
 UPDATE STUDENT SET sd_passwd = ? WHERE sd_num = ?;
+
+
+
+
 
 
 
