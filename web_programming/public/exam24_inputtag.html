@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>입력 양식 태그의 추가 속성 확인</title>
+		<style type="text/css">
+			table{ width:550px; }
+		</style>
+	</head>
+	<body>
+		<h4>color, number, range 입력 예제</h4>
+		<form>
+			<table>
+				<colgroup><!-- 한칸 당 너비 설정 -->
+					<col width="34%">
+					<col width="33%">
+					<col width="33%">
+				</colgroup>
+				<tr>
+					<td>표지색상</td>
+					<td>제작권수</td>
+					<td>표지두께</td>
+				</tr>
+				<tr>
+					<td><input type="color" /></td>
+					<td><input type="number" min="0" max="100" step="10" value="20" /></td>
+					<td><input type="range" min="1" max="5" value="3" />mm</td>
+				</tr>
+			</table>
+		</form>
+		<h4>날짜 입력 예제</h4>
+		<form>
+			<table>
+				<colgroup>
+					<col width="34%">
+					<col width="33%">
+					<col width="33%">
+				</colgroup>
+				<tr>
+					<td>date(연-월-일)</td>
+					<td>month(연도-월)</td>
+					<td>week(연도-주)</td>
+				</tr>
+				<tr>
+					<td><input type="date" /></td>
+					<td><input type="month" /></td>
+					<td><input type="week" /></td>
+				</tr>
+			</table>
+		</form>
+		<h4>시간 입력 예제</h4>
+		<form>
+			<table>
+				<tr>
+					<td>time(시간)</td>
+					<td>datetime-local(현지시간)</td>
+				</tr>
+				<tr>
+					<td><input type="time" /></td>
+					<td><input type="datetime-local" /></td>
+				</tr>
+			</table>
+		</form>
+	</body>
+</html>

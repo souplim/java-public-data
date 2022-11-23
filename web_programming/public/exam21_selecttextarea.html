@@ -2,28 +2,59 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>fieldset과 속성 legend 확인</title>
+		<title>입력 야식의 select와 textarea 확인</title>
 	</head>
 	<body>
-		
 		<form>
 			<table>
+				<tr>
+					<td>컴퓨터 운영체제</td>
+					<td>
+						<select name="OS" size="3" multiple><!-- size 보여줄 항목 개수, 다중선택  허용 -->
+							<option value="windows">윈도우7</option>
+							<option value="linux">리눅스</option>
+							<option value="solrais">솔라리스</option>
+							<option value="mac">맥</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>웹 프로그래밍 과목(1)</td>
+					<td>
+						<select name="lesson">
+							<option>JAVA</option>
+							<option>JSP</option>
+							<option>HTML5</option>
+							<option>jQuery</option>
+						</select>
+					</td>
+				</tr>
 				<tr>
 					<td>웹 프로그래밍 과목(2)</td>
 					<td>
 						<select name="web">
-						
+							<optgroup label="web">
+								<option>HTML5</option>
+								<option>CSS</option>
+								<option>JavaScript</option>
+							</optgroup>
+							<optgroup label="웹 표준">
+								<option>구조</option>
+								<option>동작</option>
+								<option>표현</option>
+							</optgroup>
 						</select>
 					</td>
 				</tr>
 				<tr>
 					<td>기타사항</td>
 					<td><textarea rows="7" cols="30" name="exam"></textarea></td>
+					<!-- 입력할 수 있는 행의 수, 한 줄에 입력할 수 있는 문자개수, 서버측에 전달할 이름 -->
 				</tr>
 				<tr>
 					<td colspan="2" align="center">
 						<input type="button" value="목록" onclick="alert('목록이동')" />
-						<button type="button" onclick="alert('클릭시 보여줄 내용')">목록</button>
+						<!-- <button type="button" onclick="alert('클릭시 보여줄 내용')">목록</button> -->
 						<input type="submit" value="전송" />
 						<input type="reset" value="취소" />
 					</td>

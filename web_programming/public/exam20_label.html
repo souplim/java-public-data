@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>label의 for 속성 확인</title>
+	</head>
+	<body>
+		<form>
+			이름 <input type="text" name="name"><br/>
+			<label>이름 <input type="text" name="name"></label><br/> <!--text에 label 잡아놓으면 이름 click해도 check됨 -->
+			<label for="myName">이름</label> <!--text에 label 잡아놓으면 이름 click해도 check됨 -->
+			<input type="text" name="name" id="myName">
+		</form>
+	</body>
+</html>
