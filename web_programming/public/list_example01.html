@@ -2,77 +2,33 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>표의 병합 - rowspan</title>
+		<title>목록 나열하기</title>
 	</head>
 	<body>
-		<table border="1">
-			<caption><strong>표의 병합 - rowspan 속성</strong></caption>
-			<tr>
-				<td rowspan="3">아래 줄(rows)</br>셀 합치기</td>
-				<td>1행(row) 2열</td>
-			</tr>
-			<tr>
-				<td>2행(row) 2열</td>
-			</tr>
-			<tr>
-				<td>3행(row) 2열</td>
-			</tr>
-		</table>
-		</br>
-		<table border="1">
-			<caption><strong>표의 병합 - colspan 속성</strong></caption>
-			<tr>
-				<td colspan="3">옆 칸(cols)의 셀 합치기</td>
-			</tr>
-			<tr>
-				<td>2행 1열(col)</td>
-				<td>2행 2열(col)</td>
-				<td>2행 3열(col)</td>
-			</tr>
-		</table>
-		</br>
-		<table border="1">
-			<caption><strong>TV 편성표</strong></caption>
-			<tr>
-				<th>시간</th>
-				<th>ABC</th>
-				<th>BBC</th>
-				<th>CNN</th>
-			</tr>
-			<tr>
-				<td><strong>6pm - 7pm</strong></td>				
-				<td rowspan="2">영화</td>
-				<td>코미디</td>
-				<td>뉴스</td>
-			</tr>
-			<tr>
-				<td><strong>7pm - 8pm</strong></td>				
-				<td>스포츠</td>
-				<td>시사</td>
-			</tr>
-		</table>
-		</br>
-		<table border="1">
-			<caption><strong>시간표</strong></caption>
-			<tr>
-				<th>요일</th>
-				<th>9am</th>
-				<th>10am</th>
-				<th>11am</th>
-				<th>12am</th>
-			</tr>
-			<tr>
-				<td><strong>월요일</strong></td>
-				<td colspan="2">영어</td>
-				<td>수학</td>
-				<td>미술</td>
-			</tr>
-			<tr>
-				<td><strong>화요일</strong></td>
-				<td colspan="3">역사</td>
-				<td>체육</td>
-			</tr>
-		</table>
+		<h2>과목별 참고도서 목록</h2>
+		<ul>
+			<li>데이터베이스
+				<ol>
+					<li>박우창, 남송휘 외 1명 저, 데이터베이스 개론과 실습</li>
+					<li>오쿠노 미키야 저, 성창규 역, 관계형 데이터베이스 실전 입분</li>
+					<li>이화식(기업인) 저, 대용량 데이터베이스솔루션</li>
+				</ol>
+			</li>
+			<li>웹프로그래밍
+				<ol type="A"><!--  type="a" / "I" / "i" / "1" -->
+					<li>고경희 저, Do it! HTML5+CSS3 웹 표준의 정석 </li>
+					<li>윤인성 저, 모던 웹을 위한 JavaScript jQuery 입문</li>
+					<li>김은옥 저, 은노기의 JSP 2.3 웹 프로그래밍</li>
+				</ol>
+			</li>
+		</ul>
 		
+		<h2>지정도서</h2>
+		<dl>
+			<dt>지정도서 서비스란?</dt>
+			<dd>수업에 필요한 주교재 및 참고문헌 등의 필수도서를 도서관 1층 대출/지정도서실에서 별도로 비치하여 관리하는 제도</dd>
+			<dt>신청기간</dt>
+			<dd>매년 1월과 6월 둘째주 학교 홈페이지에 공지</dd>
+		</dl>
 	</body>
 </html>
