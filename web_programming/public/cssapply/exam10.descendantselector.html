@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+		<style type="text/css">
+			div#header h4{ color:green; } /* 후손 태그 모두 해당 */
+			div#footer>h4{ color:blue; } /* 바로 밑 자식만 */
+		</style>
+	</head>
+	<body>
+		<div id="header">
+			<h4>HTML</h4>
+			<div class="text">
+				<h4>HyperText Markup Language</h4>
+				의 약어로 웹페이지를 만들기 위한 언어로 웹브라우저 위에서 동작하는 언어이다.
+			</div>
+		</div>
+		<div id="footer">
+			<h4>CSS</h4>
+			<div class="text">
+				<h4>Cascading Style Sheets</h4>
+				의 약어로 HTML이 정보를 표현한다면 CSS는 HTML을 시각적으로 꾸며주는 역할을 한다.
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>형제 선택자와 인접 형제 선택자</title>
+		<style type="text/css">
+			h1 + h2 { color: red; } /* 인접 형제 선택자*/
+			h1 ~ h2 { background-color: yellow; } /* 형제 선택자*/
+			h1 ~ h2:hover { color: blue; }
+		</style>
+	</head>
+	<body>
+		<h1>Have a nice day</h1>
+		<h2>Have a nice day</h2>
+		<h2>Have a nice day</h2>
+		<h3>Have a nice day</h3>
+		<h2>Have a nice day</h2>
+		<div>
+			<h2>Have a nice day</h2>
+		</div>
+	</body>
+</html>

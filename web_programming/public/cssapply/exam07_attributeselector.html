@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>속성 선택자 확인</title>
+		<style type="text/css">
+			a[target="_blank"] { color:green; }
+			div[class^="first"] { color:red; }
+			div[class$="text"] { font-style:italic; }
+			
+			input {border:1px solid black;}
+			input[type="text"] {width:100px; margin-right: 10px; background-color:#D5D5D5;}
+			input[type="password"] {width:100px; margin-right: 10px; background-color:gray;}
+			input[type="submit"]{color:white; font-weight:bold; background-color:#000;}
+			
+			/* 배경으로 hwp 아이콘 표시 */
+			a[href$="hwp"]{background: url(../image/hwp_icon.gif) center right no-repeat; padding-right:25px; }
+			/* 배경으로 excel 아이콘 표시 */
+			a[href$="xls"]{background: url(../image/excel_icon.gif) center right no-repeat; padding-right:25px; }
+		</style>
+	</head>
+	<body>
+		<div class="first_text">[로그인 화면]</div>
+		<div class="second_text">아이디와 비밀번호를 입력하시오</div><br />
+		
+		<form name="input" method="get">
+			<label>아이디</label><input type="text" name="id" id="id" />
+			<label>비밀번호</label><input type="password" name="pwd" id="pwd" />
+			<input type="submit" value="로그인" />
+			<a href="#" target="_blank">회원가입</a>
+		</form>
+		
+		<h3>문서 다운 받기</h3>
+		<ul>
+			<li><a href="intro.hwp">hwp 파일</a></li><!-- 파일이 존재하지 않기 때문에 클릭시 에러발생 -->
+			<li><a href="intro.xls">엑셀 파일</a></li>
+		</ul>
+	</body>
+</html>

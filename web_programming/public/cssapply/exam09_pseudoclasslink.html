@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>링크 관련 가상 클래스 선택자 확인</title>
+		<style type="text/css">
+			a:link{color:blue;}
+			a:visited{color:red;}
+			a:hover{color:green; font-size:35px; font-weight:bold;}
+			a:active{color:yellow;}
+			input[type="text"]:focus{background-color:skyblue;}
+			input[type="button"]:focus{background-color:purple;}
+		</style>
+		<script type="text/javascript">
+			function goURL(){
+				location.href = document.getElementById("url").value;
+			}
+		</script>
+	</head>
+	<body>
+		<a href="http://www.naver.com" target="_blank">네이버</a> 사이트로 이동하기
+		<form>
+			<input type="text" name="url" id="url" />
+			<button type="button" onclick="goURL()">이동</button> <!-- 함수 호출 -->
+		</form>
+	</body>
+</html>

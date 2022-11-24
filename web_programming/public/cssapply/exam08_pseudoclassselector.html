@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>가상 클래스 선택자 확인</title>
+		<style type="text/css">
+			p:first-letter{ font-size: 25px; background-color:gray; color:white; font-weight:bold; }
+			h1:before{ content:"☆"; color:blue; }
+			h1:after{ content:"★"; color:blue; }
+			p:nth-child(even){ color:orange;} /* 짝수일 때 */
+			p:nth-child(odd){ color:blue;}
+		</style>
+	</head>
+	<body>
+		<h1>Famous Saying</h1>
+		<p>The world is a beautiful book, but of little use to him who cannot read it.</p> <!-- 이게 왜 짝수일까 -->
+		<p>Our greatest glory is not in never falling, but in rising every time we fall.</p>
+	</body>
+</html>
