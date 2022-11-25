@@ -168,12 +168,14 @@ ORDER BY SUBSTR(R.reserv_date,5,2);
 -- 10) 순위 분석(월별 온라인 전용 상품 최대 실적 지점 확인) -- ?
 -- 월별 온라인 전용 상품 매출 1위부터 3위까지 지점이 어딘지 출력한다.
 SELECT distinct branch FROM reservation; -- 25지점
+SELECT * FROM reservation;
 
-SELECT SUBSTR(R.reserv_date,5,2) 월, R.branch 지점, O.sales 전용상품매출, ROW_NUMBER() OVER (ORDER BY O.sales DESC) 순위
+SELECT SUBSTR(R.reserv_date,5,2) 월, R.branch 지점, SUM(O.sales) 전용상품매출, ROW_NUMBER() OVER (ORDER BY SUM(O.sales) DESC) 순위
 FROM order_info O RIGHT OUTER JOIN (SELECT reserv_no, reserv_date, branch FROM reservation) R ON O.reserv_no = R.reserv_no
                   LEFT OUTER JOIN item I ON O.item_id = I.item_id  
-WHERE (I.product_desc = '온라인_전용상품'), 순위<=3
-ORDER BY O.sales DESC;
+WHERE (I.product_desc = '온라인_전용상품')
+GROUP BY SUBSTR(R.reserv_date,5,2), R.branch
+ORDER BY SUM(O.sales) DESC;
 
 -- 11) 종합 리포트 작정
 -- 분석8과 분석10의 결과 항목을 월별로 합쳐서 리포트를 출력한다.
