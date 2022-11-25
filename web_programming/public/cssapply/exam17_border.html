@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>테두리 스타일 속성</title>
+		<style>
+			body > div{ margin-right:5px; }
+			.box{width:70px; height:70px; float:left; color:black;
+					background-color:white; border-width:2px; border-color:black;}
+			.box:nth-child(1){ border-style : none; }
+			.box:nth-child(2){ border-style : solid; }
+			.box:nth-child(3){ border-style : dotted; }
+			.box:nth-child(4){ border-style : dashed; }
+			.box:nth-child(5){ border-style : double; }
+			.box:nth-child(6){ border-style : groove; }
+			.box:nth-child(7){ border-width:2px 5px; border-style : solid; }
+			
+			.box:nth-child(8){ border:1px solid #0088dd; 
+							   border-top-left-radius:8px;
+							   border-top-right-radius:8px; }
+			.box:nth-child(9){ border-top : 1px solid #0088dd;
+							   border-bottom: 1px solid #0088dd; }
+			img{ border:2px solid black;
+				 border-radius:10px;
+			}
+		</style>
+	</head>
+	<body style="background-color:#FAED7D;">
+		<div class="box">none</div>
+		<div class="box">solid</div>
+		<div class="box">dotted</div>
+		<div class="box">dashed</div>
+		<div class="box">double</div>
+		<div class="box">groove</div>
+		<div class="box">종합</div>
+		<div class="box">종합</div>
+		<div class="box">종합</div>
+		<img src="../image/1.jpg" />
+	</body>
+</html>

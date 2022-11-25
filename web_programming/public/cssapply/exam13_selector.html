@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>selector example</title>
+		<style type="text/css">
+			/* h4:before{ content: "** "; }
+			h4:after{ content: " **"; }
+			.country:hover{ color:orange; }
+			.island{ color:green; }
+			.food:before{ content: "../image/icon.png"; }
+			#jjambbong{ color:red; } */
+			
+			h4:before{ content: "** "; }
+			h4:after{ content: " **"; }
+			hr{ background-color: gray; }
+			ol#country li:hover{ color:orange; font-weight:bold; }
+			ol#island li{ color:green; }
+			ul{list-style:circle url("../image/icon.png") outside; }
+			ul#food li:first-child{ color:red; }
+		</style>
+	</head>
+	<body>
+		<!-- <h4>여행하고 싶은 나라</h4>
+		<hr/>
+		<div class="country">1.페루</div>
+		<div class="country">2.홍콩</div>
+		<div class="country">3.캐나다</div>
+		<div class="country">4.일본</div>
+		<h4>여행하고 싶은 섬</h4>
+		<hr/>
+		<div class="island">1.제주도</div>
+		<div class="island">2.하와이</div>
+		<div class="island">3.오키나와</div>
+		<div class="island">4.발리</div>
+		<h4>좋아하는 음식</h4>
+		<hr/>
+		<div id="jjambbong" class="food">짬뽕</div>
+		<div class="food">삼겹살</div>
+		<div class="food">떡볶이</div> -->
+		
+		<h4>여행하고 싶은 나라</h4>
+		<hr/>
+		<ol id="country">
+			<li>페루</li>
+			<li>홍콩</li>
+			<li>캐나다</li>
+			<li>일본</li>
+		</ol>
+		<h4>여행하고 싶은 섬</h4>
+		<hr/>
+		<ol id="island">
+			<li>제주도</li>
+			<li>하와이</li>
+			<li>오키나와</li>
+			<li>발리</li>
+		</ol>
+		<h4>좋아하는 음식</h4>
+		<hr/>
+		<ul id="food">
+			<li>짬뽕</li>
+			<li>삼겹살</li>
+			<li>떡볶이</li>
+		</ul>
+	</body>
+</html>
