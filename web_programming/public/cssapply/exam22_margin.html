@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>margin 속성 확인</title>
+		<style type="text/css">
+			div:nth-child(1){
+				box-sizing:border-box; /* 속성값:content-box(기본값), border-box;*/
+				background-color:darkgray;
+				color:white;
+				width:450px;
+				padding:30px;
+				border:20px solid teal;
+				margin:50px;
+			}
+			div:nth-child(2){
+				background-color:darkgray;
+				color:white;
+				width:450px;
+				padding:30px;
+				border:20px solid teal;
+				margin:50px;
+				box-shadow:10px 10px 5px 5px #666666;
+			}
+			div:nth-child(2) h2{
+				text-shadow:0px 0px 3px red;
+			}
+			div:nth-child(3){
+				background-color:darkgray;
+				color:white;
+				width:450px;
+				padding:30px;
+				border:20px solid teal;
+				margin:50px;
+				box-shadow:10px 10px 5px 5px #666666;
+			}
+			div:nth-child(3) h2{
+				color:white;
+				text-shadow:1px 1px 2px black;
+			}
+			div:nth-child(4){
+				background-color:darkgray;
+				color:white;
+				width:450px;
+				padding:30px;
+				border:20px solid teal;
+				margin:50px;
+				box-shadow:10px 10px 1px 3px #666666;
+				box-sizing:border-box;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<h2>Alice in Wonderland</h2>
+			<p>When Alice follows the White Rabbit down a rabbit hole, she finds herself in a land where she can change her size.</p>
+		</div>
+		<div>
+			<h2>Alice in Wonderland</h2>
+			<p>When Alice follows the White Rabbit down a rabbit hole, she finds herself in a land where she can change her size.</p>
+		</div>
+		<div>
+			<h2>Alice in Wonderland</h2>
+			<p>When Alice follows the White Rabbit down a rabbit hole, she finds herself in a land where she can change her size.</p>
+		</div>
+		<div>
+			<h2>Alice in Wonderland</h2>
+			<p>When Alice follows the White Rabbit down a rabbit hole, she finds herself in a land where she can change her size.</p>
+		</div>
+	</body>
+</html>
