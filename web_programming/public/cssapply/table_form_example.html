@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>목록 및 테이블 스타일 속성</title>
+		<style type="text/css">
+			body {
+					color: #666666;
+					background-color: #f8f8f8;
+			}
+			ul li {
+					list-style-image: url("../image/icon-plus.png");
+			}
+			.workshop {
+					width:700px;
+			}	
+			.workshop, .workshop th, .workshop tr {
+					border: 1px solid #cbd2d8;
+					border-collapse: collapse;
+					padding: 5px;
+					font-size: 15px;
+					background-color: #e0e9f0;
+			}
+			.firstrow th {
+					color: white;
+					background-color: #90b4d6;
+					border-bottom: 1px solid #547ca0;
+					border-right: 1px solid #749abe;
+			}
+			.content {
+					padding: 20px;
+			}
+			.text {
+					margin-left: 20px;
+			}
+			.title {
+					font-weight: bold;
+			}
+			fieldset {
+					display: inline;
+			}
+			.register {
+					background-color: white;
+					padding: 15px;
+					font-size: 10px;
+			}
+			legend {
+					font-style: italic;
+			}
+			.botton {
+					color: white;
+					background-color: #009966;
+					display: inline;
+					border: 1px solid #006633;
+					border-radius: 8px;
+					margin-left: 270px;
+			}
+			.botton:hover {
+					background-color: #00CC33;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>시 워크샵(Poetry Workshops)</h1>
+		<p>1년 동안 다양산 시 워크샵과 심포지엄을 실시합니다.</p>
+		<p>다음과 같은 이벤트가 회원들에게 무료로 제공되오니 참고하여 주시기 바랍니다.</p>
+		<ul>
+			<li>A Poetic Perspective</li>
+			<li>Walt Whitman at War</li>
+			<li>Found Poems and Outsider Poetry</li>
+		</ul>
+		<table class="workshop">
+			<tr class="firstrow">
+				<th></th>
+				<th>뉴욕</th>
+				<th>시카고</th>
+				<th>샌프란시스코</th>
+			</tr>
+			<tr class="content">
+				<td class="title">A Poetic Perspective</td>
+				<td>2012년 2월 4일(토)<br/> 오전 11시 오후 2시</td>
+				<td>2012년 3월 3일(토)<br/> 오전 11시 오후 2시</td>
+				<td>2012년 3월 17일(토)<br/> 오전 11시 오후 2시</td>
+			</tr>
+			<tr class="content">
+				<td class="title">Walt Whitman at War</td>
+				<td>2012년 4월 7일(토)<br/> 오전 11시 오후 1시</td>
+				<td>2012년 5월 5일(토)<br/> 오전 11시 오후 1시</td>
+				<td>2012년 5월 19일(토)<br/> 오전 11시 오후 1시</td>
+			</tr>
+			<tr class="content">
+				<td class="title">Found Poems & Outsider Poetry</td>
+				<td>2012년 6월 9일(토)<br/> 오전 11시 오후 2시</td>
+				<td>2012년 7월 7일(토)<br/> 오전 11시 오후 2시</td>
+				<td>2012년 7월 21일(토)<br/> 오전 11시 오후 2시</td>
+			</tr>
+			<tr class="content">
+				<td class="title">Natural Death: An Exploration</td>
+				<td>2012년 8월 4일(토)<br/> 오전 11시 오후 4시</td>
+				<td>2012년 9월 8일(토)<br/> 오전 11시 오후 4시</td>
+				<td>2012년 9월 15일(토)<br/> 오전 11시 오후 4시</td>
+			</tr>
+		</table><br/>
+		<form>
+		<fieldset>
+			<table class="register">			
+				<legend>관심 강좌 등록</legend>
+				<tr>
+					<td>이름: </td>
+					<td><input type="text" class="text" /></td>
+				</tr>
+				<tr>
+					<td>이메일: </td>
+					<td><input type="text" class="text" /></td>
+				</tr>
+				<tr>
+					<td>가장 가까운 센터: </td>
+					<td>
+						<select class="text">
+							<option>뉴욕</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>회원이십니까? </td>
+					<td><input type="radio" name="member" value="member" /><label>예</label>
+						<input type="radio" name="member" value="nomember" /><label>아니오</label>
+					</td>
+				</tr>
+				</table>
+		</fieldset>		
+		</form>
+			<div><input type="button" class="botton" value="등록"/></div>	
+	</body>
+</html>
