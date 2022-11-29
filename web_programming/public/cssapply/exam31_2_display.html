@@ -4,12 +4,43 @@
 		<meta charset="UTF-8">
 		<title>display - 블록과 인라인</title>
 		<style type="text/css">
-			div[class^="content"]
+			div[class^="content"] img { /* class 속성값이 content로 시작하는 경우 */
+				margin: 10px 5px;
+				border: 2px solid black;
+				border-radius: 10px;
+				box-shadow: 5px 5px 3px 0px #ccc;
+			}
+			.content2 img {
+				display:block;
+			}
+			
+			div[class^="data"] div {
+				width: 200px;
+				height: auto;
+				margin: 10px 5px;
+				padding: 5px;
+				border: 1px solid black;
+			}
+			#text1 { background-color: lightyellow; }
+			#text2 { background-color: lightgreen; }
+			#text3 { background-color: lightblue; }
+			
+			.data2 div {
+				display: inline-block; /* 밑부분 기준으로 맞춰짐 */
+				/* float: left; 위로 맞추기 위해서는 float 사용 */
+			}
 		</style>
 	</head>
 	<body>
 		<h4>인라인 요소</h4>
 		<div class="content1">
+			<img src="../image/2.jpg">
+			<img src="../image/1.jpg">
+			<img src="../image/3.jpg">
+		</div>
+		
+		<h4>인라인 요소를 블록 요소로 설정</h4>
+		<div class="content2">
 			<img src="../image/2.jpg">
 			<img src="../image/1.jpg">
 			<img src="../image/3.jpg">
