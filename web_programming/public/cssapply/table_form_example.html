@@ -12,23 +12,21 @@
 					list-style-image: url("../image/icon-plus.png");
 			}
 			.workshop {
-					width:700px;
-			}	
-			.workshop, .workshop th, .workshop tr {
-					border: 1px solid #cbd2d8;
+					width:800px;
 					border-collapse: collapse;
-					padding: 5px;
 					font-size: 15px;
-					background-color: #e0e9f0;
+			}	
+			.workshop th, .workshop td {
+					border: 1px solid #cbd2d8;
+					padding-left: 10px;
+					background-color: #e0e9f0;	
 			}
 			.firstrow th {
 					color: white;
 					background-color: #90b4d6;
-					border-bottom: 1px solid #547ca0;
+					border-bottom: 2px solid #547ca0;
 					border-right: 1px solid #749abe;
-			}
-			.content {
-					padding: 20px;
+					padding: 5px;
 			}
 			.text {
 					margin-left: 20px;
@@ -38,11 +36,11 @@
 			}
 			fieldset {
 					display: inline;
-			}
-			.register {
 					background-color: white;
-					padding: 15px;
-					font-size: 10px;
+					border: 1px solid #d6d6d6;
+			}
+			.table td {
+					padding: 5px;
 			}
 			legend {
 					font-style: italic;
@@ -53,7 +51,9 @@
 					display: inline;
 					border: 1px solid #006633;
 					border-radius: 8px;
-					margin-left: 270px;
+					margin-left: 300px;
+					margin-top: 10px;
+					padding: 5px;
 			}
 			.botton:hover {
 					background-color: #00CC33;
@@ -76,25 +76,25 @@
 				<th>시카고</th>
 				<th>샌프란시스코</th>
 			</tr>
-			<tr class="content">
+			<tr>
 				<td class="title">A Poetic Perspective</td>
 				<td>2012년 2월 4일(토)<br/> 오전 11시 오후 2시</td>
 				<td>2012년 3월 3일(토)<br/> 오전 11시 오후 2시</td>
 				<td>2012년 3월 17일(토)<br/> 오전 11시 오후 2시</td>
 			</tr>
-			<tr class="content">
+			<tr>
 				<td class="title">Walt Whitman at War</td>
 				<td>2012년 4월 7일(토)<br/> 오전 11시 오후 1시</td>
 				<td>2012년 5월 5일(토)<br/> 오전 11시 오후 1시</td>
 				<td>2012년 5월 19일(토)<br/> 오전 11시 오후 1시</td>
 			</tr>
-			<tr class="content">
+			<tr>
 				<td class="title">Found Poems & Outsider Poetry</td>
 				<td>2012년 6월 9일(토)<br/> 오전 11시 오후 2시</td>
 				<td>2012년 7월 7일(토)<br/> 오전 11시 오후 2시</td>
 				<td>2012년 7월 21일(토)<br/> 오전 11시 오후 2시</td>
 			</tr>
-			<tr class="content">
+			<tr>
 				<td class="title">Natural Death: An Exploration</td>
 				<td>2012년 8월 4일(토)<br/> 오전 11시 오후 4시</td>
 				<td>2012년 9월 8일(토)<br/> 오전 11시 오후 4시</td>
@@ -103,7 +103,7 @@
 		</table><br/>
 		<form>
 		<fieldset>
-			<table class="register">			
+			<table class="table">			
 				<legend>관심 강좌 등록</legend>
 				<tr>
 					<td>이름: </td>
