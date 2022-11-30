@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>main</title>
+		<link rel="stylesheet" type="text/css" href="../css/main.css" />
+		<style type="text/css">
+			/* section 내 컨텐츠(article) 영역 */
+			article.main-articles {
+				clear: both;
+				overflow: auto;
+				width: 100%
+			}
+			hgroup { margin-top: 40px; }
+			.main-articles figure {
+				float: left;
+				width: 290px;
+				height: 220px;
+				padding: 5px;
+				margin: 10px;
+				border: 1px solid #eeeeee;
+			}
+			.main-articles figcaption {
+				font-size: 90%;
+				text-align: left;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrapper">
+			<header>
+				<h1>Yoko's Kitchen</h1>
+				<nav>
+					<ul>
+						<li><a href="main.html" class="current">홈</a></li>
+						<li><a href="">교실</a></li>
+						<li><a href="">케이터링</a></li>
+						<li><a href="">소개</a></li>
+						<li><a href="">연락처</a></li>
+					</ul>
+				</nav>
+			</header>
+		
+			<section class="courses">
+				<article class="main-articles">
+					<figure>
+						<img src="../image/bok-choi.jpg" alt="Bok Choi" />
+						<figcaption>Bok Choi</figcaption>
+					</figure>
+					<hgroup>
+						<h2>일본의 채식주의자</h2>
+						<h3>런던에서의 5주 코스</h3>
+					</hgroup>
+					<p>5주간 전통적인 일본의 채식주의자 음식에 대해 소개하고 쌀과 국수요리를 가르친다.</p>
+				</article>
+				<article class="main-articles">
+					<figure>
+						<img src="../image/teriyaki.jpg" alt="Teriyaki sause" />
+						<figcaption>Teriyaki Sauce</figcaption>
+					</figure>
+					<hgroup>
+						<h2>소스 마스터클래스</h2>
+						<h3>1일 워크샵</h3>
+					</hgroup>
+					<p>1일 집중 코스에서는 다양한 일본 요리에서 사용할 수 있는 가장 맛있는 소스를 만드는 방법을 살펴본다.</p>
+				</article>
+			</section>
+			
+			<aside>
+				<section class="popular-recipes">
+					<h2>인기 요리법</h2>
+					<a href="yakitori.html">야키토리(Yakitori) - 구운 닭</a>
+					<a href="">츠쿠네(Tsukune) - 닭꼬치</a>
+					<a href="okonomiyaki.html">오코노미야끼(Okonomiyaki) - 해물 부침개</a>
+					<a href="">미즈타키(Mizutaki) - 영계백숙</a>
+				</section>
+				<section class="contact-details">
+					<h2>연락처</h2>
+					<p>Yoko's Kitchen<br />
+					6, Teheran-ro 14-gil, Gangnam-gu, <br />
+					Seoul, Republic of Korea</p>
+				</section>
+			</aside>
+			
+			<footer>
+				Copyright &copy; 1998-2022 KH Information Educational Institute All Right Reserved.
+				Contact webmaster for more information. 1544-9970
+			</footer>
+		</div> <!-- .wrapper -->
+	</body>
+</html>

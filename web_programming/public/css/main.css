@@ -1,0 +1,108 @@
+@charset "UTF-8";
+
+/* 초기화 */
+header, section, footer, aside, nav, figure, figcaption {
+	display: block;
+}
+
+/* 공통 요소 */
+a {
+	color: #de6581;
+	text-decoration: none;
+}
+h1, h2, h3 { font-weight: normal; }
+h2 {
+	margin: 10px 0px 5px 0px;
+	padding: 0px;
+}
+h3 {
+	margin: 0px 0px 10px 0px;
+	color: #de6581;
+}
+body { 
+	color: #666666;
+	background: #f9f8f6 url("../image/dark-wood.jpg") center;
+	font-family: Georgia, Times, serif;
+	line-height: 1.4em;
+	margin: 0px;
+}
+
+/* 전체 div 요소 제어 */
+.wrapper {
+	width: 940px;
+	margin: 20px auto 20px auto;
+	border: 2px solid #000000;
+	background-color: #ffffff;
+}
+
+/* header 영역 및 nav, footer 영역 */
+header {
+	height: 160px;
+	background-image: url("../image/header.jpg");
+}
+h1 {
+	visibility: hidden;
+	width: 940px;
+	height: 130px;
+	margin: 0px;
+}
+nav, footer {
+	clear: both;
+	color: ffffff;
+	background-color: #aeaca8;
+	height: 30px;
+}
+
+/* nav 태그 내 메뉴 제어 */
+nav ul {
+	margin: 0px;
+	padding: 5px 0px 5px 30px;
+}
+nav li {
+	display: inline;
+	margin-right: 40px;
+}
+nav li a {
+	color: #ffffff;
+}
+nav li a:hover, nav li a.current {
+	color: #000000;
+}
+
+/* section 영역 */
+section.courses {
+	float: left;
+	width: 659px;
+	border-right: 1px solid #eeeeee;
+}
+
+/* aside 영역 */
+aside {
+	width: 230px;
+	float: left;
+	padding: 0px 0px 0px 20px;
+}
+aside section a { 
+	display: block;
+	padding: 10px;
+	border-bottom: 1px solid #eeeeee;
+}
+aside section a:hover {
+	color: #985d6a;
+	background-color: #efefef;
+}
+aside h2 {
+	padding: 30px 0px 10px 0px;
+	color: #de6581;
+}
+
+/* 연락처 아래 주소 부분 구글 폰트 적용은 각자 설정*/
+.contact-details p {
+	font-family: 'Patua One', cursive;
+}
+
+/* footer 영역 */
+footer {
+	font-size: 80%;
+	padding: 7px 0px 0px 20px;
+}

@@ -1,0 +1,32 @@
+@charset "UTF-8";
+
+/* section 영역 */
+section.courses {
+	float: left;
+	width: 659px;
+	border-right: 1px solid #eeeeee;
+}
+
+/* section 내 컨텐츠(article) 영역 */
+article.more-articles {
+	display: inline;
+	float: left;
+	width: 290px;
+	padding: 5px;
+	margin: 10px;
+}
+.more-articles img {
+	width: 290px;
+	height: 190px;
+	border: 1px solid #eeeeee;
+}
+.more-articles div {
+	width: 290px;
+	height: 80px;
+	padding-bottom: 10px;
+	font-size: 90%;
+	border-bottom: 1px solid #eeeeee;
+}
+.more-articles div:last-child {
+	border-bottom: none;
+}
