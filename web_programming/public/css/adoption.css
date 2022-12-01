@@ -1,0 +1,41 @@
+@charset "UTF-8";
+
+.video iframe {
+	margin: 10px;
+	width: 90%; 
+	height: 190px; 
+}
+.videoframe {
+	height: 300px;
+}
+.goods {
+	height: 45%;
+}
+.site {
+	height: 55%;
+}
+.checklist ul {
+	padding-top: 20px;
+}
+.checklist li {
+	margin: 20px 10px 0px 0px;
+	/* clear: left; */
+}
+.button {
+	color: white;
+	background-color: purple;
+	display: inline;
+	border: 1px solid black;
+	border-radius: 8px;
+	margin: 5px;
+	padding: 3px;
+}
+
+.site a {
+	color: purple;
+}
+aside a {
+	text-decoration: none;
+	color: black;
+}
+		
