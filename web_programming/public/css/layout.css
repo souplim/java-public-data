@@ -28,6 +28,7 @@ header {
 	background-image: url("../image/layout_bg.jpg");
 }
 header h1 {
+	font-size: 20px;
 	padding: 30px 10px;
 	margin: 0px 10px;
 }
@@ -36,12 +37,10 @@ header h1 {
 nav {
 	display: inline-block;
 	float: left;
-	height: 750px;
+	/* height: 750px; */
 	width: 17%;
 	margin: 0px;
 	padding: 10px;
-	/* background-color: #069; */
-	background-image: url("../image/layout_bg.jpg");
 }
 nav ul {
 	padding: 0px;
@@ -67,7 +66,7 @@ article{
 article div {
 	border: 1px dotted black;
 	height: 100%;
-	width: 30%;
+	width: 31%;
 	float: left; 
 	margin: 5px;
 	padding: 5px;
@@ -90,9 +89,8 @@ article dl dt {
 	font-weight: bold;
 }
 aside {
-	/* background-color: #99cc33; */
-	background-color: #8080c0;
-	color: white;
+	background-color: #DAD9FF;
+	color: #353535;
 	clear: both;
 	padding: 5px;
 }
@@ -104,4 +102,27 @@ footer {
 	font-size: 10px;
 	text-align: center;
 	padding: 2vh 0px;
+}
+
+
+@media ( max-width: 600px ) {
+	#container {
+		width: auto;
+		text-align: center;
+	}
+	nav {
+		display: block;
+		width: 100%;
+		text-align: center;
+	}
+	section {
+		float: none;
+		clear: both;
+		width: auto;
+	}
+	aside {
+		float: none;
+		clear: both;
+		width: auto;
+	}
 }
