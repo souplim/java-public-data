@@ -1,27 +1,47 @@
 @charset "UTF-8";
 
-.container {
-	background-color: #333;
+/* 전체 */
+@font-face {
+          font-family: 'GangwonEdu_OTFBoldA';
+          src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff') format('woff');
+          font-weight: normal;
+          font-style: normal;
+      }
+      
+      *{
+          font-family: 'GangwonEdu_OTFBoldA';
+          font-size: 16px;
+      }
+
+#container {
+	/* background-color: #333; */
+	background-image: url("../image/layout_bg.jpg");
 	width: 80%;
 	margin: 0 auto;
 }
+
+/* 헤더 */
 header {
-	color: white;
-	background-color: #069;
+	/* color: white; */
+	color: #069;
+	/* background-color: #069; */
+	background-image: url("../image/layout_bg.jpg");
 }
 header h1 {
-	padding: 20px 10px;
-	margin: 20px 10px;
+	padding: 30px 10px;
+	margin: 0px 10px;
 }
-.container .section-aside {
-	background-color: white;
-}
+
+/* nav */
 nav {
-	display: block;
-	height: 640px;
+	display: inline-block;
 	float: left;
+	height: 750px;
+	width: 17%;
 	margin: 0px;
-	background-color: #069;
+	padding: 10px;
+	/* background-color: #069; */
+	background-image: url("../image/layout_bg.jpg");
 }
 nav ul {
 	padding: 0px;
@@ -29,17 +49,26 @@ nav ul {
 nav li {
 	list-style: none;
 	padding: 5px;
+	font-size: 20px;
 }
 nav ul a {
 	text-decoration: none;
-	color: white;
-	font-align: bold;
+	/* color: white; */
+	color: #069;
+	font-weight: bold;
+}
+
+/* section */
+article{
+	width: 81%;
+	background-color: #ffffff;
+	overflow: auto;
 }
 article div {
 	border: 1px dotted black;
-	height: 620px;
-	width: 27%;
-	float: left;
+	height: 100%;
+	width: 30%;
+	float: left; 
 	margin: 5px;
 	padding: 5px;
 }
@@ -47,10 +76,11 @@ article div img {
 	display: inline;
 	float: left;
 	margin: 20px 0px 0px 0px;
+	width: 25px; height: 25px;
 }
 article h3 {
 	float: left;
-	margin: 20px 0px 0px 0px;
+	margin: 20px 0px 5px 5px;
 }
 dl {
 	clear: both;
@@ -60,12 +90,17 @@ article dl dt {
 	font-weight: bold;
 }
 aside {
-	background-color: #99cc33;
+	/* background-color: #99cc33; */
+	background-color: #8080c0;
+	color: white;
 	clear: both;
 	padding: 5px;
 }
+
+/* footer */
 footer {
 	color: white;
+	background-color: #333;
 	font-size: 10px;
 	text-align: center;
 	padding: 2vh 0px;
