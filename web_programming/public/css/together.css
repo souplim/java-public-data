@@ -1,53 +1,47 @@
 @charset "UTF-8";
       
-         article div.dog {
-            border: 1px dotted black;
-            height: 300px;
-           /*  height: 50%; */
-            /* width: 27%; */
-            width: 30%;
-            float: left;
-            margin: 5px;
-         }
-         article div#dog1 {
-            background-color: #FFD8D8;
-            font-size:17px;
-         }
-         article div#dog2 {
-            background-color: #FAE0D4;
-            font-size:17px;
-         }
-         article div#dog3 {
-            background-color: #FAECC5;
-            font-size:17px;
-         }
-         article div#dog4 {
-            background-color: #E4F7BA;
-            font-size:17px;
-         }
-         article div#dog5 {
-            background-color: #D4F4FA;
-            font-size:17px;
-         }
-         article div#dog6 {
-            background-color: #D9E5FF;
-            font-size:17px;
-         }
-         article h4 {
-            float: left;
-            margin: 20px 0px 0px 0px;
-            font-size:20px;
-         }
-         aside#dog_a {
-            background-color: #DAD9FF;
-            color: #353535;
-            clear: both;
-            font-size:18px;
-         }
-         img#dog_pic{
-            width:55%;
-            height:32%;
-         }
-         img.dog_icon{
-         width: 20px; height: 20px;
-         }
+article div.dog {
+   border: 1px dotted black;
+   height: 300px;
+  /*  height: 50%; */
+   /* width: 27%; */
+   width: 31%;
+   float: left;
+   margin: 5px;
+}
+article div#dog1 {
+   background-color: #FFD8D8;
+   font-size:17px;
+}
+article div#dog2 {
+   background-color: #FAE0D4;
+   font-size:17px;
+}
+article div#dog3 {
+   background-color: #FAECC5;
+   font-size:17px;
+}
+article div#dog4 {
+   background-color: #E4F7BA;
+   font-size:17px;
+}
+article div#dog5 {
+   background-color: #D4F4FA;
+   font-size:17px;
+}
+article div#dog6 {
+   background-color: #D9E5FF;
+   font-size:17px;
+}
+article h4 {
+   float: left;
+   margin: 20px 0px 0px 0px;
+   font-size:20px;
+}
+img#dog_pic{
+   width:55%;
+   height:32%;
+}
+img.dog_icon{
+width: 20px; height: 20px;
+}
