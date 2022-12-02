@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+		<title>02-helloJavascript.html</title>
+		
+		<!-- 모바일 웹 페이지 설정 -->
+		<link rel="shortcut icon" href="../image/icon.png" />
+		<link rel="apple-touch-icon" href="../image/icon.png" />
+		<!-- 모바일 웹 페이지 설정 끝 -->
+		
+		<!--[if lt IE 9]>
+		<script src="../js/html5shiv.js"></script>
+		<![endif]-->
+		
+		<!-- 외부 파일 연동 시 
+		<script type="text/javascript" src="../js/sayHello.js"></script> -->
+		
+		<!-- 내부 자바스크립트 구현 시 -->
+		<script type="text/javascript">
+			 /* 본문에만 태그 적용 가능 경고창(메서드 내)은 알림창이기 때문에 태그 적용 안 됨. java의 escape문 사용 */
+			 /* 인터프리터 방식 -> 한 라인씩 컴파일 하기 때문에 끝에 세미콜론 없어도 오류 안 남 */
+			/* window.alert("안녕하세요.\n \"Java\"script!"); 
+			document.write("자바<br /> 스크립트)
+			document.write("<h1>Hello JavaScript</h1>");  */
+			
+			function print() {
+				/* document.write("Hello Javascript!"); */ /* 현재 문서 맨 위에 출력 -> 이전에 만들었던 버튼들이 사라짐. 내가 원하는 영역에 출력 불가 */
+				document.getElementById("title").innerHTML = "Hello Jacascript!";
+			}
+		</script>
+	</head>
+	<body>
+		<button type="button" onclick="alert('안녕하세요. 자바 스크립트')"> 버튼을 클릭해주세요.</button>
+		<input type="button" value="버튼 클릭해 주세요" onclick="alert('안녕하세요. 자바스크립트 버튼 클릭입니다')" />
+		<br /><br />
+		<h1 id="title"></h1>
+		<button type="button" onclick="print()">h1 태그 출력</button>
+	</body>
+</html>
