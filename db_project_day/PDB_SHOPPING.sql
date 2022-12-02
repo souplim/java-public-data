@@ -170,10 +170,10 @@ ORDER BY SUBSTR(R.reserv_date,5,2);
 SELECT distinct branch FROM reservation; -- 25지점
 SELECT * FROM reservation;
 
-SELECT SUBSTR(R.reserv_date,5,2) 월, R.branch 지점, SUM(O.sales) 전용상품매출, ROW_NUMBER() OVER (ORDER BY SUM(O.sales) DESC) 순위
+SELECT SUBSTR(R.reserv_date,5,2) 월, R.branch 지점, SUM(O.sales) 전용상품매출, ROW_NUMBER() OVER (ORDER BY SUM(O.sales) DESC) AS 순위
 FROM order_info O RIGHT OUTER JOIN (SELECT reserv_no, reserv_date, branch FROM reservation) R ON O.reserv_no = R.reserv_no
                   LEFT OUTER JOIN item I ON O.item_id = I.item_id  
-WHERE (I.product_desc = '온라인_전용상품')
+WHERE (I.product_desc = '온라인_전용상품') AND (순위<=3) 
 GROUP BY SUBSTR(R.reserv_date,5,2), R.branch
 ORDER BY SUM(O.sales) DESC;
 
