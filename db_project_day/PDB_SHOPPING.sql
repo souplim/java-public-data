@@ -166,7 +166,7 @@ GROUP BY SUBSTR(R.reserv_date,5,2)
 ORDER BY SUBSTR(R.reserv_date,5,2);
 
 -- 10) 순위 분석(월별 온라인 전용 상품 최대 실적 지점 확인) -- ?
--- 월별 온라인 전용 상품 매출 1위부터 3위까지 지점이 어딘지 출력한다.
+-- 월별 온라인 전용 상품 매출 1위부터 3위까지 지점이 어딘지 출력한다. 6월 1,2,3 / ... / 12월 1,2,3
 SELECT distinct branch FROM reservation; -- 25지점
 SELECT * FROM reservation;
 
