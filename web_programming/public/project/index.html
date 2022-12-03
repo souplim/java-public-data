@@ -2,48 +2,94 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>index</title>
+		<title>나의 사이트</title>
+		<link rel="stylesheet" type="text/css" href="css/main.css">
 	</head>
 	<body>
-		<div>
-			<header>
-				<p>
-					<img src="image/logo.png"/>
-				</p>
-			</header>
-			<section>
-				<nav>
-					<ul>
-						<li><a href="">Home</a></li>
-						<li><a href="">Sitemap</a></li>
-					</ul>
-					<ul>
-						<li><a href="">Home</a></li>
-						<li><a href="">갤러리</a></li>
-						<li>
-							<a href="">게시판</a> <a href="">자유 게시판</a> <a href="">문의 게시판</a> <a href="">건의 게시판</a>
-						</li>
-						<li>
-							<a href="">멀티미디어</a> <a href="">음악듣기</a> <a href="">동영상보기</a>
-						</li>
-						<li><a href="">상품구매</a></li>
-						<li><a href="">찾아오시는길</a></li>
-					</ul>
-					<ul>
-						<li><a href="">회원가입</a></li>
-						<li><a href="">로그인</a></li>
-					</ul>
-				</nav>
-			</section>
-			<footer>
-				<div>
-					다운로드 개인정보처리방침 저작권지침및신고 이메일무단수집거부
+		<!-- header --------------------------------- -->
+		<header>
+			<div class="container">
+				<div class="logo"><img src="image/logo.png"/></div>
+				<ul class="sidemenu">
+					<li><a href="#">Home</a></li>
+					<li><a href="#">Sitemap</a></li>
+				</ul>
+			</div>
+		</header>
+		
+		<!-- nav --------------------------------- -->
+		<nav>
+			<div class="container">
+				<ul class="leftMenu">
+					<li class="active"><a href="index.html">Home</a></li>
+					<li><a href="html/galery.html">갤러리</a></li>
+					<li class="dropBox">
+						<a href="html/board.html">게시판</a>
+						<span class="dropmenu">
+							<span><a href="#">자유 게시판</a></span>
+							<span><a href="#">문의 게시판</a></span> 
+							<span><a href="#">건의 게시판</a></span>
+						</span>
+					</li>
+					<li class="dropBox">
+						<a href="">멀티미디어</a> 
+						<span class="dropmenu">
+							<span><a href="#">음악듣기</a></span>
+							<span><a href="#">동영상보기</a></span>
+						</span>
+					</li>
+					<li class="coming-soon"><a href="#">상품구매</a></li>
+					<li><a href="location.html">찾아오시는길</a></li>
+				</ul>
+				<ul class="rightMenu">
+					<li><a href="html/join.html">회원가입</a></li>
+					<li class="active"><a href="html/login.html">로그인</a></li>
+				</ul>
+			</div>
+		</nav>
+		
+		<!-- section --------------------------------- -->
+		<section id="section1">
+			<div class="container">
+				<div class="leftBox">
+					<div class="graph1">
+						<!-- 그래프1 추가 -->
+					</div>
+					<div class="graph2">
+						<!-- 그래프2 추가 -->
+					</div>
 				</div>
-				<div>
+				<div class="rightBox">
+					<div class="imgBox">
+						<!-- 이미지 추가 -->
+					</div>
+					<div class="table">
+						<!-- 테이블 추가 -->
+					</div>
+				</div>
+			</div>
+		</section>
+		<div class="clear"></div>
+		
+		<!-- footer --------------------------------- -->
+		<footer>
+			<div class="top">
+				<div class="container">
+					<span>다운로드</span> 
+					<span>개인정보처리방침</span> 
+					<span>저작권지침및신고</span> 
+					<span>이메일무단수집거부</span>
+				</div>
+			</div>
+			<div class="container">
+				<address>
+					서울특별시 강남구 테헤란로 14길 6
+				</address>
+				<div class="copyright">
 					Copyright &copy; 1998-2022 KH Information Educational Institute All Right Reserved.
-           			Contact webmaster for more information. 1544-9970
-         		</div>
-			</footer>
-		</div>
+	   				Contact webmaster for more information. 1544-9970
+				</div>
+       		</div>
+		</footer>
 	</body>
 </html>
