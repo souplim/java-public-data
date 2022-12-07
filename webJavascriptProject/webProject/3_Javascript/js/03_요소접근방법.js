@@ -36,7 +36,6 @@ function accessTagName(){
 
     // 반복문(java랑 비슷)
     for(let i = 0; i<arr.length; i++){
-
         const num = arr[i].innerText; // 요소에 작성된 내용 얻어오기
         arr[i].style.backgroundColor = "rgb(130, 200, "+(50*num)+")"; // 그라데이션 효과
     }
@@ -80,4 +79,57 @@ function accessName(){
     document.getElementById("name-div").innerHTML = str;
 
     document.getElementById("name-div").innerHTML += "<br><br>선택된 개수: "+count;
+}
+
+// CSS 선택자로 접근하기
+function accessCss(){
+    // querySelector() : 요소 1개 선택 시 사용. 여러 요소가 선택되면 첫 번째 요소만 선택
+    document.querySelector("#css-div").style.border ="3px solid red";
+
+    // 여러 개 있는 요소 선택해도 첫 번째 요소만 선택됨
+    // document.querySelector("#css-div > div").style.fontSize = "30px";
+
+    // querySelectorAll() : 모든 요소를 선택 시 사용
+    const arr = document.querySelectorAll("#css-div > div");
+    
+    for(let i=0;i<arr.length;i++){
+        arr[i].style.backgroundColor = "rgb(100,120,"+(50*(i+1))+")";
+    }
+}
+
+// 카카오톡 채팅 만들기
+function readValue(){
+    // 채팅 입력에 사용되는 요소 모두 얻어오기
+    // 배경
+    const bg = document.getElementById("chatting-bg");
+    // input
+    const input = document.querySelector("#chatting-input");
+
+    // input에 입력된 값이 있을 경우
+    if(input.value.trim().length > 0){
+        // 문자열.trim() : 문자열 양 끝에 공백을 모두 제거
+        // ex) "          k   h    ".trin() -> "k   h"
+        
+        // input에 입력된 값을 얻어와 bg에 추가(누적)
+        bg.innerHTML += "<p><span>"+input.value+"</span></p>";
+
+        // 요소.scrollTop           : 요소 내부 현재 스크롤 위치 반환
+        // 요소.scrollTop = 위치    : 스크롤을 특정 위치 이동
+        // 요소.scrollHeight        : 스크롤 전체 높이
+        
+        // bg의 스크롤을 제일 밑으로 내리기
+        bg.scrollTop = bg.scrollHeight;
+    }
+    
+    // 입력창에 내가 입력한 text 사라지고 커서 자동으로 들어가게 하기
+    input.value="";
+    input.focus(); /* input에 포커스를 맞추겠다 */
+}
+
+// input 태그 키가 눌러졌을 때 엔터인 경우를 검사하는 함수 
+function inputEnter(){
+    // console.log(window.event.key); // 현재 눌러진 키를 반환(test용 )
+    if(window.event.key == "Enter"){ // 눌러진 키가 enter인 경우
+            readValue(); // 함수 호출
+    }
 }
