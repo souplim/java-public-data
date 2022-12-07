@@ -26,7 +26,7 @@ function getInnerText(){
     const test1 = document.getElementById("test1");
 
     // test1 변수에 대입된 요소에서 내용을 얻어와 console에 출력
-    console.log(test1.innerHTML);
+    console.log(test1.innerText);
 }
 
 // innerText로 변경하기
