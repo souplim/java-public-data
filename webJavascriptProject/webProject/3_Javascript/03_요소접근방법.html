@@ -14,6 +14,28 @@
             height: 100px;
             border: 1px solid black;
         }
+
+        /* 카카오톡 채팅 만들기 */
+        #chatting-bg {
+            width: 360px;
+            height: 400px;
+            border: 1px solid black;
+            background-color: rgb(178, 199, 217);
+            overflow: auto;
+        }
+
+        /* 채팅 내용 */
+        #chatting-bg > p > span {
+            background-color: rgb(254, 234, 51);
+            padding: 5px;
+            border-radius: 6px;
+        }
+
+        /* 채팅 출력 라인 */
+        #chatting-bg > p {
+            margin: 20px 10px;
+            text-align: right;
+        }
     </style>
 </head>
 <body>
@@ -28,11 +50,15 @@
     <h1>DOM을 이용한 HTML 요소 접근하기(해당 요소객체 가져오기)</h1>
     <pre>
         1. id로 접근하기 : document.getElementById("id속성값");
+
         <!-- 복수형태(Elements)로 작성 -->
         2. name으로 접근하기 : document.getElementsByName("name속성값");
+
         <!-- 같은 class 는 여러 요소가 가질 수 있으므로 복수() -->
         3. class로 접근하기 : document.getElementsByClass("class속성값");
+        
         4. tag로 접근하기 : document.getElementsByTagName("태그명");
+
         5. CSS 선택자로 접근하기
          1) document.querySelector("css선택자");
             -> 선택된 요소가 여러 개일 경우 첫 번째 요소에만 접근
@@ -114,5 +140,32 @@
     <div class="area" id="name-div"></div>
 
     <button onclick="accessName()">출력하기</button>
+
+    <hr>
+
+    <h3>CSS 선택자로 접근하기</h3>
+
+    <div id="css-div">
+        <div class="area">test1</div>
+        <div class="area">test2</div>
+    </div>
+    <button onclick="accessCss()">확인하기</button>
+
+    <hr>
+
+    <h3>카카오톡 채팅 화면 만들기(version1)</h3>
+    <div id="chatting-bg">
+        <p><span>입력되는 채팅 출력</span></p>
+    </div>
+
+    <!-- 
+        onkeydown: 키가 눌러졌을 때
+        onkeypress: 키가 눌러지고 있을 때
+        쭉 누르고 있을 경우 무분별한 함수 호출이 발생
+        
+        onkeyup: 키가 올라올 때 (눌러진 후 딱 한 번 이벤트가 발생) -> 함수 1회 호출
+     -->
+    <input type="text" id="chatting-input" size="50" onkeyup="inputEnter()">
+    <button type="button" onclick="readValue()">입력</button>
 </body>
 </html>
