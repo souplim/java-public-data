@@ -26,7 +26,7 @@ function getInnerText(){
     const test1 = document.getElementById("test1");
 
     // test1 변수에 대입된 요소에서 내용을 얻어와 console에 출력
-    console.log(test1.innerText);
+    console.log(test1.innerHTML);
 }
 
 // innerText로 변경하기
@@ -44,7 +44,7 @@ function getInnerHTML1(){
     const test2 = document.getElementById("test2");
 
     // test2 요소 내부에 내용(태그+속성+내용)을 읽어 콘솔에 출력 
-    console.log(test2.innerHTML);
+    console.log(test2.innerText);
 }
 
 // innerHTML로 변경하기
@@ -59,10 +59,10 @@ function add(){
     const area1 = document.getElementById("area1");
 
     // 2) area1 내부 내용(태그, 속성, 내용 포함) 모두 읽어오기
-    const content = area1.innerHTML;
+    // const content = area1.innerHTML;
 
     // 3) area1에 이전 내용 + 새로운 요소(div.box2)추가
-    area1.innerHTML = content + "<div class='box2'></div>";
+    // area1.innerHTML = content + "<div class='box2'></div>";
 
     // 2번 + 3번
     area1.innerHTML += "<div class='box2'></div>";
