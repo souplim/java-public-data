@@ -8,7 +8,8 @@ function btnClick2(){
 }
 
 function changeColor1(){
-   document.getElementById("box").style.backgroundColor = "red"; /* <div id="box"></div> 를 가져와 배경색상 바꿈 */
+	/* <div id="box"></div> 를 가져와 배경색상 바꿈 */
+    document.getElementById("box").style.backgroundColor = "red";
 }
 
 function changeColor2(){
