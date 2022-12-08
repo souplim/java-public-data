@@ -57,6 +57,7 @@ document.getElementById("test2-3").onclick = function(event){
 }
 
 // 같은 이벤트 리스너에 이벤트 핸들러 작성한 것 까먹고 아래와 같은 코드 작성했다면...
+// 위에서 적용한 속성 무시됨
 /* document.getElementById("test2-3").onclick = function(){
     // 버튼 색 바꾸기
     // 방법 1) 요소(태그전체 즉 속성+속성값+내용)를 문서에서 찾아서 선택
