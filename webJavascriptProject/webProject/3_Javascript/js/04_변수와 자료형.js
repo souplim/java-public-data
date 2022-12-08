@@ -4,9 +4,9 @@ console.log(str);
 
 // 변수 선언 위치에 따른 구분
 var num1 = 10; // 전역 변수
-num2 = 20; // 전역 변수, 자바와는 다르게 변수타입 선언 않아도 됨
+num2 = 20; // 전역 변수, 자바와는 다르게 변수타입 선언 하지 않아도 됨
 
-var num1 = 20; // 변수명 중복 ok -> var의 특징
+var num1 = 20; // 변수명 중복(덮어쓰기) ok -> var의 특징
 
 console.log("num1 : "+num1);
 console.log("num2 : "+num2);
@@ -22,7 +22,7 @@ function test(){
         var num5 = 5; // if의 지역변수 -> function의 지역변수
         num6 = 6; // 전역변수
     }
-    console.log("num5: "+num5); // ok. why? function의 지역변수가 됨
+    console.log("num5: "+num5); // ok. why? var은 함수레벨 scopre -> function의 지역변수가 됨
 }
 
 test(); // 바로 함수 호출
@@ -81,4 +81,34 @@ function typeTest(){
     const user = {"id" : "user01", "pw" : "pass01"};
     typeBox.innerHTML += "<br>user : " + user+ " / " + typeof user;
 
+    // 객체 내용 출력 방법 1
+    typeBox.innerHTML += "<br>user.id : "+user.id +" / "+typeof user.id;
+    typeBox.innerHTML += "<br>user.pw : "+user.pw +" / "+typeof user.pw;
+
+    // 객체 내용 출력 방법 2 (객체 전용 for문 for ...in)
+    for(let key in user){ // user 객체의 키(id, pw)를 반복할 때마다 하나씩 얻어와 변수 key에 저장
+        // typeBox.innerHTML += "<br>user.key :" + user.key;  // key가 "key"인 것을 얻어오는 것
+        typeBox.innerHTML += "<br>user["+key+"] :" + user[key];     
+                                      // id           user[id]
+                                      // pw           user[pw]
+    }
+
+    console.log(user); // 콘솔 출력시 보기 더 좋음
+
+    // 5. function (함수도 자료형이다)
+    // 1) 변수명 == 함수명
+    const sumFn = function(n1, n2){ // 익명 함수를 sumFn이라는 변수에 담음
+        return n1+n2;
+    }
+
+    // 함수명만 작성한 경우 -> 함수에 작성된 코드가 출력됨
+    typeBox.innerHTML += "<br>sumFn :" + sumFn + " / " +typeof sumFn;
+    // 함수를 호출(수행)하기 위해서는 함수명() 괄호를 포함해서 작성해야함
+    typeBox.innerHTML += "<br>sumFn(10, 20) : "+sumFn(10, 20) + " / " +typeof sumFn(10, 20);
+
+    typeBox.innerHTML += "<br>tempFn(30, sumFn) : "+ tempFn(30, sumFn); // 함수명만 작성-> 코드 출력. -> 60 출력
+}
+
+function tempFn(n3, fn){
+    return n3+fn(10, 20);
 }
