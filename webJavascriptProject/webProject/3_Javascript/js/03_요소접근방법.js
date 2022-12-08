@@ -113,7 +113,7 @@ function readValue(){
         // input에 입력된 값을 얻어와 bg에 추가(누적)
         bg.innerHTML += "<p><span>"+input.value+"</span></p>";
 
-        // 요소.scrollTop           : 요소 내부 현재 스크롤 위치 반환
+        // 요소.scrollTop           : 요소 내부 현재 스크롤 위치 반환 (맨 위가 0)
         // 요소.scrollTop = 위치    : 스크롤을 특정 위치 이동
         // 요소.scrollHeight        : 스크롤 전체 높이
         
