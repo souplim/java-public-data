@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실습문제2_2</title>
+</head>
+<body>
+    <h1>간이 계산기 만들기</h1>
+
+    첫번째 값 : <input type="text" id="num1"><br>
+    두번째 값 : <input type="text" id="num2"><br>
+
+    <br><br>
+    
+    <button onclick="calculate('+')">+</button>
+    <button onclick="calculate('-')">-</button>
+    <button onclick="calculate('*')">*</button>
+    <button onclick="calculate('/')">/</button>
+    <button onclick="calculate('%')">%</button>
+
+    <br><br>
+    계산결과 : <span id="result"></span>
+
+    <script>
+        function calculate(op){
+            // op에는 +, -, *, /, % 중 하나가 전달됨
+
+            // input에 입력된 값을 얻어와 바로 number 타입으로 변환
+            const num1 = Number(document.getElementById("num1").value);
+            const num2 = Number(document.getElementById("num2").value);
+            
+            let result = 0;
+
+            switch(op){
+                case '+': result = num1+num2; break;
+                case '-': result = num1-num2; break;
+                case '*': result = num1*num2; break;
+                case '/': result = num1/num2; break;
+                case '%': result = num1%num2; break;
+            }
+            
+            // span 태그에 결과 출력
+            document.getElementById("result").innerHTML = result;
+        }
+    </script>
+</body>
+</html>
