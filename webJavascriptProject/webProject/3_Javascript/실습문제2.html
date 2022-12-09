@@ -14,49 +14,69 @@
 
     <br><br>
     
-    <button id="plus" onclick="sum()">+</button>
-    <button id="minus" onclick="minus()">-</button>
-    <button id="multiply" onclick="multi()">*</button>
-    <button id="divide" onclick="div()">/</button>
+    <button onclick="add()">+</button>
+    <button onclick="minus()">-</button>
+    <button onclick="multi()">*</button>
+    <button onclick="div()">/</button>
 
     <br><br>
     계산결과 : <span id="result"></span>
 
     <script>
         // 형변환 : Number("10") -> 10
-        const result = document.getElementById("result");
         
         // 전역변수로 사용하면 빈공간의 값을 가져오게 됨(함수 호출 전)
         // const number1 = Number(document.getElementById("num1").value);
         // const number2 = Number(document.getElementById("num2").value);
-        const number1 = document.getElementById("num1");
-        const number2 = document.getElementById("num2");
 
-        const plus = function(num1, num2){
-            return num1+num2;
-        }
-        const minuss = function(num1, num2){
-            return num1-num2;
-        }
-        const multiply = function(num1, num2){
-            return num1*num2;
-        }
-        const divide = function(num1, num2){
-            return num1/num2;
+        function add(){
+            const result =  document.getElementById("result");
+            
+            const num1 = Number(document.getElementById("num1").value);
+            const num2 = Number(document.getElementById("num2").value);
+
+            const add1 = function(num1, num2){
+                return num1+num2;
+            }
+            result.innerHTML = add1(num1, num2);
         }
 
-        function sum(){
-            result.innerHTML = plus(Number(number1.value), Number(number2.value));
-        }
         function minus(){         
-            result.innerHTML = minuss(Number(number1.value), Number(number2.value));
+            const result =  document.getElementById("result");
+            
+            const num1 = Number(document.getElementById("num1").value);
+            const num2 = Number(document.getElementById("num2").value);
+
+            const minus1 = function(num1, num2){
+                return num1-num2;
+            }
+            result.innerHTML = minus1(num1, num2);
         }
         function multi(){
-            result.innerHTML = multiply(Number(number1.value), Number(number2.value));
+            const result =  document.getElementById("result");
+            
+            const num1 = Number(document.getElementById("num1").value);
+            const num2 = Number(document.getElementById("num2").value);
+
+            const multi1 = function(num1, num2){
+                return num1*num2;
+            }
+            result.innerHTML = multi1(num1, num2);
         }
         function div(){
-            result.innerHTML = divide(Number(number1.value), Number(number2.value));
+            const result =  document.getElementById("result");
+            
+            const num1 = Number(document.getElementById("num1").value);
+            const num2 = Number(document.getElementById("num2").value);
+
+            const div1 = function(num1, num2){
+                return num1/num2;
+            }
+            result.innerHTML = div1(num1, num2);
         }
+
+        
+
     </script>
 </body>
 </html>
