@@ -49,7 +49,7 @@ document.getElementById("btn1").addEventListener("click", function(){
     // -> 객체 내부에 작성된 key를 순서대로 하나씩 꺼내옴
     for(let a in product)
         div1.innerHTML += "product["+a+"] : "+product[a]+"<br/>"; 
-                                            // 배열이라 배열 기호로 key값 감싸줘야 함(배열의 인덱스 선택하듯이)
+                                            // 배열이라 배열 기호로 key값 감싸줘야 함(배열의 인덱스 선택하듯이). 객체 자체를 꺼내므로 주석까지 출력됨(04_변수와 자료형.js 맨 마지막)
                             // product.a -> key값이 'a'인 key의 value값
 
     div1.innerHTML += "<hr>";
