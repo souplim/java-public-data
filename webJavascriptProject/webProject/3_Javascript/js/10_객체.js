@@ -50,6 +50,7 @@ document.getElementById("btn1").addEventListener("click", function(){
     for(let a in product)
         div1.innerHTML += "product["+a+"] : "+product[a]+"<br/>"; 
                                             // 배열이라 배열 기호로 key값 감싸줘야 함(배열의 인덱스 선택하듯이). 객체 자체를 꺼내므로 주석까지 출력됨(04_변수와 자료형.js 맨 마지막)
+                                            // 속성들을 출력하려다 함수까지 출력된 것으로 함수를 출력할 때는 이 방법 사용 안 함
                             // product.a -> key값이 'a'인 key의 value값
 
     div1.innerHTML += "<hr>";
