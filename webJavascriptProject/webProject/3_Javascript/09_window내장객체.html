@@ -5,6 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>09_window내장객체</title>
+
+    <style>
+      #clock {
+        border: 1px solid black;
+        width: 300px;
+        height: 300px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        font-size: 50px;
+        font-weight: bold;
+      }
+    </style>
 </head>
 <body>
     <h1>window 객체</h1>
@@ -28,6 +43,16 @@
     <h2>window.setTimeout(함수, 지연시간(ms))</h2>
     <p>지연시간 후 함수가 1회 실행</p>
     <button id="btn1">setTimeout() 확인</button>
+
+    <hr>
+
+    <h2>window.setInterval(함수, 지연시간(ms))</h2>
+    <p>지연시간 마다 함수 실행</p>
+
+    <div id="clock">16 : 49 : 45</div>
+
+    <h2>window.clearInterval(setInterval이 저장된 변수)</h2>
+    <button id="stop">STOP!!!</button>
 
     <script src="js/09_window내장객체.js"></script>
 </body>
