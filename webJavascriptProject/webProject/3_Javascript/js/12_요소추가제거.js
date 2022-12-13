@@ -40,3 +40,26 @@ document.getElementById("add").addEventListener("click", function(){
     // #container에 div를 마지막 자식으로 추가
     document.getElementById("container").append(div); 
 })
+
+// 계산 버튼 클릭시 이벤트 동작
+document.getElementById("calc").addEventListener("click", function(){
+
+    // 합계 저장용 변수
+    let sum = 0;
+
+    // in 클래스 요소를 모두 얻어옴 -> 배열 형태
+    const list = document.getElementsByClassName("in"); // 여기서 가져오는 것은 배열형태. 배열 전체에 .value 해버리면 안 나옴(0번 인덱스의 value값을 원하는 거지 배열자체의 value값 아님)
+
+    // 배열용 향상된 for문(for ... of ...) 사용
+    for(let input of list){
+
+        // Number("") == 0 // 빈칸은 0으로 변환되기 때문에 신경쓰지 말자
+        // sum에 입력값 누적
+        // -> input에 작성된 값은 모두 string -> 숫자 변환 Number() 필요 
+        sum += Number(input.value); 
+    }
+
+    // sum을 alert로 출력
+    alert("합계 : "+sum);
+
+})
