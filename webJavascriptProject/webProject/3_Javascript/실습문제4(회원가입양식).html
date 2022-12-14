@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실습문제4(회원가입양식)</title>
+
+    <style>
+        fieldset {
+            width: 500px;
+        }
+
+        .text {
+            display: inline-block;
+            width: 150px;
+        }
+        
+        fieldset :nth-child(2) > button {
+            margin-left : 5px;
+        }
+
+        .btnSubRst {
+            margin-left: 200px;
+        }
+    </style>
+</head>
+<body>
+    <form onsubmit="return validate()">
+        <fieldset>
+            <legend>회원 가입 양식</legend>
+            <p>
+                <span class="text">아이디</span>
+                <input type="text" id="inputId">
+                <button type="button" >중복확인</button>
+                <span></span>
+            </p>
+            <p>
+                <span class="text">비밀번호</span>
+                <input type="text" id="inputPw">
+            </p>
+            <p>
+                <span class="text">비밀번호 확인</span>
+                <input type="text" id="inputPwConfirm">
+                <span id="inputPwResult"></span>
+            </p>
+            <p>
+                <span class="text">이름</span>
+                <input type="text" id="inputName">
+                <span id="inputNameResult"></span>
+            </p>
+            <p>
+                <span class="text">성별</span>
+                <label>남</label>
+                <input type="radio" name="gender" value="man"/>
+                <label>여</label>
+                <input type="radio" name="gender" value="woman"/>
+            </p>
+            <p>
+                <span class="text">전화번호</span>
+                <input type="text">
+            </p>
+            <p>
+                <span class="text">이메일</span>
+                <input type="text">
+            </p>
+            <p class="btnSubRst">
+                <button type="reset">초기화</button>
+                <button type="submit">회원가입</button>
+            </p>
+        </fieldset>
+
+    </form>
+
+
+
+
+
+    <script src="js/실습문제4(회원가입양식).js"></script>
+</body>
+</html>
