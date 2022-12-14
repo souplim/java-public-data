@@ -73,8 +73,25 @@ document.getElementById("inputPwConfirm").addEventListener("keyup", function(){
 
 document.getElementById("inputPw").addEventListener("keyup", function(){
     
+    const pwConfirm = document.getElementById("inputPwConfirm");
     const span = document.getElementById("pwMessage");
-    
+
+    if(this.value==""){
+        pwConfirm.value = "";
+        alert("비밀번호를 입력해주세요");
+        this.focus();
+    }
+
+    if(this.value == pwConfirm.value){
+        span.innerHTML = "비밀번호 일치";
+        span.classList.remove("error");
+        span.classList.add("confirm");
+    } else {
+        span.innerHTML = "비밀번호 불일치";
+        span.classList.remove("confirm");
+        span.classList.add("error");
+    }
+
     if(this.value == ""){
         span.innerHTML = "";
     }
