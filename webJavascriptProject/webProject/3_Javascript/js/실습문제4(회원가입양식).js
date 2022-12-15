@@ -11,7 +11,7 @@
 
 // 아이디 중복확인
 document.getElementById("inputId").addEventListener("change", function(){
-    const regExp = /^[a-z]{1}([a-z]|[A-Z]|[0-9]|\-\_){5,13}$/;
+    const regExp = /^[a-z]{1}[a-zA-Z0-9\-_]{5,13}$/;
 
     if(regExp.test(this.value)){
         this.style.backgroundColor = "springgreen";
