@@ -99,11 +99,27 @@ function validate(){
 
     const gender = document.getElementsByName("gender");
 
-    if(!gender[0].checked && !gender[1].checked){
+    // 방법 1
+    /* if(!gender[0].checked && !gender[1].checked){
         alert("성별을 선택해주세요.");
 
         return false;
+    } */
+
+    // 방법 2
+    let count = 0;
+    for(let i=0; i<gender.length; i++){
+
+        if(gender[i].checked){
+            count++;
+        }
     }
+
+    if(count==0){
+        alert("성별을 선택해주세요.");       
+        return false; 
+    }
+    
 
     /*
     - 전화번호 형식이 올바르지 않을 경우 
@@ -115,10 +131,17 @@ function validate(){
     const inputTel = document.getElementById("inputTel").value;
     const regExp = /^[0][0-9]{1,2}-[0-9]{3,4}-[0-9]{4}/;
 
+    if(inputTel == ""){
+        alert("전화번호를 입력해주세요.");
+        return false;
+    } 
+
     if(!regExp.test(inputTel)){
         alert("전화번호의 형식이 올바르지 않습니다.");
 
         return false;
+    } else {
+        return true;
     }
 
 }
