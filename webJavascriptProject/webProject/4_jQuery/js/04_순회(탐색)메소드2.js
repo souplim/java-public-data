@@ -39,6 +39,9 @@ $(".wrap").children(".type").children("ul").children("li").css(style4);
 
 // find("매개변수(css선택자)")
 // 선택된 요소의 후손 중 매개변수로 작성된 선택자와 일치하는 모든 요소를 선택
+// 순회탐색메소드 중에 $(선택자).children()는 사용하면 children이 모든 자식요소를 찾아오지만 
+// $(선택자).find()는 사용할 경우에 find는 매개변수가 없으면 아무것도 안 찾아옴
+// 이때 find로 모든 자손요소를 찾고 싶으면 매개변수로 전체 선택자("*")를 집어넣으면 됨
 
 // 클래스가 wrap인 요소의 후손 중 모든 span 태그의 스타일을 style5로 설정
 $(".wrap").find("span").css(style5);
