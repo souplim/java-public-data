@@ -95,61 +95,40 @@ $("#select").on("select", function(){
 // 131~149까지는 주황색
 // 150부터는 빨간색으로 출력
 
-// $("#input-content").on("input", function(){
-//     // let length = $("#input-content").val().length;
-//     let length = $(this).val().length;
-
-//     if(length <= 130){
-//         $("#counter").css("color","black");
-//     } else if(length <= 149){ // 130이내는 이미 if문에서 거르기 때문에 130< 라는 조건은 생략 가능
-//         $("#counter").css("color","orange");
-//     } else {
-//         $("#counter").css("color","red");
-
-//         // 150글자 이상 작성 불가능하게 만들기
-//         // 1) textarea에 작성된 값(문자열)을 변수에 저장
-//         const str = $(this).val();
-
-//         // 2) substr을 이용해서 글자를 150글자까지만 잘라내기
-//         // 문자열.substr(시작인덱스, 종료인덱스)
-//         // -> 문자열을 시작 인덱스 이상부터, 종료 인덱스 미만까지를 잘라내 반환
-
-//         // 3) 150글자만 잘라내어 textarea의 값으로 세팅하기
-//         $(this).val(str.substr(0,150));
-//     }
-
-//     /*  
-//         ***중요*** 
-//         위에서 미리 length를 구해버리면 150->151로 증가하고 문자열이 잘리기 때문에 
-//         나타나는 문자열은 150자 지만 문자수는 151이라고 나옴  
-//     */
-//     $("#counter").text(length); 
-//     // $(this) : 입력(input) 이벤트가 발생한 현재 요소(textarea)
-//     // val() : teatarea에 입력된 값(문자열)
-//     // length : 문자열의 길이
-//     // text("문자열") : 요소의 내용으로 문자열 출력
-// });
-
-
 $("#input-content").on("input", function(){
+    // let length = $("#input-content").val().length;
+    let length = $(this).val().length;
 
-    // #counter의 글자색 변경하기
-    // 글자수가 0 ~ 130 이면 글자색이 검은색
-    // 131 ~ 149 까지는 주황색 
-    // 150부터는 빨간색으로 출력
-    if( $(this).val().length <= 130 ){
-        $("#counter").css("color", "black");
+    if(length <= 130){
+        $("#counter").css("color","black");
+    } else if(length <= 149){ // 130이내는 이미 if문에서 거르기 때문에 130< 라는 조건은 생략 가능
+        $("#counter").css("color","orange");
+    } else {
+        $("#counter").css("color","red");
 
-    } else if( $(this).val().length <= 149 ){
-        $("#counter").css("color", "orange");
-
-    } else { // 150 글자 이상인 경우
-        $("#counter").css("color", "red");
+        // 150글자 이상 작성 불가능하게 만들기
+        // 1) textarea에 작성된 값(문자열)을 변수에 저장
         const str = $(this).val();
+
+        // 2) substr을 이용해서 글자를 150글자까지만 잘라내기
+        // 문자열.substr(시작인덱스, 종료인덱스)
+        // -> 문자열을 시작 인덱스 이상부터, 종료 인덱스 미만까지를 잘라내 반환
+
+        // 3) 150글자만 잘라내어 textarea의 값으로 세팅하기
         $(this).val(str.substr(0,150));
     }
 
-    $("#counter").text( $(this).val().length );
+    /*  
+        ***중요*** 
+        위에서 미리 length를 구해버리면 150->151로 증가하고 문자열이 잘리기 때문에 
+        나타나는 문자열은 150자 지만 문자수는 151이라고 나옴  
+    */
+
+    // $("#counter").text(length); 잘못된 코드
+    $("#counter").text($(this).val().length); // 수정한 코드
+
     // $(this) : 입력(input) 이벤트가 발생한 현재 요소(textarea)
     // val() : teatarea에 입력된 값(문자열)
+    // length : 문자열의 길이
+    // text("문자열") : 요소의 내용으로 문자열 출력
 });
