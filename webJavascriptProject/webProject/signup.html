@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.2.min.js" integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA=" crossorigin="anonymous"></script>
+
+    <style>
+        /* - 배경색 : #f1f1f1
+            - 경고 문구 : #dc3340
+            - 회원가입 사각형 라인 : #888888
+            - 회원가입 입력칸 기본 문구 : #c4c4c4
+            - 버튼 색(파랑) : #3880e8
+            - 버튼색 (회색) : #888888 */
+
+        /* 전체 */
+        body {
+            background-color: #f1f1f1;
+            
+        }
+
+        /* 중앙정렬 */
+        #outerFrame {
+            display: flex;
+            justify-content: center;
+        }
+
+        #table {
+            color: #c4c4c4;
+            font-weight: bold;
+        }
+
+        /* 제목 */
+        h1 {
+            display: inline-block;
+            margin-left: 20px;
+        }
+        
+        /* 목차 */
+        header {
+            display: flex;
+        }
+        header > div {
+            margin: 40px 10px 10px 40px;
+        }
+
+        p { margin-bottom: 2px; }
+
+
+        /* 테이블 속성 */
+        #table {
+            width: 600px;
+            height: 400px;
+            background-color: white;
+            border: 1px solid #888888;
+        }
+        #table td:first-child {
+            border-bottom: 1px solid #888888;
+        }
+        #table td:nth-child(2) {
+            border-bottom: 1px solid #888888;
+        }
+        #table td {
+            align-items: flex-start;
+        }
+
+        /* input */
+        .inputText {
+            width: 75%;
+            height: 50%;
+            margin-left: 10px;
+            border-color: rgba(255, 255, 255, 0);
+        }
+
+        select {
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+            border-color:rgba(255, 255, 255, 0);
+        }
+
+        #gender {
+            padding-left: 10px;
+        }
+        #phoneNum {
+            padding-left: 10px;
+        }
+
+        /* 버튼 */
+        button {
+            height: 50px;
+            color: white;
+            border-radius: 5px;
+            border-color: rgba(255, 255, 255, 0);
+            margin: 10px; 
+        }
+        #resetBtn {
+            width: 150px;
+            background-color: #888888;
+            margin-left: 100px;
+        }
+        #confirmBtn {
+            width: 200px;
+            background-color: #3880e8;
+        }
+    </style>
+</head>
+<body>
+    <div id="outerFrame">
+        <div id="frame">
+
+            <header>
+                <h1>구매 회원가입</h1>
+            
+                <div>1 가입</div>
+                <div>2 약관동의</div>
+                <div>3 정보입력</div>
+                <div>4 가입완료</div>
+            </header>
+
+
+            <p>회원정보를 입력해주세요. 모두 입력하셔야 가입이 가능합니다.</p>
+            <form>
+                
+                <legend></legend>
+                <table id="table">
+                    <tr>
+                        <td>
+                            <input type="text" class="inputText" placeholder="ID를 만들어주세요 띄어쓰기 없이 영/숫자 6~10자"><br>
+                            <span id="alarmId"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="text" class="inputText" placeholder="비밀번호 입력 8~15자의 영문 대소문자, 숫자 또는 특수문자 조합">
+                            <span id="alarmPw"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="text" class="inputText" placeholder="위의 비밀번호를 다시 입력해주세요">
+                            <span id="alarmPwConfirm"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="text" class="inputText" placeholder="이름">
+                            <span id="alarmName"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="gender">
+                            <label>남</label><input type="radio" name="gender" value="male">
+                            <label>여</label><input type="radio" name="gender" value="female">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select id="phoneNum">
+                                <option>010</option>
+                                <option>011</option>
+                                <option>016</option>
+                                <option>017</option>
+                                <option>018</option>
+                            </select>
+                            <input type="text" class="inputText" placeholder="휴대폰번호입력">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="inputText" placeholder="이메일">
+                            <select>
+                                <option>직접입력</option>
+                                <option>naver.com</option>
+                                <option>daum.net</option>
+                                <option>hotmail.com</option>
+                                <option>nate.com</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                <div id="buttonPlace">
+                    <button type="reset" id="resetBtn">처음으로</button>
+                    <button id="confirmBtn">확인</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="signup.js"></script>
+</body>
+</html>
