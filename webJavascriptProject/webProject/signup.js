@@ -45,8 +45,8 @@ $(".inputText").hover(function(){
 // 띄어쓰기 없이 영/숫자 6~10자
 // 빈칸이면 "필수 정보입니다" -> 빨간색
 // 정규표현식에 맞으면 "사용가능한 아이디 입니다" -> 파란색
-
 $("#inputId").on("change", function(){
+
     const regExp = /^[a-zA-Z0-9]{6,10}$/;
 
     if(regExp.test( $(this).val() )){
@@ -59,13 +59,19 @@ $("#inputId").on("change", function(){
         $("#idMessage").html("회원 아이디(ID)는 띄어쓰기 없이 6~10자리의 영문자와 숫자 조합만 가능합니다.");
         $("#idMessage").addClass("error");
         $("#idMessage").removeClass("confirm");
+
+        $("#imgId").attr("src","checkBlack.png");
     }
     
     if($(this).val().length == 0){
         $("#idMessage").html("필수 정보입니다");
         $("#idMessage").addClass("error");
         $("#idMessage").removeClass("confirm");
+
+        $("#imgId").attr("src","checkBlack.png");
     }
+
+    
 });
 
 // focus 나갔을 때 공백이면 "필수정보입니다"
@@ -77,10 +83,20 @@ $("#inputId").on("blur", function(){
         $("#idMessage").removeClass("confirm");
 
         // input 내용 없이 포커스 나가면 placeholder 다시 띄우기 
-        $(this).attr("placeholder", "ID를 만들어주세요 띄어쓰기 없이 영/숫자 6~10자");
+        $(this).attr("placeholder", "ID를 만들어주세요");
+
+        // focus 해지되었을 때 아무 값도 안 들어오면 pPlaceholder1 다시 띄우기
+        $("#pPlaceholder1").html("띄어쓰기 없이 영/숫자 6~10자");
     }
 
 });
+
+// input에 커서 들어오면 pPlaceholder1 공백으로 처리
+$("#inputId").on("focus", function(){
+    $("#pPlaceholder1").html("");
+});
+
+
 
 //----- 비밀번호 ---------------------------------------------------------
 
@@ -95,17 +111,22 @@ $("#inputPw").on("change", function(){
         $("#pwMessage").html("적정 수준의 안전한 비밀번호입니다.");
         $("#pwMessage").addClass("confirm");
         $("#pwMessage").removeClass("error");
+
         $("#imgPw").attr("src","lockBlue.png");
     } else {
         $("#pwMessage").html("비밀번호 조합기준에 적합하지 않습니다.");
         $("#pwMessage").addClass("error");
         $("#pwMessage").removeClass("confirm");
+
+        $("#imgPw").attr("src","lockBlack.png");
     }
     
     if($(this).val().length == 0){
         $("#pwMessage").html("띄어쓰기 없는 8~15자의 영문 대/소문자, 숫자 또는 특수문자 조합으로 입력하셔야 합니다.");
         $("#pwMessage").addClass("error");
         $("#pwMessage").removeClass("confirm");
+
+        $("#imgPw").attr("src","lockBlack.png");
     }
 });
 
@@ -118,12 +139,17 @@ $("#inputPw").on("blur", function(){
         $("#pwMessage").removeClass("confirm");
 
         // input 내용 없이 포커스 나가면 placeholder 다시 띄우기 
-        $(this).attr("placeholder", "띄어쓰기 없는 8~15자의 영문 대/소문자, 숫자 또는 특수문자 조합");
+        $(this).attr("placeholder", "비밀번호 입력");
+
+        // focus 해지되었을 때 아무 값도 안 들어오면 pPlaceholder2 다시 띄우기
+        $("#pPlaceholder2").html("8~15자의 영문 대소문자, 숫자 또는 특수문자 조합"); 
     }
 });
 
-
-// 비밀번호 암호화?
+// input에 커서 들어오면 pPlaceholder2 공백으로 처리
+$("#inputPw").on("focus", function(){
+    $("#pPlaceholder2").html("");
+});
 
 
 //----- 비밀번호 확인 ---------------------------------------------------------
@@ -133,17 +159,22 @@ $("#inputPw").on("blur", function(){
 $("#inputPwConfirm").on("change", function(){
     if( $("#inputPw").val() == $(this).val() ){
         $("#pwConfirmMessage").html("");
+
         $("#imgPwConfirm").attr("src","lockBlue.png");
     } else {
         $("#pwConfirmMessage").html("비밀번호가 일치하지 않습니다.");
         $("#pwConfirmMessage").addClass("error");
         $("#pwConfirmMessage").removeClass("confirm");
+
+        $("#imgPwConfirm").attr("src","lockBlack.png");
     }
     
     if($(this).val().length == 0){
         $("#pwConfirmMessage").html("필수 정보입니다.");
         $("#pwConfirmMessage").addClass("error");
         $("#pwConfirmMessage").removeClass("confirm");
+
+        $("#imgPwConfirm").attr("src","lockBlack.png");
     }
 });
 
@@ -171,17 +202,22 @@ $("#inputName").on("change", function(){
         $("#nameMessage").html("");
         $("#nameMessage").addClass("confirm");
         $("#nameMessage").removeClass("error");
+
         $("#imgName").attr("src","checkBlue.png");
     } else {
         $("#nameMessage").html("한글만 입력하세요.");
         $("#nameMessage").addClass("error");
         $("#nameMessage").removeClass("confirm");
+
+        $("#imgName").attr("src","checkBlack.png");
     }
     
     if($(this).val().length == 0){
         $("#nameMessage").html("필수 정보입니다.");
         $("#nameMessage").addClass("error");
         $("#nameMessage").removeClass("confirm");
+
+        $("#imgName").attr("src","checkBlack.png");
     }
 });
 
@@ -245,11 +281,9 @@ $("#inputTel2").on("blur", function(){
         $("#dash").html("");
 });
 
-
 // 각각 4자리까지만 입력되게 하기. 숫자, 자리 벗어난 숫자 제거
 // 입력 없을 때, 자리수 모자랄 때 "전화번호를 정확히 입력해주세요."
 // 입력 알맞을 때 파란색 체크 이미지
-// /^[0][0-9]{1,2}-[0-9]{3,4}-[0-9]{4}$/;
 
 const regExpNo = /^[a-zA-Z<>?!@#$%^&*()\-_=+]$/;
 const regExpNo2 = /^[0-9]{5,}$/;
@@ -287,17 +321,22 @@ $("#inputTel1").on("change", function(){
         $("#telMessage").html("");
         $("#telMessage").addClass("confirm");
         $("#telMessage").removeClass("error");
+
         $("#imgTel").attr("src","checkBlue.png");
     } else {
         $("#telMessage").html("전화번호를 정확히 입력해주세요.");
         $("#telMessage").addClass("error");
         $("#telMessage").removeClass("confirm");
+
+        $("#imgTel").attr("src","checkBlack.png");
     }
     
     if($(this).val().length == 0){
         $("#telMessage").html("전화번호를 정확히 입력해주세요.");
         $("#telMessage").addClass("error");
         $("#telMessage").removeClass("confirm");
+
+        $("#imgTel").attr("src","checkBlack.png");
     }
 });
 
@@ -307,17 +346,22 @@ $("#inputTel2").on("change", function(){
         $("#telMessage").html("");
         $("#telMessage").addClass("confirm");
         $("#telMessage").removeClass("error");
+
         $("#imgTel").attr("src","checkBlue.png");
     } else {
         $("#telMessage").html("전화번호를 정확히 입력해주세요.");
         $("#telMessage").addClass("error");
         $("#telMessage").removeClass("confirm");
+
+        $("#imgTel").attr("src","checkBlack.png");
     }
     
     if($(this).val().length == 0){
         $("#telMessage").html("전화번호를 정확히 입력해주세요.");
         $("#telMessage").addClass("error");
         $("#telMessage").removeClass("confirm");
+
+        $("#imgTel").attr("src","checkBlack.png");
     }
 });
 
@@ -386,7 +430,7 @@ $("#emailAddress").on("change", function(){
 const regExp11 = /^([a-z0-9_\.-]+)$/;
 const regExp22 = /^([\da-z\.-]+)\.([a-z\.]{2,6})$/;
 
-$("#inputEmail1").on("change", function(){
+$("#inputEmail1").on("input", function(){
 
     if(regExp11.test( $(this).val() ) && regExp22.test( $("#inputEmail2").val())){
         $("#emailMessage").html("");
@@ -406,7 +450,7 @@ $("#inputEmail1").on("change", function(){
 
 });
 
-$("#inputEmail2").on("change", function(){
+$("#inputEmail2").on("input", function(){
 
     if(regExp11.test( $(this).val() ) && regExp22.test( $("#inputEmail2").val())){
         $("#emailMessage").html("");
@@ -424,4 +468,40 @@ $("#inputEmail2").on("change", function(){
         $("#emailMessage").removeClass("confirm");
     }
 
+});
+
+// focus 나갔을 때 공백이면 "이메일 주소를 다시 확인해주세요."
+$("#inputEmail1").on("blur", function(){
+    
+    if($(this).val().length == 0 && $("#inputEmail2").val().length == 0 ){
+        $("#emailMessage").html("이메일 주소를 다시 확인해주세요.");
+        $("#emailMessage").addClass("error");
+        $("#emailMessage").removeClass("confirm");
+
+        // input 내용 없이 포커스 나가면 placeholder 다시 띄우기 
+        $(this).attr("placeholder", "이메일");
+    }
+});
+
+$("#inputEmail2").on("blur", function(){
+    
+    if($(this).val().length == 0 && $("#inputEmail2").val().length == 0 ){
+        $("#emailMessage").html("이메일 주소를 다시 확인해주세요.");
+        $("#emailMessage").addClass("error");
+        $("#emailMessage").removeClass("confirm");
+    }
+});
+
+// select 값 변경됐을 때 정규표현식이 알맞으면 span 지우기
+$("#emailAddress").on("change", function(){
+
+    if(regExp11.test( $("#inputEmail1").val() ) && regExp22.test( $("#inputEmail2").val())){
+        $("#emailMessage").html("");
+        $("#emailMessage").addClass("confirm");
+        $("#emailMessage").removeClass("error");
+    } else {
+        $("#emailMessage").html("이메일 주소를 다시 확인해주세요.");
+        $("#emailMessage").addClass("error");
+        $("#emailMessage").removeClass("confirm");
+    }
 });
