@@ -1,33 +1,3 @@
-/* 유효성 검사
-
-아이디 : 필수, 영/숫자6-10자
-
-^[a-zA-Z\d]{6,10}$
-
-비밀번호:  필수, 8-15자의 영문 대소문자, 숫자, 특수문자
-
-^(?=.*?[A-Za-z)(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,15}$
-
-비밀번호확인: 중복 체크
-
-이름 : 필수, 한글
-
-^[가-힣]{2,5}$
-
-성별 : onsubmit 제한
-
-전화번호 : 010-> select, onsubmit 제한
-
-/^[0][0-9]{1,2}-[0-9]{3,4}-[0-9]{4}$/;
-
-이메일 : 직접입력 -> select, 선택
-
-^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$ */
-
-
-
-
-
 //----- 전체 ---------------------------------------------------------
 
 
@@ -38,18 +8,19 @@ $(".inputText").on("focus", function(){
 
 });
 
-// input 내용 없이 포커스 나가면 placeholder 다시 띄우기
-$(".inputText").on("blur", function(){
-
-    const textPh = $(this).attr("placeholder"); /* 왜 안 얻어질까? 클래스이름 -> 배열이라? 각각 구현해야 하나? */
+// input 내용 없이 포커스 나가면 placeholder 다시 띄우기 /* 왜 안 얻어질까? 클래스이름 -> 배열이라? 각각 구현해야 하나? */
+// focus 있을 때 placeholder값 공백으로 설정했으므로 아무것도 안 가져와지는 것이 당연
+// 각각의 항목에 text 다시 줘서 설정해야 함
+/* $(".inputText").on("blur", function(){
+    const textPh = $(this).attr("placeholder"); 
 
     if($(this).val()!=""){
         $(this).attr("placeholder","");
     } else {
         $(this).attr("placeholder", textPh);
     }
+}); */
 
-});
 
 // inputText에 마우스 대면 CURSOR: POINTER (아무것도 써져있지 않을 때)
 // focus 없을 때만
@@ -67,6 +38,7 @@ $(".inputText").hover(function(){
     $(this).css("cursor","");
 });
 
+
 //----- 아이디 ---------------------------------------------------------
 
 // id 유효성 검사 
@@ -81,6 +53,8 @@ $("#inputId").on("change", function(){
         $("#idMessage").html("사용가능한 아이디 입니다.");
         $("#idMessage").addClass("confirm");
         $("#idMessage").removeClass("error");
+        
+        $("#imgId").attr("src","checkBlue.png");
     } else {
         $("#idMessage").html("회원 아이디(ID)는 띄어쓰기 없이 6~10자리의 영문자와 숫자 조합만 가능합니다.");
         $("#idMessage").addClass("error");
@@ -101,7 +75,11 @@ $("#inputId").on("blur", function(){
         $("#idMessage").html("필수 정보입니다");
         $("#idMessage").addClass("error");
         $("#idMessage").removeClass("confirm");
+
+        // input 내용 없이 포커스 나가면 placeholder 다시 띄우기 
+        $(this).attr("placeholder", "ID를 만들어주세요 띄어쓰기 없이 영/숫자 6~10자");
     }
+
 });
 
 //----- 비밀번호 ---------------------------------------------------------
@@ -117,6 +95,7 @@ $("#inputPw").on("change", function(){
         $("#pwMessage").html("적정 수준의 안전한 비밀번호입니다.");
         $("#pwMessage").addClass("confirm");
         $("#pwMessage").removeClass("error");
+        $("#imgPw").attr("src","lockBlue.png");
     } else {
         $("#pwMessage").html("비밀번호 조합기준에 적합하지 않습니다.");
         $("#pwMessage").addClass("error");
@@ -137,6 +116,9 @@ $("#inputPw").on("blur", function(){
         $("#pwMessage").html("띄어쓰기 없는 8~15자의 영문 대/소문자, 숫자 또는 특수문자 조합으로 입력하셔야 합니다.");
         $("#pwMessage").addClass("error");
         $("#pwMessage").removeClass("confirm");
+
+        // input 내용 없이 포커스 나가면 placeholder 다시 띄우기 
+        $(this).attr("placeholder", "띄어쓰기 없는 8~15자의 영문 대/소문자, 숫자 또는 특수문자 조합");
     }
 });
 
@@ -151,7 +133,7 @@ $("#inputPw").on("blur", function(){
 $("#inputPwConfirm").on("change", function(){
     if( $("#inputPw").val() == $(this).val() ){
         $("#pwConfirmMessage").html("");
-        // 자물쇠 이미지 -> 파란색
+        $("#imgPwConfirm").attr("src","lockBlue.png");
     } else {
         $("#pwConfirmMessage").html("비밀번호가 일치하지 않습니다.");
         $("#pwConfirmMessage").addClass("error");
@@ -172,6 +154,9 @@ $("#inputPwConfirm").on("blur", function(){
         $("#pwConfirmMessage").html("필수 정보입니다.");
         $("#pwConfirmMessage").addClass("error");
         $("#pwConfirmMessage").removeClass("confirm");
+
+        // input 내용 없이 포커스 나가면 placeholder 다시 띄우기 
+        $(this).attr("placeholder", "위의 비밀번호를 다시 입력해주세요");
     }
 });
 
@@ -180,12 +165,13 @@ $("#inputPwConfirm").on("blur", function(){
 // 공백일 때 "필수 정보입니다."
 // 정규표현식에 맞으면 체크 이미지 파란색
 $("#inputName").on("change", function(){
-    const regExp = /^[가-힣]$/;
+    const regExp = /^[가-힣]{2,5}$/;
     
     if(regExp.test( $(this).val() )){
         $("#nameMessage").html("");
         $("#nameMessage").addClass("confirm");
         $("#nameMessage").removeClass("error");
+        $("#imgName").attr("src","checkBlue.png");
     } else {
         $("#nameMessage").html("한글만 입력하세요.");
         $("#nameMessage").addClass("error");
@@ -206,30 +192,48 @@ $("#inputName").on("blur", function(){
         $("#nameMessage").html("필수 정보입니다.");
         $("#nameMessage").addClass("error");
         $("#nameMessage").removeClass("confirm");
+
+        // input 내용 없이 포커스 나가면 placeholder 다시 띄우기 
+        $(this).attr("placeholder", "이름");
     }
 });
 
 
 
+//----- 성별 ---------------------------------------------------------
 function validate(){ // Q. 다른 항목들도 입력되지 않았을 때 안 넘어가게 하려면 어떻게 해야 할까? function 안에 넣으면 이벤트 사라짐
-    //----- 성별 ---------------------------------------------------------
+    
     const gender = $("input[name='gender']:checked");
 
     if(gender.length==0){
         alert("성별 입력이 잘못되었습니다.");
 
         return false;
-    }
+    } 
 }
+
+// gender 체크시 아이콘 변경
+$("input[name='gender']").on("change", function(){
+
+    const gender = $("input[name='gender']:checked");
+
+    if(gender.length!=0){
+        $("#imgGender").attr("src","checkBlue.png");
+    }
+});
+
+
     
 //----- 휴대폰번호 ---------------------------------------------------------
 
 // inputTel1 혹은 inputTel2에 focus 되면 span(dash)에 '-' 생기게
 $("#inputTel1").on("focus", function(){
     $("#dash").html("-");
+    $("#dash").css("color","black");
 });
 $("#inputTel2").on("focus", function(){
     $("#dash").html("-");
+    $("#dash").css("color","black");
 });
 // 둘다 공백일 때 다시 span에 dash 제거
 $("#inputTel1").on("blur", function(){
@@ -283,6 +287,7 @@ $("#inputTel1").on("change", function(){
         $("#telMessage").html("");
         $("#telMessage").addClass("confirm");
         $("#telMessage").removeClass("error");
+        $("#imgTel").attr("src","checkBlue.png");
     } else {
         $("#telMessage").html("전화번호를 정확히 입력해주세요.");
         $("#telMessage").addClass("error");
@@ -302,6 +307,7 @@ $("#inputTel2").on("change", function(){
         $("#telMessage").html("");
         $("#telMessage").addClass("confirm");
         $("#telMessage").removeClass("error");
+        $("#imgTel").attr("src","checkBlue.png");
     } else {
         $("#telMessage").html("전화번호를 정확히 입력해주세요.");
         $("#telMessage").addClass("error");
@@ -323,6 +329,11 @@ $("#inputTel1").on("blur", function(){
         $("#telMessage").addClass("error");
         $("#telMessage").removeClass("confirm");
     }
+
+    // input 내용 없이 포커스 나가면 placeholder 다시 띄우기 
+    if($(this).val().length == 0 && $("#inputTel2").val().length == 0){
+        $(this).attr("placeholder", "휴대폰번호입력");
+    }
 });
 $("#inputTel2").on("blur", function(){
     
@@ -334,21 +345,16 @@ $("#inputTel2").on("blur", function(){
 });
 
 
-/* if( regExp.test( $("#inputTel1").val() )){
-    // 이미지?
-} else {
-    $("#telMessage").html("전화번호를 정확히 입력해주세요.");
-} */
-
-
 //----- 이메일 ---------------------------------------------------------
 
 // inputEmail1 혹은 inputEmail2 focus 되면 span(at)에 @ 생기게
 $("#inputEmail1").on("focus", function(){
     $("#at").html("@");
+    $("#at").css("color","black");
 });
 $("#inputEmail2").on("focus", function(){
     $("#at").html("@");
+    $("#at").css("color","black");
 });
 
 // 둘다 공백일 때 다시 span에 dash 제거
