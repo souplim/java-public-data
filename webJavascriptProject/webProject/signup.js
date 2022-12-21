@@ -41,7 +41,7 @@ $(".inputText").on("focus", function(){
 // input 내용 없이 포커스 나가면 placeholder 다시 띄우기
 $(".inputText").on("blur", function(){
 
-    const textPh = $(this).attr("placeholder"); /* 왜 안 얻어질까? */
+    const textPh = $(this).attr("placeholder"); /* 왜 안 얻어질까? 클래스이름 -> 배열이라? 각각 구현해야 하나? */
 
     if($(this).val()!=""){
         $(this).attr("placeholder","");
@@ -211,7 +211,7 @@ $("#inputName").on("blur", function(){
 
 
 
-function validate(){
+function validate(){ // Q. 다른 항목들도 입력되지 않았을 때 안 넘어가게 하려면 어떻게 해야 할까? function 안에 넣으면 이벤트 사라짐
     //----- 성별 ---------------------------------------------------------
     const gender = $("input[name='gender']:checked");
 
@@ -224,7 +224,7 @@ function validate(){
     
 //----- 휴대폰번호 ---------------------------------------------------------
 
-// inputTel1 혹은 inputTel2에 focus 되면 span(dash)에 - 생기게
+// inputTel1 혹은 inputTel2에 focus 되면 span(dash)에 '-' 생기게
 $("#inputTel1").on("focus", function(){
     $("#dash").html("-");
 });
@@ -340,6 +340,7 @@ $("#inputTel2").on("blur", function(){
     $("#telMessage").html("전화번호를 정확히 입력해주세요.");
 } */
 
+
 //----- 이메일 ---------------------------------------------------------
 
 // inputEmail1 혹은 inputEmail2 focus 되면 span(at)에 @ 생기게
@@ -349,6 +350,7 @@ $("#inputEmail1").on("focus", function(){
 $("#inputEmail2").on("focus", function(){
     $("#at").html("@");
 });
+
 // 둘다 공백일 때 다시 span에 dash 제거
 $("#inputEmail1").on("blur", function(){
     if($("#inputEmail1").val()=="" && $("#inputEmail2").val()=="")
@@ -380,20 +382,40 @@ const regExp22 = /^([\da-z\.-]+)\.([a-z\.]{2,6})$/;
 
 $("#inputEmail1").on("change", function(){
 
-    if(regExp11.test( $(this).val() ) && regExp2.test( $("#inputTel2").val())){
-        $("#telMessage").html("");
-        $("#telMessage").addClass("confirm");
-        $("#telMessage").removeClass("error");
+    if(regExp11.test( $(this).val() ) && regExp22.test( $("#inputEmail2").val())){
+        $("#emailMessage").html("");
+        $("#emailMessage").addClass("confirm");
+        $("#emailMessage").removeClass("error");
     } else {
-        $("#telMessage").html("전화번호를 정확히 입력해주세요.");
-        $("#telMessage").addClass("error");
-        $("#telMessage").removeClass("confirm");
+        $("#emailMessage").html("이메일 주소를 다시 확인해주세요.");
+        $("#emailMessage").addClass("error");
+        $("#emailMessage").removeClass("confirm");
     }
     
     if($(this).val().length == 0){
-        $("#telMessage").html("전화번호를 정확히 입력해주세요.");
-        $("#telMessage").addClass("error");
-        $("#telMessage").removeClass("confirm");
+        $("#emailMessage").html("이메일 주소를 다시 확인해주세요.");
+        $("#emailMessage").addClass("error");
+        $("#emailMessage").removeClass("confirm");
+    }
+
+});
+
+$("#inputEmail2").on("change", function(){
+
+    if(regExp11.test( $(this).val() ) && regExp22.test( $("#inputEmail2").val())){
+        $("#emailMessage").html("");
+        $("#emailMessage").addClass("confirm");
+        $("#emailMessage").removeClass("error");
+    } else {
+        $("#emailMessage").html("이메일 주소를 다시 확인해주세요.");
+        $("#emailMessage").addClass("error");
+        $("#emailMessage").removeClass("confirm");
+    }
+    
+    if($(this).val().length == 0){
+        $("#emailMessage").html("이메일 주소를 다시 확인해주세요.");
+        $("#emailMessage").addClass("error");
+        $("#emailMessage").removeClass("confirm");
     }
 
 });
