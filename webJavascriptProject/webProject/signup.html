@@ -93,16 +93,31 @@
             border-bottom: none;
         }
 
-        /* input */
-        input{ background-color: #88888800; }
-        .pPlaceholder {
-            /* z-index: 6; */
-            
+        #phoneTd {
+            width: 20px;
+            border-right: 1px solid black;
+        }
+        #emailTd {
+            border-right: 1px solid black;
         }
 
-        #pPlaceholder1, #pPlaceholder2 {
+        /* input */
+        input{ 
+            background-color: white;
+            /* z-index: 2; */
+        }
+
+        .pPlaceholder {
+            /* z-index: 1; */
+        }
+        #pPlaceholder1 {
             left: 150px;
-            top: 10px;
+            top: 13px;
+            font-size: 11px;
+        }
+        #pPlaceholder2 {
+            left: 120px;
+            top: 13px;
             font-size: 11px;
         }
 
@@ -115,9 +130,9 @@
         }
     
         .imgClass { 
-            width: 60px;
+            width: 30px;
             text-align: right;
-            padding-right: 20px;
+            padding: 0 20px 0 0;
         }
 
         select {
@@ -126,7 +141,9 @@
             padding: 0px;
             border-color:rgba(255, 255, 255, 0);
         }
-        #inputTel1, #inputTel2, #inputEmail1, #inputEmail2 { width: 40% }
+        #phoneNum { width: 70px; }
+
+        #inputTel1, #inputTel2, #inputEmail1, #inputEmail2 { width: 30% }
         
 
         /* 버튼 */
@@ -173,7 +190,7 @@
                     <legend></legend>
                     <table id="table">
                         <tr>
-                            <td style="position: relative">
+                            <td style="position: relative" colspan="2">
                                 <input type="text" class="inputText" id="inputId" placeholder="ID를 만들어주세요">
                                 <p id="pPlaceholder1" style="position: absolute;">띄어쓰기 없이 영/숫자 6~10자</p>
                                 <br>
@@ -184,8 +201,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <td style="position: relative">
-                                <input type="text" class="inputText" id="inputPw" placeholder="비밀번호 입력">
+                            <td style="position: relative" colspan="2">
+                                <input type="password" class="inputText" id="inputPw" placeholder="비밀번호 입력">
                                 <p id="pPlaceholder2" style="position: absolute;">8~15자의 영문 대소문자, 숫자 또는 특수문자 조합</p>
                                 <br>
                                 <span id="pwMessage"></span>
@@ -195,8 +212,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                <input type="text" class="inputText" id="inputPwConfirm" placeholder="위의 비밀번호를 다시 입력해주세요">
+                            <td colspan="2">
+                                <input type="password" class="inputText" id="inputPwConfirm" placeholder="위의 비밀번호를 다시 입력해주세요">
                                 <br>
                                 <span id="pwConfirmMessage"></span>
                             </td>
@@ -205,7 +222,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td colspan="2">
                                 <input type="text" class="inputText" id="inputName" placeholder="이름">
                                 <br>
                                 <span id="nameMessage"></span>
@@ -215,7 +232,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td id="gender">
+                            <td id="gender" colspan="2">
                                 <label>남</label><input type="radio" name="gender" value="male">
                                 <label>여</label><input type="radio" name="gender" value="female">
                             </td>
@@ -224,7 +241,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td id="phoneTd">
                                 <select id="phoneNum">
                                     <option>010</option>
                                     <option>011</option>
@@ -232,6 +249,8 @@
                                     <option>017</option>
                                     <option>018</option>
                                 </select>
+                            </td>
+                            <td>
                                 <input type="text" class="inputText" id="inputTel1" placeholder="휴대폰번호입력">
                                 <span id="dash"></span>
                                 <input type="text" class="inputText" id="inputTel2">
@@ -243,7 +262,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="noBorderBottom">
+                            <td class="noBorderBottom" colspan="2" id="emailTd">
                                 <input type="text" class="inputText" id="inputEmail1" placeholder="이메일">
                                 <span id="at"></span>
                                 <input type="text" class="inputText" id="inputEmail2">
