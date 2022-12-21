@@ -5,7 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+    
     <script src="https://code.jquery.com/jquery-3.6.2.min.js" integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA=" crossorigin="anonymous"></script>
 
     <style>
@@ -44,6 +48,8 @@
         /* header */
         h1 {
             display: inline-block;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 38px;
         }
         
         /* nav */
@@ -52,11 +58,13 @@
             font-size: 17px;
         }
         nav {
+            height: 30px;
             display: flex;
             margin: 40px 0px 0px 40px;
         }
         header div {
             padding: 5px;
+            margin-top: 10px;
             font-weight: bold;
             color: #a19f9f;
         }
@@ -81,8 +89,7 @@
             border-bottom: 1px solid #888888;
             padding-left: 20px;
         }
-        #table .noBorderBottom { /* ? */
-            /* border-bottom-color: rgba(255, 255, 255, 0); */
+        #table .noBorderBottom {
             border-bottom: none;
         }
 
@@ -93,6 +100,12 @@
             border-color: rgba(255, 255, 255, 0);
             font-weight: bold;
         }
+       
+        .imgClass { 
+            width: 125px;
+            text-align: right;
+            padding-right: 20px;
+        }
 
         select {
             height: 40%;
@@ -100,8 +113,8 @@
             padding: 0px;
             border-color:rgba(255, 255, 255, 0);
         }
-        #inputTel1, #inputTel2, #inputEmail1, #inputEmail2 { width: 30% }
-
+        #inputTel1, #inputTel2, #inputEmail1, #inputEmail2 { width: 40% }
+        
 
         /* 버튼 */
         button {
@@ -148,32 +161,51 @@
                     <table id="table">
                         <tr>
                             <td>
-                                <input type="text" class="inputText" id="inputId" placeholder="ID를 만들어주세요 띄어쓰기 없이 영/숫자 6~10자"><br>
+                                <input type="text" class="inputText" id="inputId" placeholder="ID를 만들어주세요 띄어쓰기 없이 영/숫자 6~10자">
+                                <br>
                                 <span id="idMessage"></span>
                             </td>
+                            <td class="imgClass">
+                                <img src="checkBlack.png" width="20px" height="20px" id="imgId">
+                            </td>
                         </tr>
                         <tr>
                             <td>
-                                <input type="text" class="inputText" id="inputPw" placeholder="비밀번호 입력 8~15자의 영문 대소문자, 숫자 또는 특수문자 조합"><br>
+                                <input type="text" class="inputText" id="inputPw" placeholder="비밀번호 입력 8~15자의 영문 대소문자, 숫자 또는 특수문자 조합">
+                                <br>
                                 <span id="pwMessage"></span>
                             </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="text" class="inputText" id="inputPwConfirm" placeholder="위의 비밀번호를 다시 입력해주세요"><br>
-                                <span id="pwConfirmMessage"></span>
+                            <td class="imgClass">
+                                <img src="lockBlack.png" width="20px" height="20px" id="imgPw">
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <input type="text" class="inputText" id="inputName" placeholder="이름"><br>
+                                <input type="text" class="inputText" id="inputPwConfirm" placeholder="위의 비밀번호를 다시 입력해주세요">
+                                <br>
+                                <span id="pwConfirmMessage"></span>
+                            </td>
+                            <td class="imgClass">
+                                <img src="lockBlack.png" width="20px" height="20px" id="imgPwConfirm">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" class="inputText" id="inputName" placeholder="이름">
+                                <br>
                                 <span id="nameMessage"></span>
+                            </td>
+                            <td class="imgClass">
+                                <img src="checkBlack.png" width="20px" height="20px" id="imgName">
                             </td>
                         </tr>
                         <tr>
                             <td id="gender">
                                 <label>남</label><input type="radio" name="gender" value="male">
                                 <label>여</label><input type="radio" name="gender" value="female">
+                            </td>
+                            <td class="imgClass">
+                                <img src="checkBlack.png" width="20px" height="20px" id="imgGender">
                             </td>
                         </tr>
                         <tr>
@@ -187,8 +219,12 @@
                                 </select>
                                 <input type="text" class="inputText" id="inputTel1" placeholder="휴대폰번호입력">
                                 <span id="dash"></span>
-                                <input type="text" class="inputText" id="inputTel2"><br>
+                                <input type="text" class="inputText" id="inputTel2">
+                                <br>
                                 <span id="telMessage"></span>
+                            </td>
+                            <td class="imgClass">
+                                <img src="checkBlack.png" width="20px" height="20px" id="imgTel">
                             </td>
                         </tr>
                         <tr>
@@ -196,14 +232,17 @@
                                 <input type="text" class="inputText" id="inputEmail1" placeholder="이메일">
                                 <span id="at"></span>
                                 <input type="text" class="inputText" id="inputEmail2">
+                                <br>
+                                <span id="emailMessage"></span>
+                            </td>
+                            <td class="noBorderBottom imgClass">
                                 <select id="emailAddress">
                                     <option>직접입력</option>
                                     <option name="naver">naver.com</option>
                                     <option name="daum">daum.net</option>
                                     <option name="hotmail">hotmail.com</option>
                                     <option name="nate">nate.com</option>
-                                </select><br>
-                                <span id="emailMessage"></span>
+                                </select>
                             </td>
                         </tr>
                     </table>
