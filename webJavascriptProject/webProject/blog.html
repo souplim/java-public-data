@@ -5,211 +5,215 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>blog</title>
-
-    <style>
-        /* 전체 */
-        body {
-            width: 1000px;
-            margin: 0 auto;
-        }
-        #wrapper {
-            /* display: flex; */
-        }
-        .container {
-            display: flex;
-            justify-content: center;
-            align-content: center;
-            align-items: center;
-        }
-        
-
-        /* nav */
-        nav {
-            height :60px;
-        }
-        nav .topMenu {
-            align-items: center;
-            margin: 0;
-            padding: 0;
-        }
-        nav .rigthMenu {
-            /* justify-content: right; */
-            margin-left: 180px;
-        }
-        nav ul { display: inline-block; }
-        nav li {
-            display: inline-block;
-            
-        }
-
-        /* section */
-        section {
-            width: 60%;
-            display: inline-block;
-        }
-        .imgDiv {
-            width: 100%;
-        }
-        .imgDiv div {
-            width: 150px;
-            height: 150px;
-            border: 1px solid black;
-            display: inline-block;
-        }
-
-        .sectionNav {
-            /* display: block; */
-            width: 100%;
-        }
-
-        .content {
-            width: 100%;
-        }
-        
-
-        /* aside */
-        aside {
-            width: 35%;
-            display: inline-block;
-        }
-
-        /* footer */
-        footer {
-            align-items: baseline;
-        }
-    </style>
+    
+    <link rel="stylesheet" href="blog.css">
 </head>
 <body>
     <!-- 반응형 웹 -->
-
-    <div id="wrapper">
-        <!-- header --------------------------------- -->
+    <!-- 처음 구조 짤 때 border 줘 놓고 짜면 편함  -->
+    
+    <!-- header --------------------------------- -->
+    <div id="headerCommon">
         <header>
-            <div class="container">
-                <h3>blog</h3>
-                <h3>lifelog blog</h3>
+            <div id="header1">      
+                <img src="logo.png" id="logo">
+                <!-- <span id="title">blog</span>
+                <span id="subTitle">lifelog blog</span> -->
+            </div> 
+
+            <div id="header2">
                 <select>
                     <option>글</option>
                     <option>블로그</option>
                     <option>별명·아이디</option>
                 </select>
-                <input type="text">
-                <button></button>
-                <button>통합검색</button>
-                <ul>
-                    <li>로그인</li>
-                </ul>
-            
+                <input type="text" id="inputSearch">
+                <!-- <div id="search">
+                    <img src="mag.png" width="30px" height="30px"></img>
+                </div> -->
+                <button id="searchBtn">통합검색</button>
+            </div>
+            <div id="header3">
+                <span id="loginBtn1">로그인</span>
+                <span><input type="button" id="menuBtn"></span>
             </div>
         </header>
+    </div>
 
-        <!-- nav --------------------------------- -->
-        <nav>
-            <div id="container">
-                <ul class="topMenu">
-                    <li>블로그 홈</li>
-                    <li>주제별 보기</li>
-                    <li>이달의 블로그</li>
-                    <li>공식블로그</li>
-                    <li>챌린지 프로그램</li>
-                </ul>
-                <ul class="rigthMenu">
-                    <li>블로그 마켓 가입</li>
-                    <li>블로그팀 공식 블로그</li>
-                </ul>
+    <!-- nav --------------------------------- -->
+    <div id="headerService">
+        <nav id="headerNav">          
+            <ul id="topLeftMenu">
+                <li id="activeHome">블로그 홈</li>
+                <li>주제별 보기</li>
+                <li>이달의 블로그</li>
+                <li>공식블로그</li>
+                <li>챌린지 프로그램</li>
+            </ul>
+            <ul id="topRigthMenu">
+                <li>블로그 마켓 가입</li>
+                <li>블로그팀 공식 블로그</li>
+            </ul>     
+        </nav>     
+    </div>
+    <!-- section 1 --------------------------------- -->
+    <div id="hotTopic">   
+        <section id="section1"> 
+            <div id="section1-1">
+                <div id="heading">
+                    <span>핫토픽</span>
+                    <span>></span>
+                    <span>겨울 디저트</span>
+                </div>
+                <div class="page">
+                    123
+                </div>
+                <div id="imgDiv">
+                    <div>
+                        <img href="">썸네일
+                    </div>
+                    <div>
+                        <img href="">썸네일
+                    </div>
+                    <div>
+                        <img href="">썸네일
+                    </div>                    
+                </div>
             </div>
-        </nav>
-        
-
-        <!-- section --------------------------------- -->
-        <section>
-            <div class="container">
-                <div class="imgDiv">
+            <div id="section1-2">
+                <div class="page">
+                    123
+                </div>
+                <div id="adDiv">
                     <div>
-                        <img href="">게시글1
-                    </div>
-                    <div>
-                        <img href="">게시글2
-                    </div>
-                    <div>
-                        <img href="">게시글3
+                        <img href="">광고
                     </div>
                 </div>
             </div>
-            <div class="container">
-                <nav class="sectionNav">
-                    <ul>
-                        <li>전체</li>
-                        <li>만화·애니</li>
-                        <li>어학·외국어</li>
-                        <li>자동차</li>
-                        <li>패션·미용</li>
-                        <li>세계여행</li>
-                        <li>반려동물</li>
-                        <li>방송</li>
-                    </ul>
-                </nav>
-            </div>
+        </section>   
+    </div>
 
-            <div class="container">
-                <div class="content">
-                    <div class="post">
-                        <img href=""><!-- 유저이미지 -->
-                        <a href="">유저아이디</a>
-                        <a href="">블로그 글 제목</a>
-                        <div><img href="">썸네일</div>
+    <!-- section 2 --------------------------------- -->   
+    <div id="section2-aside">
+        <section id="section2">
+            <nav id="sectionNav">
+                <hr>
+
+                <ul>
+                    <li>전체</li>
+                    <li>문학·책</li>
+                    <li>어학·외국어</li>
+                    <li>영화</li>
+                    <li>취미</li>
+                    <li>세계여행</li>
+                    <li>반려동물</li>
+                    <li>공연·전시</li>
+                </ul>
+
+                <hr>
+            </nav>
+
+            <div class="content">
+                <div class="post1">
+                    <div class="post1-1">
+                        <div class="userImg">
+                            <img src="user.png" width="30px" height="30px"><!-- 유저이미지 -->
+                        </div>
+                        <div class="nameAuthor">
+                            <a href="">유저아이디</a>
+                        </div>
+                        <span class="time">시간</span>
                     </div>
-                    <div class="post">
-                        <img href=""><!-- 유저이미지 -->
-                        <a href="">유저아이디</a>
-                        <a href="">블로그 글 제목</a>
-                        <div><img href="">썸네일</div>
+
+                    <div class="post1-2">
+                        <div class="titlePost">
+                            <a href="">블로그 글 제목</a>
+                        </div>
+                        <div class="text">
+                            <a href="">블로그 글 본문</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="post2">   
+                    <div class="thumbnail">
+                        <img href="">썸네일
                     </div>
                 </div>
             </div>
+            
+            <hr>
+
+            <div class="content">
+                <div class="post1">
+                    <div class="post1-1">
+                        <div class="userImg">
+                            <img src="user.png" width="30px" height="30px"><!-- 유저이미지 -->
+                        </div>
+                        <div class="nameAuthor">
+                            <a href="">유저아이디</a>
+                        </div>
+                        <span class="time">시간</span>
+                    </div>
+
+                    <div class="post1-2">
+                        <div class="titlePost">
+                            <a href="">블로그 글 제목</a>
+                        </div>
+                        <div class="text">
+                            <a href="">블로그 글 본문</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="post2">   
+                    <div class="thumbnail">
+                        <img href="">썸네일
+                    </div>
+                </div>
+            </div>               
+
+            <hr>
+
         </section>
 
         <!-- aside --------------------------------- -->
-        <aside>
-            <div class="container">
-                <div class="ad">
-                    <img href="">광고
-                </div>
-                <div class="login">
+        <aside> 
+            <div id="login">
+                <div class="loginDiv">
                     <p>네이버를 보다 편리하고 안전하게 이용하세요</p>
-                    <img href="">
+                </div>
+                <div class="loginDiv">
+                    <button type="button" id="loginBtn2">NAVER 로그인</button>
+                </div>
+                <div class="loginDiv">
                     <ul>
                         <li>아이디 찾기</li>
                         <li>비밀번호 찾기</li>
                         <li>회원가입</li>
                     </ul>
                 </div>
-                <div class="ad">
-                    <img href="">광고
-                </div>
-                <div>
-
-                </div>
+            </div>
+            <div class="ad">
+                <img src="">광고
             </div>
         </aside>
-
-        <!-- footer --------------------------------- -->
+    </div>
+    <!-- footer --------------------------------- -->
+    <div id="footer">
         <footer>
-            <div class="container">
-                <nav>
-                    <span>이용약관</span>
-                    <span>블로그 서비스 운영정책</span>
-                    <span>개인정보처리방침</span>
-                    <span>책임의 한계와 법적고지</span>
-                    <span>글권리 보호하기</span>
-                    <span>게시중단요청서비스</span>
-                </nav>
-                <div class="copyright">
-                    Copyright © NAVER Corp. All Rights Reserved.
-                </div>
+            <nav id="footerNav">
+                <span>이용약관</span>
+                <span>블로그 서비스 운영정책</span>
+                <span>개인정보처리방침</span>
+                <span>책임의 한계와 법적고지</span>
+                <span>글권리 보호하기</span>
+                <span>게시중단요청서비스</span>
+            </nav>
+            <div id="copyright">
+                Copyright © NAVER Corp. All Rights Reserved.
             </div>
         </footer>
-    </div>
+    </div> 
+    
     <script src="blog.js"></script>
 </body>
 </html>
