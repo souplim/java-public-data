@@ -7,9 +7,10 @@
     <title>blog</title>
     
     <link rel="stylesheet" href="blog.css">
+    <script src="https://code.jquery.com/jquery-3.6.2.min.js" integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA=" crossorigin="anonymous"></script>
+
 </head>
 <body>
-    <!-- 반응형 웹 -->
     <!-- 처음 구조 짤 때 border 줘 놓고 짜면 편함  -->
     
     <!-- header --------------------------------- -->
@@ -28,14 +29,12 @@
                     <option>별명·아이디</option>
                 </select>
                 <input type="text" id="inputSearch">
-                <!-- <div id="search">
-                    <img src="mag.png" width="30px" height="30px"></img>
-                </div> -->
+                <img src="search.png" id="searchImg" width="40px" height="40px"></img>
                 <button id="searchBtn">통합검색</button>
             </div>
             <div id="header3">
                 <span id="loginBtn1">로그인</span>
-                <span><input type="button" id="menuBtn"></span>
+                <span id="menuBtnSpan"><input type="button" id="menuBtn"></span>
             </div>
         </header>
     </div>
@@ -63,30 +62,45 @@
                 <div id="heading">
                     <span>핫토픽</span>
                     <span>></span>
-                    <span>겨울 디저트</span>
+                    <span>크리스마스</span>
                 </div>
                 <div class="page">
-                    123
+                    <span>1</span>
+                    <span>2</span>
+                    <span>3</span>
+                    <span>4</span>
+                    <span>5</span>
                 </div>
                 <div id="imgDiv">
-                    <div>
-                        <img href="">썸네일
-                    </div>
-                    <div>
-                        <img href="">썸네일
-                    </div>
-                    <div>
-                        <img href="">썸네일
-                    </div>                    
+                    <a href="">
+                        <div class="screen">
+                            <div class="bottom" id="bottom1"><img src="user.png"><span>블로그씨</span></div>
+                            <img src="tree1.jpg" width="250px" height="250px">
+                        </div>
+                    </a>
+                    <a href="">
+                        <div class="screen">
+                            <div class="bottom"  id="bottom2"><img src="user.png">서로이웃</div>
+                            <img src="tree2.jpg" width="250px" height="250px">
+                        </div>
+                    </a>
+                    <a href="">
+                        <div class="screen">
+                            <div class="bottom"  id="bottom3"><img src="user.png">kh정보교육원</div>
+                            <img src="tree3.jpg" width="250px" height="250px">
+                        </div>
+                    </a>                   
                 </div>
             </div>
             <div id="section1-2">
                 <div class="page">
-                    123
+                    <span>1</span>
+                    <span>2</span>
+                    <span>3</span>
                 </div>
                 <div id="adDiv">
                     <div>
-                        <img href="">광고
+                        <img src="ad1.png" width="250px" height="250px">
                     </div>
                 </div>
             </div>
@@ -117,29 +131,33 @@
                 <div class="post1">
                     <div class="post1-1">
                         <div class="userImg">
-                            <img src="user.png" width="30px" height="30px"><!-- 유저이미지 -->
+                            <img src="user1.png" width="40px" height="40px"><!-- 유저이미지 -->
                         </div>
                         <div class="nameAuthor">
-                            <a href="">유저아이디</a>
+                            <span class="userId">만개의레시피</span>
+                            <span class="time">15:49</span>
                         </div>
-                        <span class="time">시간</span>
                     </div>
 
                     <div class="post1-2">
                         <div class="titlePost">
-                            <a href="">블로그 글 제목</a>
+                            <a href="https://www.10000recipe.com/recipe/6923924">크리스마스 파티를 위한 홈파티음식 레시피</a>
                         </div>
                         <div class="text">
-                            <a href="">블로그 글 본문</a>
+                            <span>
+                                홈파티를 하려면 컨셉이 필요하잖아요???<br>
+                                크리스마스 레시피로 오늘 분위기 한껏 뽐내줘요~!<br>
+                                세상의 모든 레시피 만개의레시피
+                            </span>
                         </div>
                     </div>
                 </div>
                 <div class="post2">   
                     <div class="thumbnail">
-                        <img href="">썸네일
+                        <img src="food.jpg" width="200px" height="200px">
                     </div>
                 </div>
-            </div>
+            </div>               
             
             <hr>
 
@@ -147,26 +165,30 @@
                 <div class="post1">
                     <div class="post1-1">
                         <div class="userImg">
-                            <img src="user.png" width="30px" height="30px"><!-- 유저이미지 -->
+                            <img src="user2.png" width="40px" height="40px"><!-- 유저이미지 -->
                         </div>
                         <div class="nameAuthor">
-                            <a href="">유저아이디</a>
+                            <span class="userId">네이버 여행플러스</span>
+                            <span class="time">13:24</span>
                         </div>
-                        <span class="time">시간</span>
                     </div>
 
                     <div class="post1-2">
                         <div class="titlePost">
-                            <a href="">블로그 글 제목</a>
+                            <a href="https://post.naver.com/viewer/postView.naver?volumeNo=34755478&memberNo=30482008&navigationType=push">일본 크리스마스 명소 8</a>
                         </div>
                         <div class="text">
-                            <a href="">블로그 글 본문</a>
+                            <span>
+                                올해의 대미를 장식할 행사는 단연 크리스마스다.<br> 
+                                멀리 가지 않더라도 색다른 매력의 크리스마스를 원한다면<br> 
+                                일본으로 눈을 돌려보는 것은 어떨까.
+                            </span>
                         </div>
                     </div>
                 </div>
                 <div class="post2">   
                     <div class="thumbnail">
-                        <img href="">썸네일
+                        <img src="spot.png" width="200px" height="200px">
                     </div>
                 </div>
             </div>               
@@ -188,12 +210,15 @@
                     <ul>
                         <li>아이디 찾기</li>
                         <li>비밀번호 찾기</li>
-                        <li>회원가입</li>
+                        <li><a href="signup.html">회원가입</a></li>
                     </ul>
                 </div>
             </div>
             <div class="ad">
-                <img src="">광고
+                <img src="ad2.png" width="250px" height="250px">
+            </div>
+            <div class="ad">
+                <img src="ad3.png" width="250px" height="250px">
             </div>
         </aside>
     </div>
@@ -209,6 +234,7 @@
                 <span>게시중단요청서비스</span>
             </nav>
             <div id="copyright">
+                <img src="logoFooter.png" width="100px" height="25px">
                 Copyright © NAVER Corp. All Rights Reserved.
             </div>
         </footer>
