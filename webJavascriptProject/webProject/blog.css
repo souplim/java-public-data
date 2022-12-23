@@ -216,6 +216,7 @@ nav li {
 }
 #imgDiv > a:hover .screen .bottom { top: 0%; opacity: 1; }
 
+/* css 가상요소 */
 /* ::before : 선택된 요소의 콘텐츠 시작부분에 생성된 콘텐츠를 추가한다. */
 /* ::after : 선택된 요소의 콘텐츠 끝 부분에 생성된 콘텐츠를 추가한다. */
 .screen #bottom1:hover::after {
