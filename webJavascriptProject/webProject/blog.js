@@ -31,3 +31,8 @@ $(".titlePost > a").hover(function(){
 // }, function(){
 //     $(this).prev().text("크리스마스가 일주일 앞으로 다가왔어요.");
 // });
+
+// 마우스 오버되면 이미지 옆으로 슬라이드
+$(".menu > li").hover(function(){
+
+}, function(){});
