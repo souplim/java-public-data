@@ -258,7 +258,7 @@ nav li {
 
 #section1-1 .page {
     display: inline-block;
-    margin-left: 540px;
+    margin-left: 535px;
 }
 
 #section1-2 .page { text-align: right;}
@@ -404,4 +404,5 @@ footer {
 }
 #footerNav > span {
     margin: 0 10px;
+    cursor: pointer;
 }
