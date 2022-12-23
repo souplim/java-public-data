@@ -33,6 +33,14 @@ $(".titlePost > a").hover(function(){
 // });
 
 // 마우스 오버되면 이미지 옆으로 슬라이드
-$(".menu > li").hover(function(){
+// $(".menu > li").hover(function(){
+//     $(this).find(".submenu").stop().slideDown(500);
+// }, function(){
+//     $(this).find(".submenu").stop().slideUp(500);
+// });
 
-}, function(){});
+$(".menu > li").hover(function(){
+    $(this).find(".submenu").show("slide", {direction: "left"}, 1000);
+}, function(){
+    $(this).find(".submenu").stop().slideUp(500);
+});
