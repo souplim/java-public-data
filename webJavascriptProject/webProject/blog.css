@@ -295,12 +295,11 @@ nav li {
 .post1 { 
     flex-basis : 70%;
 }
-.post2 { flex-basis : 30%;}
-
 .post1-1 {
     display: flex;
     text-align: center;
 }
+
 .userImg {
     width: 50px;
     height: 50px;
@@ -322,10 +321,15 @@ nav li {
     font-size: 20px;
     font-weight: bold;
     text-decoration: none;
+    color: black;
 }
 .text { cursor: pointer; }
 
-.post2 { text-align: right; }
+.post2 { 
+    text-align: right; 
+    flex-basis : 30%;
+}
+
 .thumbnail {
     width: 200px;
     height: 200px;
@@ -333,6 +337,17 @@ nav li {
 }
 .thumbnail img {
     cursor: pointer;
+}
+
+.menu { display: flex; }
+.menu > li img { display: inline-block; }
+
+.submenu {
+    display: none;
+}
+.submenu > li {
+    width: 200px;
+    height: 200px;
 }
 
 /*** aside ***************************************/
