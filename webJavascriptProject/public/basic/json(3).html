@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+		<title>json(3)</title>
+		
+		<!-- 모바일 웹 페이지 설정 -->
+		<link rel="shortcut icon" href="../image/icon.png" />
+		<link rel="apple-touch-icon" href="../image/icon.png" />
+		<!-- 모바일 웹 페이지 설정 끝 -->
+		
+		<!--[if lt IE 9]>
+		<script src="../js/html5shiv.js"></script>
+		<![endif]-->
+		
+		<style>
+			
+			#numberOfPost {
+				width: 500px;
+				display: block; 
+				text-align: right; 
+				margin-top: 15px;
+			}
+			table { 
+				width: 500px;
+				border: 2px solid black; 
+				border-collapse: collapse; 
+			}
+			th, td {
+				border: 1px solid black;  
+				text-align: center;
+			}
+			.title {
+				text-align: left;
+			}
+		</style>
+		
+		<script>
+			/* 하위 데이터 요소로서 JSON을 포함 */
+			let keyword_rank = {
+					"title" : "인기 검색어 순위",
+					"rank1" : {
+						"keyword" : "HTML5",
+						"s" : "+",
+						"v" : 178 },
+					"rank2" : {
+						"keyword" : "CSS",
+						"s" : "new",
+						"v" : 150 },
+					"rank3" : {
+						"keyword" : "jQuery",
+						"s" : "+",
+						"v" : 135 }
+			};
+			
+			// 출력형태 : HTML(+178)
+			// JSON 데이터의 내용을 목록정의 태그로 구성 (객체명.하위객체명.name명)
+			let tag = "<h1>"+keyword_rank.title+"</h1><ul>";
+				tag += "<li>"+keyword_rank.rank1.keyword+"("+keyword_rank.rank1.s+keyword_rank.rank1.v+")</li>";
+				tag += "<li>"+keyword_rank.rank2.keyword+"("+keyword_rank.rank2.s+keyword_rank.rank2.v+")</li>";
+				tag += "<li>"+keyword_rank.rank3.keyword+"("+keyword_rank.rank3.s+keyword_rank.rank3.v+")</li>";
+				tag += "</ul>;"
+				
+			// 구성한 내용을 화면에 출력(각각의 하위 객체명으로 명시하였을 때)
+				document.write(tag);
+				
+			/* 배열을 선언하고 하위 데이터 요소로서 JSON을 포함 */
+			let keyword_rank2 = {
+					"title" : "인기검색어 순위",
+					"rank" : [
+								{"keyword":"HTML5", "s" : "+", "v" : 178},
+								{"keyword":"CSS3", "s" : "new", "v" : 150},
+								{"keyword":"jQuery", "s" : "+", "v" : 135}
+							 ]
+			};
+			
+			// keyword_rank.rank[0].keyword로 접근
+			let tag2 = "<h1>" + keyword_rank2.title+"</h1><ul>";
+			for(let i=0; i<keyword_rank2.rank.length; i++){
+				let rank = keyword_rank2.rank[i]; // 이 부분이 존재하지 않는다면
+				tag2 += "<li>"+rank.keyword; // keyword2.rank.rank[i].keyword로 명시이어야 함
+				tag2 += "("+rank.s + rank.v +")</li>";
+			}
+			tag2 += "</ul>";
+			
+			// 구성한 내용을 화면에 출력
+			document.write(tag2);
+			
+			
+			/* JSON 표기 기본 형식 예제 */
+			let clientProgram = {
+					"title" : "Javascript / jQuery / Ajax",
+					"inform" : "클라이언트 프로그래밍 과목을 정리해 놓은 게시판입니다.",
+					"numberOfPost" : "총 게시물의 수 : 4개",
+					"table" : [
+								{"number" : "번호", "title" : "제목", "notice" : "조회수", "registerDate" : "등록일"},
+								{"number" : "공지", "title" : "클라이언트 프로그래밍", "notice" : "3", "registerDate" : "2017.01.29."},
+								{"number" : "3", "title" : "Ajax", "notice" : "6", "registerDate" : "2018.04.08."},
+								{"number" : "2", "title" : "jQuery", "notice" : "15", "registerDate" : "2017.11.07."},
+								{"number" : "1", "title" : "Javascript", "notice" : "19", "registerDate" : "2017.06.05."}
+							  ]
+			};
+			
+			// clientProgram.table[0].number로 접근
+			let tag3 = "<h1>"+ clientProgram.title+"</h1>";
+				tag3 += "<span id='inform'>"+ clientProgram.inform +"</span><br />";
+				tag3 += "<span id='numberOfPost'>"+ clientProgram.numberOfPost +"</span>";
+				
+				tag3 += "<table><tr><th>"+clientProgram.table[0].number+"</th>";
+				tag3 += "<th>"+clientProgram.table[0].title+"</th>";
+				tag3 += "<th>"+clientProgram.table[0].notice+"</th>";
+				tag3 += "<th>"+clientProgram.table[0].registerDate+"</th></tr>";
+				
+				for(let i=1; i<clientProgram.table.length; i++){
+					tag3 += "<tr><td>"+clientProgram.table[i].number+"</td>";
+					tag3 += "<td class='title'>"+clientProgram.table[i].title+"</td>";
+					tag3 += "<td>"+clientProgram.table[i].notice+"</td>";
+					tag3 += "<td>"+clientProgram.table[i].registerDate+"</td></tr>";
+				}
+
+			// 구성한 내용을 화면에 출력
+			document.write(tag3);
+		</script>
+	</head>
+	<body>
+	
+		
+	
+	</body>
+</html>

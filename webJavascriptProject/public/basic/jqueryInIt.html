@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+		<title>Insert title here</title>
+		
+		<!-- 모바일 웹 페이지 설정 -->
+		<link rel="shortcut icon" href="../image/icon.png" />
+		<link rel="apple-touch-icon" href="../image/icon.png" />
+		<!-- 모바일 웹 페이지 설정 끝 -->
+		
+		<!--[if lt IE 9]>
+		<script src="../js/html5shiv.js"></script>
+		<![endif]-->
+		
+		
+		<script src="https://code.jquery.com/jquery-3.6.2.min.js" integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA=" crossorigin="anonymous"></script>
+				
+		<script>
+			/* function init(){ */
+			window.onload = function(){
+				/* document.getElementById("btn").addEventListener("click", function(){
+					document.querySelector("#color").style.color = "red";
+				}); */
+				/* document.getElementById("btn").addEventListener("click", function(){
+					document.querySelector("ul :nth-child(3)").style.color = "red";
+				}); */
+			}
+			
+			// 브라우저가 현재 웹 페이지에 대한 DOM 구성을 완료했을 때 jQuery에 의해 자동으로 실행되는 부분 - ready 함수
+			$(function(){
+				$("#btn").on("click", function(){
+					$("#color").css("color","blue");
+				});
+				
+				$("#img").hover(function(){
+					$("#img").attr("src","../image/print-05.jpg");
+					
+				}, function(){	});
+				
+			});
+			
+			
+		</script>
+	</head>
+	<body> <!-- onload="init()" -->
+		<div>
+			<ul>
+				<li>첫번째</li>
+				<li>두번째</li>
+				<li id="color">세번째(글자색을 red로 설정해보세요)</li>
+				<li>네번째</li>
+			</ul>
+			<button type="button" id="btn">색변경</button>
+		</div>
+		<div><img src="../image/print-01.jpg" id="img"></div>
+	</body>
+</html>
