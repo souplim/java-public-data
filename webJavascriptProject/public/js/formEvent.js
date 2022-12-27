@@ -63,14 +63,61 @@ $(function(){
 		}
 		
 	});
-	
+
+	// 필수 항목 제어
+	$("#btnReg").on("click", function(){
+		const gender = $("input[name='gender']");
+		const hobbyCheck = $(".hobbyCheck");
+
+		if($("#userId").val()==""){
+			alert("아이디를 입력해주세요");
+			return false;
+		} else if ($("#userPw").val()==""){
+			alert("비밀번호를 입력해주세요");
+			return false;
+		} else if ($("#userPwConfirm").val()==""){
+			alert("비밀번호 확인을 입력해주세요");
+			return false;
+		} else if ($("#userName").val()==""){
+			alert("이름을 입력해주세요");
+			return false;
+		} else if ($("#birth").val()==""){
+			alert("생년월일을 입력해주세요");
+			return false;
+		} else if (!gender[0].checked && !gender[1].checked){
+			alert("성별을 체크해주세요");
+			return false;
+		} else if ($("#email").val()=="" || $("#emailDomain").val()==""){
+			alert("이메일을 입력해주세요");
+			return false;
+		} else if ($("#hpno").val()==""){
+			alert("핸드폰번호를 입력해주세요");
+			return false;
+		} else if (!hobbyCheck[0].checked && !hobbyCheck[1].checked && !hobbyCheck[2].checked && !hobbyCheck[3].checked && !hobbyCheck[4].checked && !hobbyCheck[5].checked){
+			alert("취미를 하나 이상 체크해주세요");
+			return false;
+		} else if ($("#job").val()=="----- 선택하세요 -----"){
+			alert("직업을 입력해주세요");
+			return false;
+		}
+
+		alert("회원가입이 완료되었습니다");
+
+		$("#result").html($("#userId").val()+"<br/>");
+		$("#result").append($("#userPw").val()+"<br/>");
+		$("#result").append($("#userPwConfirm").val()+"<br/>");
+		$("#result").append($("#userName").val()+"<br/>");
+		$("#result").append($("#birth").val()+"<br/>");
+		$("#result").append($("input[name='gender']:checked").val()+"<br/>");
+		$("#result").append($("#email").val()+"@"+$("#emailDomain").val()+"<br/>");
+		$("#result").append($("#hpno").val()+"<br/>");
+
+		for(let i=0; i<hobbyCheck.length; i++){
+			if(hobbyCheck[0].checked){
+				$("#result").append(hobbyCheck[0].val()+"<br/>");
+			}
+		}
+
+		$("#result").append($("#job option:selected").val()+"<br/>");
+	});
 });
-
-// 필수 항목 제어
-function validate(){
-	
-}
-
-
-
-
