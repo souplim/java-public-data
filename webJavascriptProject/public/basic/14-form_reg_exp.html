@@ -29,21 +29,29 @@
 		
 		[조건]<br/>
 		1. 값이 입력되지 않았을 때 "값(이름)을 입력해주세요" 라고 메시지를 출력해주세요.<br/>
-		회원명 <input type="text" id="inputName"/> <button id="btn3">확인</button>
+		회원명 <input type="text" id="inputName"/> <button id="btn3">확인</button><span id="msg"></span>
 		
 		<script>
 			$("#btn2").on("click", function(){
 				const regExp = /^[a-zA-Z][0-9a-zA-Z]{4,7}$/;
+				/* 객체 사용 정규표현식 */
+				/* const regExp = new RegExp("^[a-zA-Z][0-9a-zA-Z]{4,7}$"); */
 				
 				if(!regExp.test($("#inputId").val())){
 					alert("조건에 맞게 입력해주세요");
+				} else {
+					alert("정상적으로 등록되었습니다");
 				}
 			});
 			
 			$("#btn3").on("click", function(){
 				
-				if($("#inputName").val()==""){
-					alert("값(이름)을 입력해주세요");
+				/* if($("#inputName").val()==""){ */
+				/* 해당하는 value 값에 공백이 들어오면 빈문자열로 대체 */
+				if(document.getElementById("inputName").value.replace(/\s/g, "")==""){ 
+					/* alert("값(이름)을 입력해주세요"); */
+					$("#msg").html("값(이름)을 입력해주세요");
+					/* document.getElementById("msg").innerHTML = "값(이름)을 입력해주세요"; */
 				}
 			});
 			
