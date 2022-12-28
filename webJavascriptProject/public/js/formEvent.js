@@ -113,8 +113,8 @@ $(function(){
 		$("#result").append($("#hpno").val()+"<br/>");
 
 		for(let i=0; i<hobbyCheck.length; i++){
-			if(hobbyCheck[0].checked){
-				$("#result").append(hobbyCheck[0].val()+"<br/>");
+			if(hobbyCheck[i].checked){
+				$("#result").append(hobbyCheck[i].val()+" ");
 			}
 		}
 
