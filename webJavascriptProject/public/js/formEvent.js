@@ -113,11 +113,10 @@ $(function(){
 		$("#result").append($("#hpno").val()+"<br/>");
 
 		for(let i=0; i<hobbyCheck.length; i++){
-			if(hobbyCheck[i].checked){
-				$("#result").append(hobbyCheck[i].val()+" ");
-			}
+			if(hobbyCheck[i].checked)
+				$("#result").append(hobbyCheck[i].value+" ");
 		}
 
-		$("#result").append($("#job option:selected").val()+"<br/>");
+		$("#result").append("<br/>"+$("#job option:selected").val()+"<br/>");
 	});
 });
