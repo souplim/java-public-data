@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<school>
+	<subject>
+		<title>Javascript/jQuery/Ajax</title>
+		<time>매주 월~금 오전 7시30분 ~ 10시 20분</time>
+		<teacher>홍길동</teacher>
+	</subject>
+	<subject>
+		<title>HTML5+CSS3 기반의 반응형 웹</title>
+		<time>매주 화 오후 7시30분 ~ 10시 20분</time>
+		<teacher>김철수</teacher>
+	</subject>
+	<subject>
+		<title>Java 입문에서 활용까지</title>
+		<time>매주 목 오후 7시30분 ~ 10시 20분</time>
+		<teacher>조현수</teacher>
+	</subject>
+</school>

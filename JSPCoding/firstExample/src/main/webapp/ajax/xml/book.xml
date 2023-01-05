@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<bookshelf>
+	<book>
+		<title>자바 한 권으로 끝내기</title>
+		<author>홍길동</author>
+		<price>35000</price>
+		<page>254p</page>
+	</book>
+	<book>
+		<title>jsp 한 권으로 끝내기</title>
+		<author>고길동</author>
+		<price>25000</price>
+		<page>347p</page>
+	</book>
+</bookshelf>

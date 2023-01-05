@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<school>
+	<subject>
+		<title>나의 하루 일과(교육원)</title>
+		<time>매주 월~금 오전 9시00분 ~ 13시 30분</time>
+		<teacher>홍길동</teacher>
+	</subject>
+</school>

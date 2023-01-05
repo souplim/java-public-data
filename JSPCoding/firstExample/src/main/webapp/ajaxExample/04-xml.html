@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+		<title>04-xml.html</title>
+		
+		<!-- 모바일 웹 페이지 설정 -->
+		<link rel="shortcut icon" href="../image/icon.png" />
+		<link rel="apple-touch-icon" href="../image/icon.png" />
+		<!-- 모바일 웹 페이지 설정 끝 -->
+		
+		<!--IE8이하 브라우저에서 HTML5를 인식하기 위해서는 아래의 패스필터를 적용하면 된다.--> 
+		<!--[if lt IE 9]>
+		<script src="../js/html5shiv.js"></script>
+		<![endif]-->
+		
+		<!-- 공통 css -->
+		<link rel="stylesheet" type="text/css" href="../css/reset.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/common.css"/>
+		
+		<!-- jQuery Framework 참조하기 -->
+		<script src="../js/jquery-3.6.2.min.js"></script>
+		
+		<!-- 사용자 스크립트 블록 -->
+		<script type="text/javascript">
+			$(function(){
+				$("#mybtn").click(function(){ // 버튼 클릭시마다 이벤트 발생
+				// $("#mybtn").one("click", function(){ // 버튼 클릭시 단 한 번 이벤트 발생
+				// $("#mybtn").on("click", function(){ 와의 차이?? 표준이벤트모델 고전이벤트모델?
+					$.ajax({
+						url: "/firstExample/ajax/xml/04.xml",
+						type: "get",
+						dataType: "xml",
+						cache: false,
+						timeout: 30000,
+						success: function(data){
+							// 반복되는 태그 단위를 찾아서 each() 함수 사용
+							$(data).find("subject").each(function(){ // 가져온 데이터를 객체화하여 subject를 찾아라
+								// 각 개별 요소에 속해 있는 텍스트 데이터 추출
+								let title = $(this).find("title").text(); // 현재 커서가 가리키고 있는 대상 -> this
+								let time = $(this).find("time").text();
+								let teacher = $(this).find("teacher").text();
+								
+								// 추출된 데이터를 화면에 출력하기 위한 HTML 요소를 동적으로 생성
+								// 존재하지 않는 태그 동적으로 추가
+								let div = $("<div>");
+								let p1 = $("<p>").html(title);
+								let p2 = $("<p>").html(time);
+								let p3 = $("<p>").html(teacher);
+								
+								// 메서드 체인을 사용한 동적 요소의 결합. <div><p></p><p></p><p></p></div>
+								div.append(p1).append(p2).append(p3);
+								
+								// 반드시 body 태그 하위에 정적 요소에 추가 작업 설정
+								$("#result").append(div);
+								$("#result").append("<hr />");
+							});
+						},
+						error: function(xhr, textStatus, errorThrown){
+							$("#result").html(textStatus + " (HTTP-" + xhr.status + " / " + errorThrown + ")");
+						}
+					});
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<h1 class="title">$.ajax() 함수를 사용한 XML데이터 읽기 (2)</h1>
+		<div class="exec">
+			<input type="button" value="xml데이터 가져오기" id="mybtn" />			
+		</div>
+		<div class="console" id="result" /></div>
+	</body>
+</html>
