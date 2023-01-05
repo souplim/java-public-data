@@ -1,26 +1,26 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="EUC-KR">
+		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
 		<title>Insert title here</title>
 		
-		<!-- ¸ð¹ÙÀÏ À¥ ÆäÀÌÁö ¼³Á¤ -->
+		<!-- ëª¨ë°”ì¼ ì›¹ íŽ˜ì´ì§€ ì„¤ì • -->
 		<link rel="shortcut icon" href="../image/icon.png" />
 		<link rel="apple-touch-icon" href="../image/icon.png" />
-		<!-- ¸ð¹ÙÀÏ À¥ ÆäÀÌÁö ¼³Á¤ ³¡ -->
+		<!-- ëª¨ë°”ì¼ ì›¹ íŽ˜ì´ì§€ ì„¤ì • ë -->
 		
-		<!--IE8ÀÌÇÏ ºê¶ó¿ìÀú¿¡¼­ HTML5¸¦ ÀÎ½ÄÇÏ±â À§ÇØ¼­´Â ¾Æ·¡ÀÇ ÆÐ½ºÇÊÅÍ¸¦ Àû¿ëÇÏ¸é µÈ´Ù.--> 
+		<!--IE8ì´í•˜ ë¸Œë¼ìš°ì €ì—ì„œ HTML5ë¥¼ ì¸ì‹í•˜ê¸° ìœ„í•´ì„œëŠ” ì•„ëž˜ì˜ íŒ¨ìŠ¤í•„í„°ë¥¼ ì ìš©í•˜ë©´ ëœë‹¤.--> 
 		<!--[if lt IE 9]>
 		<script src="../js/html5shiv.js"></script>
 		<![endif]-->
 	</head>
 	<body>
 	<% 
-		// ¼ýÀÚ¸¦ ÀúÀåÇÑ º¯¼ö 3°³(7, 5, 9)¸¦ Á¤ÀÇÇÏ°í ÃÖ´ë°ª ±¸ÇÏ±â
+		// ìˆ«ìžë¥¼ ì €ìž¥í•œ ë³€ìˆ˜ 3ê°œ(7, 5, 9)ë¥¼ ì •ì˜í•˜ê³  ìµœëŒ€ê°’ êµ¬í•˜ê¸°
 		int var1 = 7;
 		int var2 = 5;
 		int var3 = 9;
@@ -33,13 +33,17 @@
 			max = var2;
 		if(var3>max)
 			max = var3;
+		
+		out.println("<p>");
+		out.println("ìµœëŒ€ê°’ì€ : " + max);
+		out.println("</p>");
 	%>
 	<p>
-		ÃÖ´ë°ªÀº : <%=max%> 
+		ìµœëŒ€ê°’ì€ : <%=max%> 
 	</p>
 	
 	<%
-		// ¹è¿­ÀÇ °ª(12, 26, 68, 98, 76, 54, 8, 6, 4) Áß ÃÖ´ë°ª°ú ÃÖ¼Ò°ª ±¸ÇÏ±â
+		// ë°°ì—´ì˜ ê°’(12, 26, 68, 98, 76, 54, 8, 6, 4) ì¤‘ ìµœëŒ€ê°’ê³¼ ìµœì†Œê°’ êµ¬í•˜ê¸°
 		int[] arr = {12, 26, 68, 98, 76, 54, 8, 6, 4};
 		int max2 = arr[0];
 		int min2 = arr[0];
@@ -51,20 +55,20 @@
 		}
 	%>
 	<p>
-		ÃÖ¼Ò°ª : <%=min2%>
-		ÃÖ´ë°ª : <%=max2%> 
+		ìµœì†Œê°’ : <%=min2%>
+		ìµœëŒ€ê°’ : <%=max2%> 
 	</p>
 	
 	<%
-		// ¹®ÀÚ¿­ ÃßÃâÇÏ±â
-		String str = "µ¿ÇØ ¹°°ú ¹éµÎ»êÀÌ ¸¶¸£°í ´âµµ·Ï ÇÏ´À´ÔÀÌ º¸¿ìÇÏ»ç ¿ì¸®³ª¶ó ¸¸¼¼";
+		// ë¬¸ìžì—´ ì¶”ì¶œí•˜ê¸°
+		String str = "ë™í•´ ë¬¼ê³¼ ë°±ë‘ì‚°ì´ ë§ˆë¥´ê³  ë‹³ë„ë¡ í•˜ëŠë‹˜ì´ ë³´ìš°í•˜ì‚¬ ìš°ë¦¬ë‚˜ë¼ ë§Œì„¸";
 		int length = str.length();
-		int idx = str.indexOf('´â');
+		int idx = str.indexOf('ë‹³');
 		char cha = str.charAt(15);
 	%>
 	<p>
-		"µ¿ÇØ ¹°°ú ¹éµÎ»êÀÌ ¸¶¸£°í ´âµµ·Ï ÇÏ´À´ÔÀÌ º¸¿ìÇÏ»ç ¿ì¸®³ª¶ó ¸¸¼¼" => <%=length%>ÀÚÀÌ¸ç, '´â'Àº <%=idx%>¹øÂ°¿¡ ÀÖ´Ù.<br/>
-		"µ¿ÇØ ¹°°ú ¹éµÎ»êÀÌ ¸¶¸£°í ´âµµ·Ï ÇÏ´À´ÔÀÌ º¸¿ìÇÏ»ç ¿ì¸®³ª¶ó ¸¸¼¼" ÀÇ 15¹øÂ° ¹®ÀÚ´Â '<%=cha%>'ÀÌ´Ù.
+		"ë™í•´ ë¬¼ê³¼ ë°±ë‘ì‚°ì´ ë§ˆë¥´ê³  ë‹³ë„ë¡ í•˜ëŠë‹˜ì´ ë³´ìš°í•˜ì‚¬ ìš°ë¦¬ë‚˜ë¼ ë§Œì„¸" => <%=length%>ìžì´ë©°, 'ë‹³'ì€ <%=idx%>ë²ˆì§¸ì— ìžˆë‹¤.<br/>
+		"ë™í•´ ë¬¼ê³¼ ë°±ë‘ì‚°ì´ ë§ˆë¥´ê³  ë‹³ë„ë¡ í•˜ëŠë‹˜ì´ ë³´ìš°í•˜ì‚¬ ìš°ë¦¬ë‚˜ë¼ ë§Œì„¸" ì˜ 15ë²ˆì§¸ ë¬¸ìžëŠ” '<%=cha%>'ì´ë‹¤.
 	</p>
 	</body>
 </html>
