@@ -48,6 +48,25 @@ $(function(){
 		}
 	});
 	
+	// 이메일 선택하면 input 들어가게
+// 	$("#emailAddress").on("change", function(){
+// 		// val() : form 하위 태그에 입력된 값을 반환받기 위한 메서드
+// 		// val("값") : form 하위 태그에 값 설정하기 위한 메서드
+		
+// 		let email = $("#emailAddress option:selected").val(); // input의 option태그 사이에 있는 텍스트
+// 		let emailAddress = $("select[name='emailAddress']").val(); // value값
+		
+// 		if(email == "직접입력"){
+// 			$("#emailDomain").removeAttr("readonly"); // 설정된 속성을 제거하기 위한 메서드
+// 			$("#emailDomain").val("");
+// 			$("#emailDomain").focus();
+// 		} else {
+// 			// 속성을 설정해주기 위한 메서드 attr->명확하게 정의되는 속성 prop->명확한 값을 가지지 않은 것
+// 			$("#emailDomain").prop("readonly", "readonly"); 
+// 			$("#emailDomain").val(emailAddress);
+// 		}
+// 	});
+	
 	// 취미 옆 checkbox 선택하면 option 다 선택되게
 	$("#hobbyCheckTotal").on("change", function(){
 		let hobby = $(".hobbyCheck");
