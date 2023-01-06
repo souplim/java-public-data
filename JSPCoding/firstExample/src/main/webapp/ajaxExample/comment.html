@@ -17,8 +17,8 @@
 		<![endif]-->
 		
 		<!-- 공통 css -->
-		<link rel="stylesheet" type="text/css" href="../css/reset.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/common.css"/>
+		<!-- <link rel="stylesheet" type="text/css" href="../css/reset.css"/> -->
+		<!-- <link rel="stylesheet" type="text/css" href="../css/common.css"/> -->
 		
 		<!-- jQuery Framework 참조하기 -->
 		<script src="../js/jquery-3.6.2.min.js"></script>
@@ -42,7 +42,7 @@
 							let content = comment[i].content;
 							
 							let ul = $("<ul>");
-							let li1 = $("<li>").html(id+" / "+date + "<input type='button' value='삭제하기' class='delBtn'/>");
+							let li1 = $("<li>").html(id+" / "+date + "&nbsp;<input type='button' value='삭제하기' class='delBtn'/>");
 							let li2 = $("<li>").html(content);
 							
 							let data = ul.append(li1).append(li2);
@@ -77,7 +77,7 @@
 					date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds(); 
 					
 					let ul = $("<ul>");
-					let li1 = $("<li>").html(id+" / "+dateFormat + "<input type='button' value='삭제하기' class='delBtn'/>");
+					let li1 = $("<li>").html(id+" / "+dateFormat + "&nbsp;<input type='button' value='삭제하기' class='delBtn'/>");
 					let li2 = $("<li>").html(content);
 					
 					let data = ul.append(li1).append(li2);
@@ -104,23 +104,84 @@
 						$(this).parents("ul").remove();
 					}
 				});
+				
+				$("#mybtn").hover(function(){
+					$(this).css("backgroundColor", "#04BEB8");
+				}, function(){
+					$(this).css("backgroundColor", "#333333");
+				});
+				
+				// ajax 로 불러오는 html 에 hover 처리를 해야할경우 
+				$(document).on({
+			        mouseenter: function () {
+			        	$(this).css("backgroundColor", "#04BEB8");
+			        },
+			        mouseleave: function () {
+			        	$(this).css("backgroundColor", "#333333");
+			        }
+			    }, '.delBtn');
 			});
 		</script>
 		
 		<style>
+			@import url(https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
+			
+			* { 
+				font-family: 'Spoqa Han Sans Neo', 'sans-serif'; 
+				font-size: 20px;
+			}
+			
 			body {
 				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
 			}
+			
+			ul { list-style: none; }
 			
 			#container {
 				width: 800px;
-				align-content: center;
-				align-items: center;
+				height: 100%;
 				border: 1px solid black;
 			}
 			
+			.title {
+				font-size: 35px;
+				background-color: #04BEB8;
+				color: white;
+				padding: 10px;
+				margin-top: 0;
+			}
+			
+			/* 댓글 등록창 위치 */
 			#result {
-				height: 60%;
+				height: 700px;
+			}
+			
+			/* 버튼 */
+			.exec { 
+				display: flex; 
+			}
+			
+			#user, #comment {
+				margin-left: 40px;
+			}
+			
+			#mybtn {
+				background-color: #333333;
+				color: white;
+				border: none;
+				padding: 5px 30px;
+				margin: 20px;
+				margin-left: 88%;
+			}
+			
+			.delBtn {
+				background-color: #333333;
+				color: white;
+				border: none;
+				padding: 5px 20px;
+				margin: 5px;
 			}
 		</style>
 	</head>
@@ -133,7 +194,7 @@
 			<div class="exec">
 				<form name="form1" id="form1">
 					<input type="text" name="user" id="user" placeholder="작성자"/><br><br>	
-					<textarea name="comment" id="comment" rows="10" cols="50" placeholder="덧글 내용"></textarea>
+					<textarea name="comment" id="comment" rows="5" cols="73" placeholder="여러분의 소중한 댓글을 입력해주세요."></textarea>
 					<br>
 					<input type="button" value="등록" id="mybtn" />
 				</form>
