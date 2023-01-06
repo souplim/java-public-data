@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+		<title>05-json.html</title>
+		
+		<!-- 모바일 웹 페이지 설정 -->
+		<link rel="shortcut icon" href="../image/icon.png" />
+		<link rel="apple-touch-icon" href="../image/icon.png" />
+		<!-- 모바일 웹 페이지 설정 끝 -->
+		
+		<!--IE8이하 브라우저에서 HTML5를 인식하기 위해서는 아래의 패스필터를 적용하면 된다.--> 
+		<!--[if lt IE 9]>
+		<script src="../js/html5shiv.js"></script>
+		<![endif]-->
+		
+		<!-- 공통 css -->
+		<link rel="stylesheet" type="text/css" href="../css/reset.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/common.css"/>
+		
+		<!-- jQuery Framework 참조하기 -->
+		<script src="../js/jquery-3.6.2.min.js"></script>
+		
+		<!-- 사용자 스크립트 블록 -->
+		<script type="text/javascript">
+			$(function(){
+				$("#mybtn").click(function(){
+					$.ajax({
+						url: "/firstExample/ajax/json/05.json",
+						type: "get",
+						dataType: "json",
+						cache: false,
+						timeout: 30000,
+						success: function(json){
+							// 파라미터로 전달되는 객체는 JSON 자체이다. 그래서 계층구조로 접근
+							let title = json.school.subject.title;
+							let time = json.school.subject.time;
+							let teacher = json.school.subject.teacher;
+							
+							// 요소의 동적 생성 및 데이터 출력 구현
+							let ul = $("<ul>");
+							let li1 = $("<li>").html(title);
+							let li2 = $("<li>").html(time);
+							let li3 = $("<li>").html(teacher);
+							
+							let data = ul.append(li1).append(li2).append(li3);
+							$("#result").append(data);
+						},
+						error: function(xhr, textStatus, errorThrown){
+							$("#result").html(textStatus + " (HTTP-" + xhr.status + " / " + errorThrown + ")");
+						}
+					});
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<h1 class="title">$.ajax() 함수를 사용한 JSON데이터 읽기 (1)</h1>
+		<div class="exec">
+			<input type="button" value="JSON 데이터 가져오기" id="mybtn" />			
+		</div>
+		<div class="console" id="result"></div>
+	</body>
+</html>

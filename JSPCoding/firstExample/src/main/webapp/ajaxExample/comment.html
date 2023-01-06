@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+		<title>comment.html</title>
+		
+		<!-- 모바일 웹 페이지 설정 -->
+		<link rel="shortcut icon" href="../image/icon.png" />
+		<link rel="apple-touch-icon" href="../image/icon.png" />
+		<!-- 모바일 웹 페이지 설정 끝 -->
+		
+		<!--IE8이하 브라우저에서 HTML5를 인식하기 위해서는 아래의 패스필터를 적용하면 된다.--> 
+		<!--[if lt IE 9]>
+		<script src="../js/html5shiv.js"></script>
+		<![endif]-->
+		
+		<!-- 공통 css -->
+		<link rel="stylesheet" type="text/css" href="../css/reset.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/common.css"/>
+		
+		<!-- jQuery Framework 참조하기 -->
+		<script src="../js/jquery-3.6.2.min.js"></script>
+		
+		<!-- 사용자 스크립트 블록 -->
+		<script type="text/javascript">
+			$(function(){
+				// 로딩 이벤트
+				$.ajax({
+					url : "/firstExample/ajax/json/comment_list.json",
+					type: "get",
+					dataType: "json",
+					cache: false,
+					timeout: 30000,
+					success: function(json){
+						let comment = json.board.comment;
+						
+						for(let i=0; i<comment.length; i++){
+							let id = comment[i].id;
+							let date = comment[i].date;
+							let content = comment[i].content;
+							
+							let ul = $("<ul>");
+							let li1 = $("<li>").html(id+" / "+date + "<input type='button' value='삭제하기' class='delBtn'/>");
+							let li2 = $("<li>").html(content);
+							
+							let data = ul.append(li1).append(li2);
+							$("#result").append(data);
+							$("#result").append("<hr/>");
+						}
+					},
+					error: function(xhr, textStatus, errorThrown){
+						$("#result").html(textStatus + " (HTTP-" + xhr.status + " / " + errorThrown + ")");
+					}
+				});
+				
+				
+				// 버튼의 클릭 이벤트 (등록)
+				$("#mybtn").click(function(){
+					let id = $("#user").val();
+					let content = $("#comment").val();
+					
+					// 유효성 검사 -> 정규 표현식으로
+					if(id==""){
+						alert("id를 입력해주세요");
+						return;
+					} else if(content==""){
+						alert("댓글 내용을 입력해주세요");
+						return;
+					} 
+					
+					let date = new Date();
+					let dateFormat = date.getFullYear() +
+					'-' + ( (date.getMonth()+1) < 9 ? "0" + (date.getMonth()+1) : (date.getMonth()+1) )+
+					'-' + ( (date.getDate()) < 9 ? "0" + (date.getDate()) : (date.getDate()) )+" "+
+					date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds(); 
+					
+					let ul = $("<ul>");
+					let li1 = $("<li>").html(id+" / "+dateFormat + "<input type='button' value='삭제하기' class='delBtn'/>");
+					let li2 = $("<li>").html(content);
+					
+					let data = ul.append(li1).append(li2);
+					$("#result").append(data);
+					$("#result").append("<hr/>");
+					
+					$("#user").val("");
+					$("#comment").val("");
+					
+				});
+				
+				// 버튼의 클릭 이벤트 (삭제)
+ 				/* $(".delBtn").on("click", function(){ // 만들어지지 않은 요소에는 이렇게 줄 수 없음 
+					$(this).remove();
+				}); */
+				
+				// 동적으로 만든 버튼에 이벤트 걸 때 이 방법 사용하자!
+				// 동적 요소에 이벤트 부여
+						// .on (이벤트,     대상,     함수     
+				$(document).on("click",".delBtn", function(){ 
+					if(confirm("선택하신 항목을 정말 삭제하시겠습니까?")){
+						$(this).parents("ul").next().remove();
+						/* $(this).parents("ul").next().css("display","none"); */
+						$(this).parents("ul").remove();
+					}
+				});
+			});
+		</script>
+		
+		<style>
+			body {
+				display: flex;
+			}
+			
+			#container {
+				width: 800px;
+				align-content: center;
+				align-items: center;
+				border: 1px solid black;
+			}
+			
+			#result {
+				height: 60%;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container">
+			<h1 class="title">jQuery Comment</h1>
+			
+			<div class="console" id="result"></div>
+			
+			<div class="exec">
+				<form name="form1" id="form1">
+					<input type="text" name="user" id="user" placeholder="작성자"/><br><br>	
+					<textarea name="comment" id="comment" rows="10" cols="50" placeholder="덧글 내용"></textarea>
+					<br>
+					<input type="button" value="등록" id="mybtn" />
+				</form>
+			</div>
+		</div>
+	</body>
+</html>
