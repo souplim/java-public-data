@@ -1,0 +1,19 @@
+{
+	"school" : {
+		"subject" : [
+			{
+				"title" : "JavaScript/jQuery/Ajax",
+				"time" : "매주 월/수/금 오전 7시30분 ~ 10시 20분",
+				"teacher" : "홍길동"
+			}, {
+				"title" : "HTML5+CSS3 기반의 반응형 웹",
+				"time" : "매주 화 오후 7시30분 ~ 10시 20분",
+				"teacher" : "김철수"
+			}, {
+				"title" : "Java 입문에서 활용까지",
+				"time" : "매주 목 오후 7시30분 ~ 10시 20분",
+				"teacher" : "조현수"
+			}
+		]
+	}
+}
