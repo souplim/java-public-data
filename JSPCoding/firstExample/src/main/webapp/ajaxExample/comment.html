@@ -37,17 +37,11 @@
 						let comment = json.board.comment;
 						
 						for(let i=0; i<comment.length; i++){
-							let id = comment[i].id;
+							let id = comment[i].id+"님";
 							let date = comment[i].date;
 							let content = comment[i].content;
 							
-							let ul = $("<ul>");
-							let li1 = $("<li>").html(id+" / "+date + "&nbsp;<input type='button' value='삭제하기' class='delBtn'/>");
-							let li2 = $("<li>").html(content);
-							
-							let data = ul.append(li1).append(li2);
-							$("#result").append(data);
-							$("#result").append("<hr/>");
+							printContent(id, date, content);
 						}
 					},
 					error: function(xhr, textStatus, errorThrown){
@@ -55,38 +49,38 @@
 					}
 				});
 				
-				
-				// 버튼의 클릭 이벤트 (등록)
-				$("#mybtn").click(function(){
-					let id = $("#user").val();
-					let content = $("#comment").val();
-					
-					// 유효성 검사 -> 정규 표현식으로
-					if(id==""){
-						alert("id를 입력해주세요");
-						return;
-					} else if(content==""){
-						alert("댓글 내용을 입력해주세요");
-						return;
-					} 
-					
-					let date = new Date();
-					let dateFormat = date.getFullYear() +
-					'-' + ( (date.getMonth()+1) < 9 ? "0" + (date.getMonth()+1) : (date.getMonth()+1) )+
-					'-' + ( (date.getDate()) < 9 ? "0" + (date.getDate()) : (date.getDate()) )+" "+
-					date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds(); 
-					
+				// 댓글 출력 메서드
+				function printContent(id, date, content){
 					let ul = $("<ul>");
-					let li1 = $("<li>").html(id+" / "+dateFormat + "&nbsp;<input type='button' value='삭제하기' class='delBtn'/>");
+					let li1 = $("<li>").html(id+" / "+date + "&nbsp;<input type='button' value='삭제하기' class='delBtn'/>");
 					let li2 = $("<li>").html(content);
 					
 					let data = ul.append(li1).append(li2);
 					$("#result").append(data);
 					$("#result").append("<hr/>");
+				}
+				
+				// 버튼의 클릭 이벤트 (등록)
+				$("#mybtn").click(function(){
+					let id = $("#user").val()+"님";
+					let content = $("#comment").val();
 					
-					$("#user").val("");
-					$("#comment").val("");
+					// 유효성 검사 -> 정규 표현식으로
+					if(id.replace(/s/g,"") == ""){
+						alert("id를 입력해주세요");
+						return;
+					} else if(content.replace(/s/g,"") == ""){
+						alert("댓글 내용을 입력해주세요");
+						return;
+					} 
 					
+					let d = new Date();
+					let date = d.getFullYear() +
+					'-' + ( (d.getMonth()+1) < 9 ? "0" + (d.getMonth()+1) : (d.getMonth()+1) )+
+					'-' + ( (d.getDate()) < 9 ? "0" + (d.getDate()) : (d.getDate()) )+" "+
+					d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
+					
+					printContent(id, date, content);
 				});
 				
 				// 버튼의 클릭 이벤트 (삭제)
@@ -193,7 +187,7 @@
 			
 			<div class="exec">
 				<form name="form1" id="form1">
-					<input type="text" name="user" id="user" placeholder="작성자"/><br><br>	
+					<input type="text" name="user" id="user" placeholder="이름"/><br><br>	
 					<textarea name="comment" id="comment" rows="5" cols="73" placeholder="여러분의 소중한 댓글을 입력해주세요."></textarea>
 					<br>
 					<input type="button" value="등록" id="mybtn" />
