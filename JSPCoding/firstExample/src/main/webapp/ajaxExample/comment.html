@@ -37,10 +37,11 @@
 						let comment = json.board.comment;
 						
 						for(let i=0; i<comment.length; i++){
-							let id = comment[i].id+"님";
+							let id = comment[i].id;
 							let date = comment[i].date;
 							let content = comment[i].content;
 							
+							id = comment[i].id+"님";
 							printContent(id, date, content);
 						}
 					},
@@ -62,7 +63,7 @@
 				
 				// 버튼의 클릭 이벤트 (등록)
 				$("#mybtn").click(function(){
-					let id = $("#user").val()+"님";
+					let id = $("#user").val();
 					let content = $("#comment").val();
 					
 					// 유효성 검사 -> 정규 표현식으로
@@ -74,6 +75,8 @@
 						return;
 					} 
 					
+					id = comment[i].id+"님";
+					
 					let d = new Date();
 					let date = d.getFullYear() +
 					'-' + ( (d.getMonth()+1) < 9 ? "0" + (d.getMonth()+1) : (d.getMonth()+1) )+
@@ -81,6 +84,9 @@
 					d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
 					
 					printContent(id, date, content);
+					
+					id = $("#user").val("");
+					content = $("#comment").val("");
 				});
 				
 				// 버튼의 클릭 이벤트 (삭제)
@@ -183,6 +189,7 @@
 		<div id="container">
 			<h1 class="title">jQuery Comment</h1>
 			
+			<!-- 여기에 동적요소 생성됨 -->
 			<div class="console" id="result"></div>
 			
 			<div class="exec">
