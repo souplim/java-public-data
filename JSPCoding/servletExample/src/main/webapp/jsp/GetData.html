@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+		<title>Insert title here</title>
+		
+		<!-- 모바일 웹 페이지 설정 -->
+		<link rel="shortcut icon" href="../image/icon.png" />
+		<link rel="apple-touch-icon" href="../image/icon.png" />
+		<!-- 모바일 웹 페이지 설정 끝 -->
+		
+		<!--IE8이하 브라우저에서 HTML5를 인식하기 위해서는 아래의 패스필터를 적용하면 된다.--> 
+		<!--[if lt IE 9]>
+		<script src="../js/html5shiv.js"></script>
+		<![endif]-->
+		
+		<!-- jQuery Framework 참조하기 -->
+		<script src="../js/jquery-3.6.2.min.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				$("#subbtn").click(function(){
+					// 이벤트 여부 확인
+					console.log("확인");
+					
+					// 유효성 체크
+					if($("#name").val().replace(/s/g,"")==""){
+						alert("이름을 입력해주세요");
+						$("#name").val("");
+						$("#name").focus();
+						return;
+					}
+					if($("#address").val().replace(/s/g,"")==""){
+						alert("주소를 입력해주세요");
+						$("#address").val("");
+						$("#address").focus();
+						return;
+					}
+					
+					// 폼에 속성을 추가하는 작업 세가지
+					// 1.
+					/* $("dataForm").attr("method","post");
+					$("#dataForm").attr("action","/servletExample/getData");
+					$("#dataForm").submit(); */
+					
+					// 2.
+					/* $("#dataForm").attr("method","post").attr("action","/servletExample/getData");
+					$("#dataForm").submit(); */
+					
+					// 3.
+					// 형식 : $("선택자").attr({"속성" : "값", "속성" : "값"});
+					$("#dataForm").attr({
+						"method" : "post",
+						"action" : "/servletExample/getData"
+					});
+					$("#dataForm").submit(); // form 전송
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<!-- 
+			webapp
+				image
+				js
+				jsp(폴더 생성 - jsp 파일과 html 파일 저장) - GetDate.html, getData.html
+			
+			GetData.html -> 요청 uri: /servletExample/getData
+			서블릿 name: GetData
+			
+			폼을 생성하여 이름과 주소를 구현한다 
+			전송은 submit이 아니라 버튼으로 구성한다
+			유효성 체크 후 서블릿으로 전송한다(필수항목)
+			
+			1. 서블릿을 생성한다. GetData.java
+			1-1. url mappings는 /getData로 설정한다
+			1-2. 메서드는 doPost()를 오버라이딩 해야 한다
+			
+			1. 앞으로의 입력양식은 반드시 form 태그로 구성함
+			2. form 태그의 속성을 명시해야 주어야 하는데
+				method="get or pos
+				action="서버로 전송할 파일명 or uri"
+		--> 
+		<form name="dataForm" id="dataForm"> <!-- action과 method는 jquery에서 부여 -->
+			<div>
+				<label>이 름:</label>
+				<input type="text" name="name" id="name" placeholder="이름 입력"/>	
+			</div>
+			<div>
+				<labe>주 소:</label>
+				<input type="text" name="address" id="address" placeholder="주소 입력"/>
+			</div>
+			<div>
+				<button type="button" value="전송" id="subbtn">전송</button>&nbsp;&nbsp;
+				<button type="reset" value="reset" id="resbtn">취소</button>
+			</div>
+			
+		</form>
+	</body>
+</html>
