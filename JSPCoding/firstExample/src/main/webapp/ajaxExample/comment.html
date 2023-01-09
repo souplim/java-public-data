@@ -25,6 +25,30 @@
 		
 		<!-- 사용자 스크립트 블록 -->
 		<script type="text/javascript">
+			// 
+			let num = 0;
+			// 댓글 출력 메서드
+			function printContent(num, id, date, content){
+				let ul = $("<ul>");
+				// 번호 속성 부여
+				ul.attr("data-num", num); // 보여주기보단 db에서 값을 식별하기 위함
+				ul.addClass(".comment_item");
+				
+				let li1 = $("<li>").html(id+"님 / "+date + "&nbsp;<input type='button' value='삭제하기' class='delBtn'/>");
+				let li2 = $("<li>").html(content);
+				
+				let data = ul.append(li1).append(li2);
+				$("#result").append(data);
+				$("#result").append("<hr/>");
+			}
+			
+			// 댓글 등록 후 초기화 메서드
+			function reset(){
+				id = $("#user").val("");
+				content = $("#comment").val("");
+				$("#user").focus();
+			}
+		
 			$(function(){
 				// 로딩 이벤트
 				$.ajax({
@@ -37,12 +61,12 @@
 						let comment = json.board.comment;
 						
 						for(let i=0; i<comment.length; i++){
+							num = comment[i].num;
 							let id = comment[i].id;
 							let date = comment[i].date;
 							let content = comment[i].content;
 							
-							id = comment[i].id+"님";
-							printContent(id, date, content);
+							printContent(num, id, date, content);
 						}
 					},
 					error: function(xhr, textStatus, errorThrown){
@@ -50,16 +74,7 @@
 					}
 				});
 				
-				// 댓글 출력 메서드
-				function printContent(id, date, content){
-					let ul = $("<ul>");
-					let li1 = $("<li>").html(id+" / "+date + "&nbsp;<input type='button' value='삭제하기' class='delBtn'/>");
-					let li2 = $("<li>").html(content);
-					
-					let data = ul.append(li1).append(li2);
-					$("#result").append(data);
-					$("#result").append("<hr/>");
-				}
+				
 				
 				// 버튼의 클릭 이벤트 (등록)
 				$("#mybtn").click(function(){
@@ -70,12 +85,13 @@
 					if(id.replace(/s/g,"") == ""){
 						alert("id를 입력해주세요");
 						return;
-					} else if(content.replace(/s/g,"") == ""){
+					} 
+					if(content.replace(/s/g,"") == ""){
 						alert("댓글 내용을 입력해주세요");
 						return;
 					} 
 					
-					id = comment[i].id+"님";
+					++num;
 					
 					let d = new Date();
 					let date = d.getFullYear() +
@@ -83,10 +99,8 @@
 					'-' + ( (d.getDate()) < 9 ? "0" + (d.getDate()) : (d.getDate()) )+" "+
 					d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
 					
-					printContent(id, date, content);
-					
-					id = $("#user").val("");
-					content = $("#comment").val("");
+					printContent(num, id, date, content);
+					reset();
 				});
 				
 				// 버튼의 클릭 이벤트 (삭제)
