@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+		<title>calculation</title>
+		
+		<!-- 모바일 웹 페이지 설정 -->
+		<link rel="shortcut icon" href="../image/icon.png" />
+		<link rel="apple-touch-icon" href="../image/icon.png" />
+		<!-- 모바일 웹 페이지 설정 끝 -->
+		
+		<!--IE8이하 브라우저에서 HTML5를 인식하기 위해서는 아래의 패스필터를 적용하면 된다.--> 
+		<!--[if lt IE 9]>
+		<script src="../js/html5shiv.js"></script>
+		<![endif]-->
+		
+		<!-- jQuery Framework 참조하기 -->
+		<script src="../js/jquery-3.6.2.min.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				function calc(op, num1, num2){
+					switch(op){
+						case '+':
+							return num1+num2;
+							break;
+						case '-':
+							return num1-num2;
+							break;
+						case '*':
+							return num1*num2;
+							break;
+						case '/':
+							if(num2!=0)
+								result = num1/num2;
+							return result;
+							break;
+					}
+				};
+				
+				$("#calcBtn").on("click", function(){
+					let num1 = $("#num1").val();
+					let num2 = $("#num2").val();
+					const op = $("select[name='operator'] option:selected").val();
+					
+					// 유효성 check
+					const regExp = /\d/;
+					if(num1.replace(/s/g,"")==""){
+						alert("숫자를 1개 이상 입력해주세요");
+						return;
+					}
+					if(num2.replace(/s/g,"")==""){
+						alert("숫자를 1개 이상 입력해주세요");
+						return;
+					}
+					if(!regExp.test(num1) || !regExp.test(num2)){
+						alert("숫자를 입력해주세요");
+						return;
+					}
+					
+					num1 = parseInt($("#num1").val());
+					num2 = parseInt($("#num2").val());
+					
+					const result = calc(op, num1, num2);
+					console.log(result);
+					
+					/*
+						결과값을 속성이 hidden인 input에 값 설정하여 값 보내기 위한 코드 
+						이 코드가 없으면 form 태그 안에 없는 변수는 보내지지 않음!
+					*/
+					$("#result").val(result); 
+					
+					// 형식 : $("선택자").attr({"속성" : "값", "속성" : "값"});
+					$("#frm").attr({
+						"method" : "post",
+						"action" : "/servletExample/calcServlet"
+					});
+					
+					$("#frm").submit(); // form단위로 값을 보내는 것 form에 없는 값은 보내지지 않음!
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<p>
+			[코딩시 참고사항]<br/>
+			calc.html --> 요청 url: /servletExample/calcServlet<br/>
+			method: post 방식 / 각각 입력 양식의 이름 및 아이디(순서대로) : frm(폼태그), num1(숫자), operator(select), num2(숫자2)<br/>
+			각 텍스트 필드의 값은 반드시 숫자만 입력되도록 유효성 체크<br/>
+			서블릿 name : CalcServlet<br/>
+			서블릿 내 요구사항 : +, -, *, / 연산의 결과를 반환하는 메서드(calc) 생성(클래스 생성도 ok)
+		</p>
+		
+		<h1>계산기</h1>
+		<hr/>
+		<form name="frm" id="frm">
+		
+			<!-- js에서 생성한 값을 보내기 위한 태그 -->
+			<input type="hidden" name="result" id="result" />
+			
+			<input type="text" name="num1" id="num1" />
+			<select name="operator" id="operator">
+				<option value="+">+</option>
+				<option value="-">-</option>
+				<option value="*">*</option>
+				<option value="/">/</option>
+			</select>
+			<input type="text" name="num2" id="num2" />
+			<span>=</span>
+			<button type="button" id="calcBtn">계산하기</button>
+			<button type="reset" id="rstBtn">다시입력</button>
+		</form>
+	</body>
+</html>
