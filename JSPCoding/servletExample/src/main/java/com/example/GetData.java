@@ -29,7 +29,7 @@ public class GetData extends HttpServlet {
 		out.println("<link rel='icon' href='data:,'>");
 		out.println("<script type='text/javascript'>");
 		out.println("window.onload = function(){");
-		out.println("let backPage = document.getElementById('subbtn')");
+		out.println("let backPage = document.getElementById('btn')");
 		out.println("backPage.onclick = function(){");
 		out.println("history.back() };");
 		out.println("};");
