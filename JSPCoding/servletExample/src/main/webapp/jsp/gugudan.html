@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+		<title>구구단 출력하기 - gugudan.html</title>
+		
+		<!-- 모바일 웹 페이지 설정 -->
+		<link rel="shortcut icon" href="../image/icon.png" />
+		<link rel="apple-touch-icon" href="../image/icon.png" />
+		<!-- 모바일 웹 페이지 설정 끝 -->
+		
+		<!--IE8이하 브라우저에서 HTML5를 인식하기 위해서는 아래의 패스필터를 적용하면 된다.--> 
+		<!--[if lt IE 9]>
+		<script src="../js/html5shiv.js"></script>
+		<![endif]-->
+		
+		<!-- jQuery Framework 참조하기 -->
+		<script src="../js/jquery-3.6.2.min.js"></script>
+		
+		<!-- 사용자 스크립트 블록 -->
+		<script type="text/javascript">
+			$(function(){
+				$("#btn").on("click", function(){
+					if($("#dan").val().replace(/s/g,"")==""){
+						alert("구구단을 입력해주세요");
+						$("#dan").val("");
+						$("#dan").focus();
+						return;
+					}
+					
+					let dan = $
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<p>
+			[코딩시 요구사항]<br/>
+			gugudan.html --> 요청 url : /servletExample/gugudanServlet <br/>
+			method : get방식 / 각각 입력 양식의 이름 및 아이디(순서대로) : frm(폼태그), dan(숫자) <br/>
+			서블릿 name : GugudanServlet 생성
+		</p>
+		
+		<h3>출력할 구구단의 수를 지정해주세요.</h3>
+		<form name="frm" id="frm">
+			출력할 구구단 : 
+			<input type="text" name="dan" id="dan" /> <br/>
+			<button type="button" id="btn">구구단출력</button>
+		</form>
+	</body>
+</html>
