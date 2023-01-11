@@ -28,7 +28,7 @@ public class FirstServlet2 extends HttpServlet {
 		out.println("<link rel='icon' href='data:,'>");
 		
 		out.print("<script type='text/javascript'>");
-		out.print("		location.href='secondLocation?name=HongGilDong&age=20';"); // 전송하는 값
+		out.print("location.href='secondLocation?name=HongGilDong&age=20';"); // 전송하는 값
 		out.println("</script></head>");
 		out.println("<body></body></html>");
 	}
