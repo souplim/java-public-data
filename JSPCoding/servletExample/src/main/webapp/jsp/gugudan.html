@@ -30,7 +30,17 @@
 						return;
 					}
 					
-					let dan = $
+					let dan = $("#dan").val();
+					if(dan<2 || dan>9){
+						alert("구구단은 2단부터 9단까지만 입력가능합니다");
+						$("#dan").val("");
+						$("#dan").focus();
+					}
+					$("#frm").attr({
+						"method" : "get",
+						"action" : "/servletExample/gugudanServlet"
+					});
+					$("#frm").submit();
 				});
 			});
 		</script>
