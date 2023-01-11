@@ -17,13 +17,19 @@ public class FirstServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	
+	/*
+	 * protected void doGet(HttpServletRequest request, HttpServletResponse
+	 * response) throws ServletException, IOException {
+	 * response.setContentType("text/html;charset=UTF-8"); // 같은 context 명을 사용하기에 생략
+	 * 가능 // response.sendRedirect("/servletExample/secondRedirect?name=Younghee");
+	 * response.sendRedirect("secondRedirect?name=Younghee"); }
+	 */
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		// 같은 context 명을 사용하기에 생략 가능
-//		response.sendRedirect("/servletExample/secondRedirect?name=Younghee");
-		response.sendRedirect("secondRedirect?name=Younghee");
+		request.setAttribute("address","서울특별시 영등포구 의사당대로 1");
+		response.sendRedirect("secondRedirect");
 	}
-
-
-
 }
