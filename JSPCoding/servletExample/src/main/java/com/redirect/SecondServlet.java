@@ -23,13 +23,15 @@ public class SecondServlet extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		
-		String name = request.getParameter("name");
+		// String name = request.getParameter("name");
+		String address = (String)request.getAttribute("address");
 		
 		out.println("<!DOCTYPE html><html><head><meta charset='UTF-8' />");
 		out.println("<title>redirect 예제</title>");
 		out.println("<link rel='icon' href='data:,'></head>");
 		out.println("<body><div>secondRedirect를 이용한 redirect 실습입니다.</div>");
-		out.println("<div>이름 : "+name+"</div>");
+		// out.println("<div>이름 : "+name+"</div>");
+		out.println("<div>주소 : "+address+"</div>"); // null
 		out.println("</body></html>");
 	}
 }
