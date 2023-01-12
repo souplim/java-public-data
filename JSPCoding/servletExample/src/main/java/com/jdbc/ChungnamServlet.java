@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,7 +26,7 @@ public class ChungnamServlet extends HttpServlet {
 		ChungnamDAO dao = ChungnamDAO.getInstance();
 		ArrayList<ChungnamVO> list = dao.getChungnamList();
 		int counter = list.size();
-		
+	
 		out.println("<!DOCTYPE html><html><head><meta charset='UTF-8' />");
 		out.println("<title>Chungnam 정보 리스트 예제</title>");
 		out.println("<link rel='icon' href='data:,'>");
@@ -33,14 +34,21 @@ public class ChungnamServlet extends HttpServlet {
 		out.println("<script src=\"/servletExample/js/jquery-3.6.2.min.js\"></script>");
 		
 		out.println("<script type='text/javascript'>");
-		out.println("$(document).on('click','.delBtn', function(){");
+		out.println("$(function(){");
+		out.println("$(document).on('click','#delBtn', function(){");
 		
 		out.println("if(confirm('선택하신 항목을 정말로 삭제하시겠습니까?')){");
-		out.println("$('.item').remove();"); 
 		
-		out.println("const mng_no = $(this).data('no');");
-
-		out.println("}});");
+		out.println("mng_no = $(this).parents('.item').data('no');");
+		out.println("$('#result').val(mng_no);");
+		
+		out.println("$('#resultForm').attr({");
+		out.println("'method' : 'post',");
+		out.println("'action' : '/servletExample/delete'");
+		out.println("});");
+		out.println("$('#resultForm').submit();");
+		
+		out.println("}});});");
 		out.println("</script>");
 		out.println("</head>");
 		
@@ -65,15 +73,13 @@ public class ChungnamServlet extends HttpServlet {
 				out.println("</li>");
 			}
 		}
-		
 		out.println("</ul>");
+		
+		//js에서 생성한 값을 보내기 위한 태그
+		out.println("<form id='resultForm'><input type='hidden' name='result' id='result' /></form>");
+		
 		out.println("</body></html>");
 		out.close();
-		
-		/*
-		 * RequestDispatcher dispatch = request.getRequestDispatcher("delete");
-		 * dispatch.forward(request, response);
-		 */
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
