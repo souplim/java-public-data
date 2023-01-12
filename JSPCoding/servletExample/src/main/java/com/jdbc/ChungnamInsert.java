@@ -38,7 +38,6 @@ public class ChungnamInsert extends HttpServlet {
 		ChungnamDAO dao = ChungnamDAO.getInstance();
 		int insertCount = dao.chungnamInsert(vo);
 		
-		// 입력페이지 <div></div>에 어떻게 작성?
 		if(insertCount > 0) {
 			// 입력 성공하면 db받아와 select화면에 입력한 항목 띄우기
 			RequestDispatcher dispatch = request.getRequestDispatcher("select");
