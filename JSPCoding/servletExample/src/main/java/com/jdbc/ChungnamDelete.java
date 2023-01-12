@@ -1,6 +1,9 @@
 package com.jdbc;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,23 +18,36 @@ public class ChungnamDelete extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
+		doPost(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		int mng_no = Integer.parseInt(request.getParameter("mng_no"));
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
+		PrintWriter out = response.getWriter();
+			
+		int mng_no = Integer.parseInt(request.getParameter("result"));
 		
 		ChungnamVO vo = new ChungnamVO();
 		vo.setMng_no(mng_no);
 		ChungnamDAO dao = ChungnamDAO.getInstance();
 		int deleteCount = dao.chungnamDelete(vo);
 		
+		System.out.println(mng_no);
+		System.out.println(deleteCount);
+		
 		if(deleteCount > 0) { // 삭제 성공
-			
+			try {
+		        out.write("<script>alert('삭제를 완료하였습니다.');location.href='select';</script>");
+		    } catch(Exception e) {
+		        e.printStackTrace();
+		    }
 		} else { // 삭제 실패
-			
+			out.write("<script>alert('삭제를 실패하였습니다.');location.href='select';</script>");
 		}
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		
+		out.flush();
+        out.close();
 	}
 }
