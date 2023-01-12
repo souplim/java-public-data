@@ -47,7 +47,7 @@
 						"method" : "post",
 						"action" : "/servletExample/insert"
 					});
-					$("#chungnamForm").submit(); // form 전송
+					$("#chungnamForm").submit(); // form 전송 
 				});
 			});
 		</script>
