@@ -174,6 +174,4 @@ public class ChungnamDAO {
 		}
 		return deleteCount;
 	}
-	
-
 }
