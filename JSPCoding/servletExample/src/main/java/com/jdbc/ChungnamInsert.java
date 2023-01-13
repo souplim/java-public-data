@@ -3,7 +3,7 @@ package com.jdbc;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.servlet.RequestDispatcher;
+//import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -38,14 +38,18 @@ public class ChungnamInsert extends HttpServlet {
 		ChungnamDAO dao = ChungnamDAO.getInstance();
 		int insertCount = dao.chungnamInsert(vo);
 		
-		if(insertCount > 0) {
+		if(insertCount == 1) {
 			// 입력 성공하면 db받아와 select화면에 입력한 항목 띄우기
-			RequestDispatcher dispatch = request.getRequestDispatcher("select");
-			dispatch.forward(request, response);
+//			RequestDispatcher dispatch = request.getRequestDispatcher("select");
+//			dispatch.forward(request, response);
+			
+			// dispatch는 url이 안 바뀌기 때문에 여기서는 select의 화면으로 이동하며 select 주소가 보여지기 위해
+			// dispatch가 아닌 redirect 방법을 사용한다!
+			response.sendRedirect("/servletExample/select"); 
 		}
 		else {
 			 try {
-			        out.write("<script>alert('입력에 실패하였습니다.<br/>다시 입력해주세요');location.href='insert';</script>");
+			        out.write("<script>alert('입력에 실패하였습니다.<br/>다시 입력해주세요');history.back();</script>");
 			        out.flush();
 			        out.close();
 			    } catch(Exception e) {
