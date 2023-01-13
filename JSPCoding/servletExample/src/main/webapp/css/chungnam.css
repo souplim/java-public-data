@@ -85,11 +85,19 @@ h1.title {
 	line-height: 150%;
 }
 
-table{width:600px; border-spacing :0px; border:1px solid #000000; 
-	border-bottom:0px; margin:10px 10px}
-th, td{border-bottom:1px solid #000000; padding:4px;}
+table{
+	width:600px; 
+	border-spacing :0px; 
+	border:1px solid #000000; 
+	border-bottom:0px; 
+	margin:10px 10px
+}
+th, td{
+	border-bottom:1px solid #000000; 
+	padding:4px;
+}
 td:last-child{text-align: center;}
-input[type="text"]{width:240px;}  
+input{width:240px;}  
 textarea{width:240px; height:120px; resize:none;}
 
 .ls2{letter-spacing:2px}
