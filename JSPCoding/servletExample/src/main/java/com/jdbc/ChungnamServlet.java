@@ -28,25 +28,29 @@ public class ChungnamServlet extends HttpServlet {
 		out.println("<!DOCTYPE html><html><head><meta charset='UTF-8' />");
 		out.println("<title>Chungnam 정보 리스트 예제</title>");
 		out.println("<link rel='icon' href='data:,'>");
-		out.println("<link rel='stylesheet' type='text/css' href='/servletExample/css/chungnam.css'>");
+		out.println("<link rel='stylesheet' type='text/css' href='/servletExample/css/chungnam.css'>"); // 브라우저 
 		out.println("<script src=\"/servletExample/js/jquery-3.6.2.min.js\"></script>");
 		
 		out.println("<script type='text/javascript'>");
 		out.println("$(function(){");
-		out.println("$(document).on('click','#delBtn', function(){");
-		
-		out.println("if(confirm('선택하신 항목을 정말로 삭제하시겠습니까?')){");
-		
-		out.println("mng_no = $(this).parents('.item').data('no');");
-		out.println("$('#result').val(mng_no);");
-		
-		out.println("$('#resultForm').attr({");
-		out.println("'method' : 'post',");
-		out.println("'action' : '/servletExample/delete'");
+		out.println("	$(document).on('click','#delBtn', function(){");
+		out.println("		if(confirm('선택하신 항목을 정말로 삭제하시겠습니까?')){");
+		out.println("			let mng_no = $(this).parents('.item').data('no');");
+		out.println("			$('#result').val(mng_no);");		
+		out.println("			$('#resultForm').attr({");
+		out.println("				'method' : 'post',");
+		out.println("				'action' : '/servletExample/delete'");
+		out.println("			});");
+		out.println("		$('#resultForm').submit();");
+		out.println("	}});");
 		out.println("});");
-		out.println("$('#resultForm').submit();");
 		
-		out.println("}});});");
+		// out.println("		let mng_no = $(this).parents('.item').attr('data-no'); console.log(mng_no);");
+		// 자바스크립트 이동 --> location.href=''
+		// out.println("		location.href='/servletExample/delete?mng_no='+mng_no;");
+		// out.println("	});");
+		// out.println("});");	
+		
 		out.println("</script>");
 		out.println("</head>");
 		
