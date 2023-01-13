@@ -3,7 +3,6 @@ package com.jdbc;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,14 +36,14 @@ public class ChungnamDelete extends HttpServlet {
 		System.out.println(mng_no);
 		System.out.println(deleteCount);
 		
-		if(deleteCount > 0) { // 삭제 성공
+		if(deleteCount == 1) { // 삭제 성공
 			try {
-		        out.write("<script>alert('삭제를 완료하였습니다.');location.href='select';</script>");
+		        out.write("<script>alert('삭제 완료하였습니다.');location.href='select';</script>");
 		    } catch(Exception e) {
 		        e.printStackTrace();
 		    }
 		} else { // 삭제 실패
-			out.write("<script>alert('삭제를 실패하였습니다.');location.href='select';</script>");
+			out.write("<script>alert('삭제 실패하였습니다.');history.back();</script>");
 		}
 		
 		out.flush();
