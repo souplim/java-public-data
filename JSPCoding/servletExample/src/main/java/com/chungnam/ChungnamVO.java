@@ -18,21 +18,6 @@ public class ChungnamVO {
 	private String regDate;
 	
 	public ChungnamVO() { }
-
-	/*public ChungnamVO(int mng_no, String local_nm, String type, String nm, String nm_sub, String addr, double lat,
-			double lng, String description, String list_img) {
-		super();
-		this.mng_no = mng_no;
-		this.local_nm = local_nm;
-		this.type = type;
-		this.nm = nm;
-		this.nm_sub = nm_sub;
-		this.addr = addr;
-		this.lat = lat;
-		this.lng = lng;
-		this.description = description;
-		this.list_img = list_img;
-	}*/
 	
 	public ChungnamVO(int mng_no, String local_nm, String type, String nm, String nm_sub, String addr, double lat,
 			double lng, String description, String list_img, String regDate) {
@@ -79,8 +64,4 @@ public class ChungnamVO {
 				+ nm_sub + ", addr=" + addr + ", lat=" + lat + ", lng=" + lng + ", description=" + description
 				+ ", list_img=" + list_img + ", regDate=" + regDate + "]";
 	}
-	
-	
-	
-	
 }
