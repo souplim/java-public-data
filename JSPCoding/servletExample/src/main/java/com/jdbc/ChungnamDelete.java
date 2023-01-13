@@ -28,6 +28,9 @@ public class ChungnamDelete extends HttpServlet {
 			
 		int mng_no = Integer.parseInt(request.getParameter("result"));
 		
+		// javascript location.href="" 를 사용했을 경우
+		// int mng_no = Integer.parseInt(request.getParameter("mng_no"));
+		
 		ChungnamVO vo = new ChungnamVO();
 		vo.setMng_no(mng_no);
 		ChungnamDAO dao = ChungnamDAO.getInstance();
