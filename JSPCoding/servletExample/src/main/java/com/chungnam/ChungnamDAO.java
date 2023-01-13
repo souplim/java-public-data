@@ -20,10 +20,10 @@ public class ChungnamDAO {
 	// 클래스 자신의 타입으로 정적 필드 선언
 	private static ChungnamDAO instance = null;
 	// 외부에서 호출할 수 있는 정적 메소드인 getInstance() 선언하여 인스턴스를 반환
-	public static ChungnamDAO getInstance() {
+	public static ChungnamDAO getInstance() { // 주소 받아오기
 		if(instance == null)
 			instance = new ChungnamDAO();
-		return instance;
+		return instance;					  // 처음에만 새로운 객체 생성하고 이후에는 만들어진 객체 반환
 	}
 	// 외부에서 new 연산자로 생성자를 호출할 수 있도록 막기 위해 접근제한자(private)로 명시.
 	// private 생성자(){} 선언
@@ -71,7 +71,7 @@ public class ChungnamDAO {
 				vo.setDescription(rs.getString("description"));
 				vo.setList_img(rs.getString("list_img"));
 				
-				list.add(vo);
+				list.add(vo); // vo객체 하나 list에 담기 -> 이 과정을 담아온 데이터 없을 때까지 반복
 			}
 		} catch(SQLException e) {
 			e.printStackTrace();
