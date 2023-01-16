@@ -15,6 +15,31 @@
 		<!--[if lt IE 9]>
 		<script src="../js/html5shiv.js"></script>
 		<![endif]-->
+		
+		<script src="../js/jquery-3.6.2.min.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				$("#word").keyup(function(){
+					$("#result").html("");
+				});
+
+				$("input[type='button']").click(function(){
+					if($("#word").val().replace(/\s/g,"")==""){
+						//alert("검색할 단어를 입력해 주세요.");
+						$("#result").html("검색할 단어를 입력해 주세요.").css("color","#800000");
+						$("#word").val("");
+						$("#word").focus();
+						return;
+					}else{
+						$("#form1").attr({
+							"method":"post", 
+							"action":"sendredirect.jsp"
+						});
+						$("#form1").submit();
+					}
+				});
+			});
+		</script>
 	</head>
 	<body>
 		<h2>검색할 단어를 입력하세요</h2>
