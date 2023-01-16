@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+		<title>Insert title here</title>
+		
+		<!-- 모바일 웹 페이지 설정 -->
+		<link rel="shortcut icon" href="../image/icon.png" />
+		<link rel="apple-touch-icon" href="../image/icon.png" />
+		<!-- 모바일 웹 페이지 설정 끝 -->
+		
+		<!--IE8이하 브라우저에서 HTML5를 인식하기 위해서는 아래의 패스필터를 적용하면 된다.--> 
+		<!--[if lt IE 9]>
+		<script src="../js/html5shiv.js"></script>
+		<![endif]-->
+		<!-- jQuery Framework 참조하기 -->
+		<script src="../js/jquery-3.6.2.min.js"></script>
+		<script src="../js/common.js"></script>
+		
+		<!-- 사용자 스크립트 블록 -->
+		<style type="text/css">
+			#container {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			table {
+				border: 1px solid black;
+				width: 400px;
+				border-spacing :0px; 
+			}
+			td {
+				border-bottom: 1px solid black;
+			}
+			tr:nth-child(1), tr:nth-child(8){
+				text-align: center;
+			}
+			.border-none { border-bottom: none; } 
+		</style>
+		
+		<script type="text/javascript">
+			$(function(){
+				$("#sendBtn").on("click", function(){
+					// 유효성 검사
+					if(!chkData("#name","이름을")) return;
+					else if(!chkData("#birth","생년월일을")) return;
+					else if(!chkData("#scholarship","학력을")) return;
+					else if(!chkData("#major","학과를")) return;
+					
+					const platforms = $("#platform").val();
+					if(platforms.length==0){
+						alert("사용가능 플랫폼을 입력해 주세요.");
+						return;
+					} 
+					
+					const languages = $("input[name='language']").val();
+					if(languages.length==0){
+						alert("사용가능 언어를 입력해 주세요.");
+						return;
+					} 
+					
+					$("#form").attr({
+						"method" : "post",
+						"action" : "request.jsp"
+					});
+					$("#form").submit();
+					
+				});
+				
+				$("#resetBtn").on("click", function(){
+					$("#form").each(function(){
+						this.reset();
+					});
+				});
+			});
+		</script>
+		
+	</head>
+	<body>
+		<div id="container">
+			<form id="form">
+				<table>
+					<tr>
+						<td colspan="2">기술 정보 이력</td>
+					</tr>
+					<tr>
+						<td>이름</td>
+						<td><input type="text" name="name" id="name" /></td>
+					</tr>
+					<tr>
+						<td>생년월일</td>
+						<td><input type="date" name="birth" id="birth" /></td>
+					</tr>
+					<tr>
+						<td>학력</td>
+						<td>
+							<label><input type="radio" name="scholarship" id="scholarship" value="high"/>고졸</label>
+							<label><input type="radio" name="scholarship" id="scholarship" value="univ"/>대졸</label>
+							<label><input type="radio" name="scholarship" id="scholarship" value="grad"/>대학원졸</label>
+						</td>
+					</tr>
+					<tr>
+						<td>학과</td>
+						<td>
+							<select name="major" id="major">
+								<option value="일반고">일반고</option>
+								<option value="특목고">특목고</option>
+								<option value="특성화고">특성화고</option>
+								<option value="전산과">전산과</option>
+								<option value="국문과">국문과</option>
+								<option value="기계공학과">기계공학과</option>
+								<option value="회계학과">회계학과</option>
+								<option value="전기전자학과">전기전자학과</option>
+								<option value="경영학과">경영학과</option>
+								<option value="법학과">법학과</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>사용가능 플랫폼</td>
+						<td>
+							<select size="4" name="platform" id="platform">
+								<option value="Window 계열 PC">Window 계열 PC</option>
+								<option value="Window 계열 서버">Window 계열 서버</option>
+								<option value="UNIX">UNIX</option>
+								<option value="IBM OS/390">IBM OS/390</option>
+								<option value="리눅스">리눅스</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>사용가능 언어</td>
+						<td>
+							<label><input type="checkbox" name="language" value="C"/>C</label>
+							<label><input type="checkbox" name="language" value="C++"/>C++</label>
+							<label><input type="checkbox" name="language" value="JAVA"/>JAVA</label>
+							<label><input type="checkbox" name="language" value="C#"/>C#</label>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" class="border-none">
+							<button type="button" id="sendBtn">보내기</button>
+							<button type="button" id="resetBtn">다시작성</button>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</body>
+</html>
