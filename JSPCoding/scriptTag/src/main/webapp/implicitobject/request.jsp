@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.Arrays" %>
-<% // 웹 브라우저에서 서버로 넘어오는 파라미터 값에 한글이 있는 경우(POST) 한글 처리
+<% 
+	// 웹 브라우저에서 서버로 넘어오는 파라미터 값에 한글이 있는 경우(POST) 한글 처리
 	request.setCharacterEncoding("UTF-8");
 
 	String name = request.getParameter("name");
@@ -17,7 +18,7 @@
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
-		<title>Insert title here</title>
+		<title>예제 request.jsp</title>
 		
 		<!-- 모바일 웹 페이지 설정 -->
 		<link rel="shortcut icon" href="../image/icon.png" />
@@ -35,21 +36,23 @@
 		
 		<style type="text/css">
 			#container {
-				/* display: flex; */
-				width: 500px;
-				margin: 0 auto;
+				display: flex;
 				justify-content: center;
 				align-items: center;
 			}
+			fieldset { width: 600px; }
 			table {
 				border: 1px solid black;
-				width: 400px;
+				width: 100%;
 				border-spacing :0px; 
+				border-collapse: collapse;
+				background-color: #F7F7F7;
 			}
-			td {
+			th, td {
 				border-bottom: 1px solid black;
+				padding: 6px;
 			}
-			tr:nth-child(1), tr:nth-child(8){
+			th, .buttons {
 				text-align: center;
 			}
 			td:nth-child(1) {
@@ -83,7 +86,7 @@
 			<input type="hidden" name="birth" value="<%=birth%>" />
 		</form>
 		<!-- input값 출력 -->
-		<div id="container">
+		<div class="container">
 			<fieldset>
 				<legend>
 					<strong>기술정보 이력서</strong>
@@ -127,9 +130,9 @@
 					</tr>
 				</table>
 			</fieldset>
-			
-			<br/>
-			
+		</div>
+		<br/>
+		<div class="container">
 			<fieldset>
 				<legend><strong>요청 정보</strong></legend>
 				<table>
