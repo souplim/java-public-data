@@ -30,36 +30,76 @@
 				border: 1px solid black;
 				width: 400px;
 				border-spacing :0px; 
+				border-collapse: collapse;
+				background-color: #F7F7F7;
 			}
-			td {
+			th, td {
 				border-bottom: 1px solid black;
+				padding: 6px;
 			}
-			tr:nth-child(1), tr:nth-child(8){
+			th, .buttons {
 				text-align: center;
+			}
+			td:nth-child(1) {
+				text-align: center;
+				border-right: 1px solid black;
 			}
 			.border-none { border-bottom: none; } 
 		</style>
 		
 		<script type="text/javascript">
 			$(function(){
+				if($("input[name='scholarship']".val()=="대졸" || $("input[name='scholarship']".val()=="대학원졸"){	
+					/*  */
+				}
+				
+				//라디오 버튼 변경시 이벤트
+				$("input[name='scholarship']:radio").on("change", function(){
+					if($(this).val() == "고졸"){
+						$("#univGradCategory").hide();
+						$("#highCategory").show();
+					} else if($(this).val() == "대졸" || $(this).val() == "대학원졸"){
+						$("#highCategory").hide();
+						$("#univGradCategory").show();
+					}
+				});
+				
+				
 				$("#sendBtn").on("click", function(){
-					// 유효성 검사
+					/* 유효성 검사 */ 
 					if(!chkData("#name","이름을")) return;
 					else if(!chkData("#birth","생년월일을")) return;
-					else if(!chkData("#scholarship","학력을")) return;
-					else if(!chkData("#major","학과를")) return;
 					
-					const platforms = $("#platform").val();
-					if(platforms.length==0){
-						alert("사용가능 플랫폼을 입력해 주세요.");
+					// 학력(radio button) 유효성 검사
+					if(!$("input[name='scholarship']").is(":checked")){
+						alert("학력을 선택해주세요.");
+						$("input[name='scholarship']:eq(0)").focus();
 						return;
-					} 
+					}
 					
-					const languages = $("input[name='language']").val();
-					if(languages.length==0){
-						alert("사용가능 언어를 입력해 주세요.");
+					// 학과/플랫폼(selectbox) 선택여부 검사 
+					/*
+						- $("select의 셀렉터 >  option:selected").index() : 선택된 항목의 index 번호.
+					 	- $("select의 셀렉터 >  option:selected").val() : 선택된 항목의 값
+					 	- $("select의 셀렉터").val() : 선택된 항목의 값을 반환.
+					*/ 
+					if ($("select[name='major'] > option:selected").index() < 0) {
+						alert("학과를 선택해 주세요.");
+						$("select[name='major']").focus();
 						return;
-					} 
+					}
+					if ($("select[name='platform'] > option:selected").index() < 0) {
+						alert("사용가능 플랫폼을 선택해 주세요.");
+						$("select[name='platform']").focus();
+						return;
+					}
+					
+					// 언어(checkbox) 선택여부 검사
+					if(!$("input[name='language']").is(":checked")){
+						alert("사용가능 언어를 선택해주세요.");
+						$("input[name='language']:eq(0)").focus();
+						return;
+					}
 					
 					$("#form").attr({
 						"method" : "post",
@@ -83,7 +123,7 @@
 			<form id="form">
 				<table>
 					<tr>
-						<td colspan="2">기술 정보 이력</td>
+						<th colspan="2">기술 정보 이력</th>
 					</tr>
 					<tr>
 						<td>이름</td>
@@ -96,26 +136,32 @@
 					<tr>
 						<td>학력</td>
 						<td>
-							<label><input type="radio" name="scholarship" id="scholarship" value="high"/>고졸</label>
-							<label><input type="radio" name="scholarship" id="scholarship" value="univ"/>대졸</label>
-							<label><input type="radio" name="scholarship" id="scholarship" value="grad"/>대학원졸</label>
+							<label><input type="radio" name="scholarship" value="고졸"/>고졸</label>
+							<label><input type="radio" name="scholarship" value="대졸"/>대졸</label>
+							<label><input type="radio" name="scholarship" value="대학원졸"/>대학원졸</label>
 						</td>
 					</tr>
 					<tr>
 						<td>학과</td>
 						<td>
-							<select name="major" id="major">
-								<option value="일반고">일반고</option>
-								<option value="특목고">특목고</option>
-								<option value="특성화고">특성화고</option>
-								<option value="전산과">전산과</option>
-								<option value="국문과">국문과</option>
-								<option value="기계공학과">기계공학과</option>
-								<option value="회계학과">회계학과</option>
-								<option value="전기전자학과">전기전자학과</option>
-								<option value="경영학과">경영학과</option>
-								<option value="법학과">법학과</option>
-							</select>
+							<span id="highCategory">
+								<select name="major">
+									<option value="일반고">일반고</option>
+									<option value="특목고">특목고</option>
+									<option value="특성화고">특성화고</option>
+								</select>
+							</span>
+							<span id="univGradCategory" style="display:none">
+								<select name="major">
+									<option value="정보통신학과">정보통신학과</option>
+									<option value="국문학과">국문학과</option>
+									<option value="기계공학과">기계공학과</option>
+									<option value="회계학과">회계학과</option>
+									<option value="전기전자학과">전기전자학과</option>
+									<option value="경영학과">경영학과</option>
+									<option value="법학과">법학과</option>
+								</select>
+							</span>
 						</td>
 					</tr>
 					<tr>
@@ -139,7 +185,7 @@
 							<label><input type="checkbox" name="language" value="C#"/>C#</label>
 						</td>
 					</tr>
-					<tr>
+					<tr class="buttons">
 						<td colspan="2" class="border-none">
 							<button type="button" id="sendBtn">보내기</button>
 							<button type="button" id="resetBtn">다시작성</button>
