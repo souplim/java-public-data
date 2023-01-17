@@ -37,11 +37,13 @@
 		</style>
 		
 		<!-- jQuery Framework 참조하기 -->
-		<script src="../js/jquery-3.6.2.min.js"></script>
+		<script type="text/javascript" src="/scriptTag/js/jquery-3.6.2.min.js"></script>
 		<script type="text/javascript">
 			$(function(){
 				// 학과 정보 등록 버튼 제어
-				$("#subjectInsert")
+				$("#subjectInsert").click(function(){
+					location.href="<%=request.getContextPath()%>/jdbc/subjectForm.jsp";
+				});
 			});
 		</script>
 	</head>
@@ -63,7 +65,6 @@
 					<%
 						if(counter >0){
 							for(SubjectVO sub : list){
-								
 					%>
 							<tr class="tc" data-no="<%= sub.getNo() %>"> <!-- 삭제하거나 상세페이지 갈 때 용이 -->
 								<td><%= sub.getNo() %></td>
