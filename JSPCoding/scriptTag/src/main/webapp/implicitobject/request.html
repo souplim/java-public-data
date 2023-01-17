@@ -49,21 +49,41 @@
 		
 		<script type="text/javascript">
 			$(function(){
-				if($("input[name='scholarship']".val()=="대졸" || $("input[name='scholarship']".val()=="대학원졸"){	
-					/*  */
-				}
+				// 로딩되자마자 라디오버튼 첫번째 항목 선택되게 함
+				$("input[name='scholarship']:eq(0)").prop("checked","true");
+				$("input[name='scholarship']:eq(0)").click();
 				
 				//라디오 버튼 변경시 이벤트
 				$("input[name='scholarship']:radio").on("change", function(){
 					if($(this).val() == "고졸"){
-						$("#univGradCategory").hide();
-						$("#highCategory").show();
+						// $("select[name='major']").prop("selected","false");
+						$("#viewUnivGradCategory").hide();
+						$("#viewHighCategory").show();
 					} else if($(this).val() == "대졸" || $(this).val() == "대학원졸"){
-						$("#highCategory").hide();
-						$("#univGradCategory").show();
+						// $("select[name='major']").prop("selected","false");
+						$("#viewHighCategory").hide();
+						$("#viewUnivGradCategory").show();
 					}
 				});
 				
+				// 대졸/대학원졸 check 후 값
+				$("select[name='major']").on("change", function(){
+					console.log($("select[name='major']option:selected").val());
+					
+				});
+				
+				
+				if($("input[name='scholarship']").val()=="대졸" || $("input[name='scholarship']").val()=="대학원졸"){	
+					// 라디오 버튼 값으로 선택
+					$("select[name='major']").prop("selected","false");
+					// 셀렉트 박스 값으로 선택
+					$("input[name='scholarship']:radio")
+				}
+				
+				/* 
+				attr : 속성값 정확하게 알 때
+				prop : checked, selected, readonly처럼 값이 명확하지 않을 때
+				*/
 				
 				$("#sendBtn").on("click", function(){
 					/* 유효성 검사 */ 
@@ -144,15 +164,15 @@
 					<tr>
 						<td>학과</td>
 						<td>
-							<span id="highCategory">
-								<select name="major">
+							<span id="viewHighCategory">
+								<select class="major" name="highCategory">
 									<option value="일반고">일반고</option>
 									<option value="특목고">특목고</option>
 									<option value="특성화고">특성화고</option>
 								</select>
 							</span>
-							<span id="univGradCategory" style="display:none">
-								<select name="major">
+							<span id="viewUnivGradCategory" style="display:none">
+								<select class="major" name="univGradCategory">
 									<option value="정보통신학과">정보통신학과</option>
 									<option value="국문학과">국문학과</option>
 									<option value="기계공학과">기계공학과</option>
