@@ -9,4 +9,27 @@
     <welcome-file>default.jsp</welcome-file>
     <welcome-file>default.htm</welcome-file>
   </welcome-file-list>
-</web-app>
+  
+  <!-- 응답 상태 코드별로 에러 페이지 지정하기 
+  <error-page>
+  	<error-code>404</error-code>
+  	<location>/error/error404.jsp</location>
+  </error-page>
+  <error-page>
+  	<error-code>500</error-code>
+  	<location>/error/viewErrorMessage.jsp</location>
+  </error-page> -->
+  
+  <!-- 예외 타입별로 에러 페이지 지정하기 -->
+  <error-page>
+  	<exception-type>java.lang.NullPointerException</exception-type>
+  	<location>/error/error500.jsp</location>
+  </error-page>
+  <error-page>
+  	<exception-type>java.lang.ArrayIndexOutOfBoundsException</exception-type>
+  	<location>/error/error500.jsp</location>
+  </error-page>
+  
+</web-app> 
+
+	
