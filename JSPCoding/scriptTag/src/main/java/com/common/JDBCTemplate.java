@@ -12,7 +12,7 @@ public class JDBCTemplate {
     private static final String USER = "javauser";
     private static final String PASSWD = "java1234";
     
-    // 1. Connectin이 필요할 때마다 직접 데이터베이스 서버에 접속해서 연결 요청
+    // 1. Connection이 필요할 때마다 직접 데이터베이스 서버에 접속해서 연결 요청
     public static Connection getConnection() {
     	Connection conn = null;
     	try {
