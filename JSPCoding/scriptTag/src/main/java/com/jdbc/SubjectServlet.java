@@ -17,7 +17,7 @@ public class SubjectServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		SubjectService subjectService = SubjectService.getInstance();
+		SubjectService subjectService = SubjectService.getInstance(); // 싱글톤 객체 생성
 		ArrayList<SubjectVO> list = subjectService.subjectList(null); // 전체 조회하기 위해 인자로 null값 주기
 		
 		request.setAttribute("list", list);
