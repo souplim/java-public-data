@@ -22,7 +22,7 @@ public class SubjectService {
 		return list;
 	}
 	
-	public boolean subjectInser(SubjectVO vo) {
+	public boolean subjectInsert(SubjectVO vo) {
 		boolean result = new SubjectDAO().subjectInsert(vo);
 		return result;
 	}
