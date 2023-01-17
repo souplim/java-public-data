@@ -162,6 +162,7 @@ public class SubjectDAO {
                 commit(conn);
             }
         } catch(SQLException se){
+        		se.printStackTrace();
                 System.out.println("입력에 문제가 있어 잠시 후에 다시 진행해주세요");
                 rollback(conn);
         } catch(Exception e){
