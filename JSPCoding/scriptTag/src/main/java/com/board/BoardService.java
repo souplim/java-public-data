@@ -46,6 +46,5 @@ public class BoardService {
 			close(conn);
 		}
 		return result;
-	}
-	
+	}	
 }
