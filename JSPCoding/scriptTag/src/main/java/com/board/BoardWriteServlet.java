@@ -21,9 +21,9 @@ public class BoardWriteServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		Board board = new Board();
 		
-		String boardWriter = request.getParameter("boardWriter");
-		String boardTitle = request.getParameter("boardTitle");
-		String boardContent = request.getParameter("boardContent");
+		String boardWriter = request.getParameter("boardWriter​");
+		String boardTitle = request.getParameter("boardTitle​​");
+		String boardContent = request.getParameter("boardContent​");
 		
 		board.setBoardWriter(boardWriter);
 		board.setBoardTitle(boardTitle);
@@ -36,7 +36,7 @@ public class BoardWriteServlet extends HttpServlet {
 			response.sendRedirect("board/boardList.jsp");
 		else {
 			request.setAttribute("message", "게시글 등록 실패!");
-			RequestDispatcher dispatcher = request.getRequestDispatcher("views/common/error.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/board/error.jsp");
 			dispatcher.forward(request, response);
 		}
 	}
