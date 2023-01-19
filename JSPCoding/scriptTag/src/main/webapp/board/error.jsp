@@ -23,7 +23,7 @@
 			<%= (String) request.getAttribute("message") %>
 		</div>
 		<div>
-			<a href="/scriptTag/list">리스트로 이동</a>
+			<a href="board/boardList.jsp">리스트로 이동</a>
 		</div>
 	</body>
 </html>
