@@ -12,7 +12,7 @@ public class BoardDao {
 	public ArrayList<Board> listBoard(){
 		StringBuffer sql = new StringBuffer();
 		sql.append("SELECT boardnum, boardwriter, boardtitle, boardcontent, boarddate ");
-		sql.append("ORDER BY boardnum");
+		sql.append("FROM board ORDER BY boardnum");
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -98,9 +98,9 @@ public class BoardDao {
             pstmt.setString(3, board.getBoardContent());
             pstmt.setInt(4, board.getBoardNum()); 
             
-            int insertCount = pstmt.executeUpdate();
+            int updateCount = pstmt.executeUpdate();
 
-            if (insertCount == 1) { 
+            if (updateCount == 1) { 
                 success = true;
                 commit(conn);
             }
