@@ -396,3 +396,7 @@ MINVALUE 1
 MAXVALUE 100000
 NOCYCLE
 CACHE 2;
+
+INSERT INTO BOARD(boardnum, boardwriter, boardtitle, boardcontent, boarddate) VALUES(board_seq.nextval, '?', '?', '?', sysdate);
+UPDATE board SET boardtitle = '와', boardwriter = '와', boardcontent = '와' WHERE boardnum = 1;
+select * from board order by boardnum;
