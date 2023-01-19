@@ -17,30 +17,42 @@
 		<!--[if lt IE 9]>
 		<script src="../js/html5shiv.js"></script>
 		<![endif]-->
+		<style type="text/css">
+			.container {display:flex; justify-content: center;}
+			body, table, input{font:12px 돋음;}
+			table{width:42  0px; border-spacing :0px; border:1px solid #000000; 
+		  			border-bottom:0px; text-align:center;}
+			th, td{border-bottom:1px solid #000000; padding:4px;}
+			input{width:250px;}  
+			#subBtn{width:100px;}
+		</style>
+		
 		<script type="text/javascript" src="/scriptTag/js/jquery-3.6.2.min.js"></script>
 	</head>
 	<body>
-		<form action="<%= request.getContextPath() %>/boardInsert" method="post">
-			<table>
-				<tr>
-					<td>제목</td>
-			        <td><input type="text" name="boardTitle​​" id="boardTitle​​"></td>
-		        </tr>
-			  	<tr>
-			  		<td>작성자</td>
-			        <td><input type="text" name="boardWriter​" id="boardWriter​"></td>
-		        </tr>
-			 	<tr>
-			 	 	<td>내용</td>
-			        <td><textarea cols="50" rows="7" name="boardContent​" id="boardContent"></textarea></td>
-		        </tr>
-			  	<tr>
-			  		<td colspan="2">
-				  		<input type="submit" value="등록하기">  
-				  		<a href="<%=request.getContextPath()%>/boardList.jsp">목록으로</a>
-			  		</td>
+		<div class="container">
+			<form action="<%= request.getContextPath() %>/boardInsert" method="post">
+				<table>
+					<tr>
+						<td>제목</td>
+				        <td><input type="text" name="boardTitle​​"></td>
+			        </tr>
+				  	<tr>
+				  		<td>작성자</td>
+				        <td><input type="text" name="boardWriter​"></td>
+			        </tr>
+				 	<tr>
+				 	 	<td>내용</td>
+				        <td><textarea cols="50" rows="7" name="boardContent​"></textarea></td>
+			        </tr>
+				  	<tr>
+				  		<td colspan="2">
+					  		<input type="submit" value="등록하기" id="subBtn">  
+					  		<a href="<%=request.getContextPath()%>/board/boardList.jsp">목록으로</a>
+				  		</td>
 			  		</tr>
-			</table>
-		</form>
+				</table>
+			</form>
+		</div>
 	</body>
 </html>
