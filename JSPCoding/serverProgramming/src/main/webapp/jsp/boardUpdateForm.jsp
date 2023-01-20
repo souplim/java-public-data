@@ -57,7 +57,7 @@
 					<tr>
 				  		<td colspan="2">
 					  		<button type="button" onclick="history.back();">취소</button>
-							<button type="submit">수정하기</button>
+							<button type="submit">수정</button>
 				  		</td>
 			  		</tr>
 				</table>
