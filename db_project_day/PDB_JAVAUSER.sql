@@ -373,6 +373,9 @@ END;
 /
 
 -- 시험
+drop table board;
+drop sequence board_seq;
+
 CREATE TABLE board (
     boardnum NUMBER,
     boardwriter VARCHAR2(20) NOT NULL,
@@ -400,3 +403,8 @@ CACHE 2;
 INSERT INTO BOARD(boardnum, boardwriter, boardtitle, boardcontent, boarddate) VALUES(board_seq.nextval, '?', '?', '?', sysdate);
 UPDATE board SET boardtitle = '와', boardwriter = '와', boardcontent = '와' WHERE boardnum = 1;
 select * from board order by boardnum;
+
+-- 저장된 정보 없으므로 0... 시퀀스 사용하지 않고 max값 가져오기
+-- DECODE(비교대상, 비교조건, 조건 만족했을 때 처리값, 조건, 조건 만족했을 때 처리값, 나머지 경우 처리값)
+SELECT DECODE(MAX(boardnum), NULL, 0, MAX(boardnum)) + 1 FROM board;
+INSERT INTO BOARD(boardnum, boardwriter, boardtitle, boardcontent, boarddate) VALUES((SELECT DECODE(MAX(boardnum), NULL, 0, MAX(boardnum)) + 1 FROM board), '?', '?', '?', sysdate);
