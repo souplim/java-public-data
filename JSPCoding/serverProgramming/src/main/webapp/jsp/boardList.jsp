@@ -79,11 +79,13 @@
 					const boardWriter = $(this).parents('.boardnumber').find('.writer').text();
 					const boardTitle = $(this).parents('.boardnumber').find('.title').text();
 					const boardContent = $(this).parents('.boardnumber').find('.content').text();
+					const boardDate = $(this).parents('.boardnumber').find('.date').text();
 					
 					$('#num').val(boardNum);
 					$('#writer').val(boardWriter);
 					$('#title').val(boardTitle);
 					$('#content').val(boardContent);
+					$('#date').val(boardContent);
 					
 					$("#boardForm").attr({
 						"method" : "post",
@@ -111,6 +113,7 @@
 					<input type="hidden" id="writer" name="boardWriter"/>
 					<input type="hidden" id="title" name="boardTitle"/>
 					<input type="hidden" id="content" name="boardContent"/>
+					<input type="hidden" id="date" name="boardDate"/>
 				</form>
 				
 				<table>
@@ -120,15 +123,17 @@
 						<col width="40%" />
 						<col width="25%" /> -->
 						
+						<col width="10%" />
+						<col width="45%" />
+						<col width="20%" />
 						<col width="15%" />
-						<col width="55%" />
-						<col width="25%" />
 					</colgroup>
 					<thead>
 						<tr>
 							<th>작성자</th>
 							<th>제목</th>
-							<th>게시물 수정, 삭제</th>
+							<th>작성일</th>
+							<th>게시물 삭제</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -140,6 +145,7 @@
 							<td class="writer center"><%=board.getBoardWriter()%></td>
 							<td class="title"><%=board.getBoardTitle()%></td>
 							<td class="content"><%=board.getBoardContent()%></td>
+							<td class="date center"><%=board.getBoardDate()%></td>
 							<td class="center">
 								<!-- <button type="button" class="updateBtn">수정하기</button> -->
 								<button type="button" class="delBtn">삭제하기</button>
@@ -151,7 +157,7 @@
 						} else {
 					%>
 						<tr>
-							<td colspan="3">불러올 게시글이 없습니다.</td>
+							<td colspan="4">불러올 게시글이 없습니다.</td>
 						</tr>
 					<%
 						}
