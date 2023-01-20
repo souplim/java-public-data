@@ -37,7 +37,9 @@
 			div#boardList thead > div#boardList tr{background-color:#ececec}
 			div#boardList th, div#boardList td{border:1px solid black;}
 			td{padding-left:5px;}
-			.center{text-aling:center; podding:0;}
+			.center{text-align:center; padding: 3px 0;}
+			.title {cursor: pointer;}
+			.content{display:none;}
 		</style>
 		
 		<script type="text/javascript" src="/serverProgramming/js/jquery-3.6.2.min.js"></script>
@@ -48,7 +50,7 @@
 					location.href="<%=request.getContextPath()%>/jsp/boardForm.jsp";
 				});
 				
-				$(".updateBtn").on("click", function(){
+				/* $(".updateBtn").on("click", function(){
 					const boardNum = $(this).parents('.boardnumber').data('no');
 					const boardWriter = $(this).parents('.boardnumber').find('.writer').text();
 					const boardTitle = $(this).parents('.boardnumber').find('.title').text();
@@ -62,6 +64,30 @@
 					$("#boardForm").attr({
 						"method" : "post",
 						"action" :	"/serverProgramming/jsp/boardUpdateForm.jsp"
+					});
+					$("#boardForm").submit();
+				}); */
+				
+				$(".title").hover(function(){
+					$(this).css("textDecoration","underline");
+				}, function(){
+					$(this).css("textDecoration","none");
+				});
+				
+				$(".title").on("click", function(){
+					const boardNum = $(this).parents('.boardnumber').data('no');
+					const boardWriter = $(this).parents('.boardnumber').find('.writer').text();
+					const boardTitle = $(this).parents('.boardnumber').find('.title').text();
+					const boardContent = $(this).parents('.boardnumber').find('.content').text();
+					
+					$('#num').val(boardNum);
+					$('#writer').val(boardWriter);
+					$('#title').val(boardTitle);
+					$('#content').val(boardContent);
+					
+					$("#boardForm").attr({
+						"method" : "post",
+						"action" :	"/serverProgramming/jsp/boardDetail.jsp"
 					});
 					$("#boardForm").submit();
 				});
@@ -89,16 +115,19 @@
 				
 				<table>
 					<colgroup>
-						<col width="10%" />
+<!-- 						<col width="10%" />
 						<col width="25%" />
 						<col width="40%" />
+						<col width="25%" /> -->
+						
+						<col width="15%" />
+						<col width="55%" />
 						<col width="25%" />
 					</colgroup>
 					<thead>
 						<tr>
 							<th>작성자</th>
 							<th>제목</th>
-							<th>내용</th>
 							<th>게시물 수정, 삭제</th>
 						</tr>
 					</thead>
@@ -108,11 +137,11 @@
 							for(Board board : list){
 					%>
 						<tr class="boardnumber" data-no="<%=board.getBoardNum()%>">
-							<td class="writer"><%=board.getBoardWriter()%></td>
+							<td class="writer center"><%=board.getBoardWriter()%></td>
 							<td class="title"><%=board.getBoardTitle()%></td>
 							<td class="content"><%=board.getBoardContent()%></td>
 							<td class="center">
-								<button type="button" class="updateBtn">수정하기</button>
+								<!-- <button type="button" class="updateBtn">수정하기</button> -->
 								<button type="button" class="delBtn">삭제하기</button>
 							</td>
 						</tr>
@@ -122,7 +151,7 @@
 						} else {
 					%>
 						<tr>
-							<td colspan="4">불러올 게시글이 없습니다.</td>
+							<td colspan="3">불러올 게시글이 없습니다.</td>
 						</tr>
 					<%
 						}
