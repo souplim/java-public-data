@@ -2,16 +2,18 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 
-	int boardNum = Integer.parseInt(request.getParameter("boardNum")) ;
+ 	int boardNum = Integer.parseInt(request.getParameter("boardNum")) ;
 	String boardWriter = request.getParameter("boardWriter");
 	String boardTitle = request.getParameter("boardTitle");
-	String boardContent = request.getParameter("boardContent");
+	String boardContent = request.getParameter("boardContent"); 
 	
-	Board board = new Board();
+ 	Board board = new Board();
 	board.setBoardNum(boardNum);
 	board.setBoardWriter(boardWriter);
 	board.setBoardTitle(boardTitle);
-	board.setBoardContent(boardContent);
+	board.setBoardContent(boardContent); 
+	
+	/* Board board = (Board) request.getAttribute("board"); */
 %>
 <!DOCTYPE html>
 <html>
@@ -57,7 +59,7 @@
 					<tr>
 				  		<td colspan="2">
 					  		<button type="button" onclick="history.back();">취소</button>
-							<button type="submit">수정</button>
+							<button type="submit">수정완료</button>
 				  		</td>
 			  		</tr>
 				</table>
