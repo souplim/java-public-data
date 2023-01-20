@@ -13,7 +13,7 @@
 	board.setBoardTitle(boardTitle);
 	board.setBoardContent(boardContent);
 	
-	// 어떻게 boardUpdateForm.jsp 로 Board 객체 보낼 수 있을까
+	// 어떻게 boardUpdateForm.jsp 로 Board 객체 보낼 수 있을까 -> boardDetailServlet.java 거쳐서 가야함
 	/* RequestDispatcher dispatcher = request.getRequestDispatcher(request.getContextPath()+"/jsp/boardUpdateForm.jsp"); 
 	request.setAttribute("board", board);
 	dispatcher.forward(request, response); */
