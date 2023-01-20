@@ -118,20 +118,15 @@
 				
 				<table>
 					<colgroup>
-<!-- 						<col width="10%" />
-						<col width="25%" />
-						<col width="40%" />
-						<col width="25%" /> -->
-						
-						<col width="10%" />
 						<col width="45%" />
+						<col width="10%" />
 						<col width="20%" />
 						<col width="15%" />
 					</colgroup>
 					<thead>
 						<tr>
-							<th>작성자</th>
 							<th>제목</th>
+							<th>작성자</th>
 							<th>작성일</th>
 							<th>게시물 삭제</th>
 						</tr>
@@ -142,8 +137,8 @@
 							for(Board board : list){
 					%>
 						<tr class="boardnumber" data-no="<%=board.getBoardNum()%>">
-							<td class="writer center"><%=board.getBoardWriter()%></td>
 							<td class="title"><%=board.getBoardTitle()%></td>
+							<td class="writer center"><%=board.getBoardWriter()%></td>
 							<td class="content"><%=board.getBoardContent()%></td>
 							<td class="date center"><%=board.getBoardDate()%></td>
 							<td class="center">
