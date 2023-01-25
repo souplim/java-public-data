@@ -2,7 +2,7 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 
- 	int boardNum = Integer.parseInt(request.getParameter("boardNum")) ;
+ 	/* int boardNum = Integer.parseInt(request.getParameter("boardNum")) ;
 	String boardWriter = request.getParameter("boardWriter");
 	String boardTitle = request.getParameter("boardTitle");
 	String boardContent = request.getParameter("boardContent"); 
@@ -11,9 +11,9 @@
 	board.setBoardNum(boardNum);
 	board.setBoardWriter(boardWriter);
 	board.setBoardTitle(boardTitle);
-	board.setBoardContent(boardContent); 
+	board.setBoardContent(boardContent);  */
 	
-	/* Board board = (Board) request.getAttribute("board"); */
+	Board board = (Board) request.getAttribute("board");
 %>
 <!DOCTYPE html>
 <html>
