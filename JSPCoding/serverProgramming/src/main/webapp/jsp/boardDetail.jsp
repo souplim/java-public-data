@@ -7,16 +7,14 @@
 	String boardTitle = request.getParameter("boardTitle");
 	String boardContent = request.getParameter("boardContent");
 	
-	Board board = new Board();
+/* 	Board board = new Board();
 	board.setBoardNum(boardNum);
 	board.setBoardWriter(boardWriter);
 	board.setBoardTitle(boardTitle);
-	board.setBoardContent(boardContent);
+	board.setBoardContent(boardContent); */
 	
 	// 어떻게 boardUpdateForm.jsp 로 Board 객체 보낼 수 있을까 -> boardDetailServlet.java 거쳐서 가야함
-	/* RequestDispatcher dispatcher = request.getRequestDispatcher(request.getContextPath()+"/jsp/boardUpdateForm.jsp"); 
-	request.setAttribute("board", board);
-	dispatcher.forward(request, response); */
+
 %>
 <!DOCTYPE html>
 <html>
@@ -36,26 +34,26 @@
 	</head>
 	<body>
 		<div align="center">
-			<form action="<%=request.getContextPath()%>/jsp/boardUpdateForm.jsp" method="post">
-				<input type="hidden" name="boardNum" value="<%=board.getBoardNum()%>" />
+			<form action="<%=request.getContextPath()%>/boardDetail" method="post">
+				<input type="hidden" name="boardNum" value="<%=boardNum%>" />
 				<table>
 					<tr>
 						<td>제목</td>
 						<td>
-							<input type="text" name="boardTitle" value="<%=board.getBoardTitle()%>" readonly />
+							<input type="text" name="boardTitle" value="<%=boardTitle%>" readonly />
 						</td>
 					</tr>	
 					<tr>
 						<td>작성자</td>
 						<td>
-							<input type="text" name="boardWriter" value="<%=board.getBoardWriter()%>" readonly />
+							<input type="text" name="boardWriter" value="<%=boardWriter%>" readonly />
 						</td>
 					</tr>
 					<tr>
 						<td>내용</td>
 						<td>
 							<textarea name="boardContent" cols="50" rows="7" readonly>
-								<%=board.getBoardContent()%>
+								<%=boardContent%>
 							</textarea>
 						</td>
 					</tr>
