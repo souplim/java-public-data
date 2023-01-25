@@ -408,3 +408,27 @@ select * from board order by boardnum;
 -- DECODE(비교대상, 비교조건, 조건 만족했을 때 처리값, 조건, 조건 만족했을 때 처리값, 나머지 경우 처리값)
 SELECT DECODE(MAX(boardnum), NULL, 0, MAX(boardnum)) + 1 FROM board;
 INSERT INTO BOARD(boardnum, boardwriter, boardtitle, boardcontent, boarddate) VALUES((SELECT DECODE(MAX(boardnum), NULL, 0, MAX(boardnum)) + 1 FROM board), '?', '?', '?', sysdate);
+
+
+-- 회원가입 테이블
+create table t_member(
+    m_id varchar2(15) not null,
+    m_passwd varchar2(15) not null,
+    m_name varchar2(18) not null,
+    m_email varchar2(100) not null,
+    m_tel varchar2(15) not null,
+    reg_date date default sysdate,
+    constraint t_member_pk primary key(m_id)
+);
+
+comment on table t_member is '회원 정보';
+comment on column t_member.m_id is '회원 아이디';
+comment on column t_member.m_passwd is '회원 비밀번호';
+comment on column t_member.m_name is '회원명';
+comment on column t_member.m_email is '회원 이메일';
+comment on column t_member.m_tel is '회원 전화번호';
+comment on column t_member.reg_date is '회원 등록일';
+
+INSERT INTO t_member(m_id, m_passwd, m_name, m_email, m_tel, reg_date) VALUES('ej', 'ej1234', '임은재', 'ej0514@hanmail.net', '010-123-4567', sysdate);
+INSERT INTO t_member(m_id, m_passwd, m_name, m_email, m_tel, reg_date) VALUES('ae', 'ae1234', '임은재', 'ae0514@hanmail.net', '010-123-4567', sysdate);
+SELECT * FROM t_member;
