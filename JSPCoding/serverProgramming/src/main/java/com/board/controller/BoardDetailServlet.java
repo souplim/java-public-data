@@ -33,7 +33,7 @@ public class BoardDetailServlet extends HttpServlet {
 		board.setBoardContent(boardContent);
 		
 		request.setAttribute("board", board);
-		RequestDispatcher dispatcher = request.getRequestDispatcher(request.getContextPath()+"/jsp/boardUpdateForm.jsp"); 
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/boardUpdateForm.jsp"); 
 		dispatcher.forward(request, response); 
 	}
 }
