@@ -65,7 +65,7 @@ public class SessionTestServlet extends HttpServlet {
 			}
 		} else if(param.equals("replace")){
 			session = request.getSession();
-			session.setAttribute("msg", "새로운 메시지 입니다.");
+			session.setAttribute("msg", "새로운 메시지 입니다."); // 마지막에 준 값으로 설정
 			msg = "세션 객체에 데이터(속성) 등록 완료";
 		}
 		
