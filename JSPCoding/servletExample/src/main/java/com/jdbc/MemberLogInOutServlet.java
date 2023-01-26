@@ -38,10 +38,12 @@ public class MemberLogInOutServlet extends HttpServlet {
 		
 		StringBuffer message = new StringBuffer();
 		
-		if(mVO != null) {
+		if(mVO != null) { // 로그인 성공시
+			// 로그인 정보를 개별적으로 설정
 			/* session.setAttribute("m_id", mVO.getM_id()); session.setAttribute("m_name",
 			 * mVO.getM_name()); */
 			
+			// 새션 객체 속성 설정. MemberVO 자체를 속성으로 저장. 추후 필요한 필드값만 접근
 			session.setAttribute("login", mVO); // 세션 객체 속성 설정
 			message.append("<div><a href='/servletExample/loginInfo'>로그인 정보 확인하기</a></div>");
 		} else {
@@ -66,7 +68,7 @@ public class MemberLogInOutServlet extends HttpServlet {
 
 	// 로그아웃 처리
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession(false);
+		HttpSession session = request.getSession(false); // 세션객체 없으면 null 반환
 		if(session != null && session.getAttribute("login") != null) {
 			// 세션 반환
 			session.invalidate();
