@@ -38,7 +38,7 @@ public class SessionTestServlet extends HttpServlet {
 		} else if(param.equals("delete")){
 			session = request.getSession(false); // 기존 세션 객체 존재시 반환. 없으면 null 반환
 			if(session != null) {
-				session.invalidate(); // 현재 생성된 세션을 무효화 시킴, 즉 현재 세션을 삭제함
+				session.invalidate(); // 현재 생성된 세션을 무효화 시킴, 즉 현재 세션을 삭제함. 로그아웃 할 때 사용
 				msg = "세션 객체 삭제 작업 완료";
 			} else {
 				msg = "삭제할 세션 존재하지 않음";
