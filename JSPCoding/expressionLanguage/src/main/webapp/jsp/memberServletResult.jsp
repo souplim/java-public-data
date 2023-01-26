@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%--
+	표현언어 쓰지 않았더라면
+	Member member = (Member)request.getAttribute("member");
+--%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -34,7 +38,7 @@
 				<th>회원우편번호</th>
 			</tr>
 			<tr>
-				<td>${member.id}</td>
+				<td>${member.id}</td> <!-- <%--=member.getId()--%> -->
 				<td>${member.pwd}</td>
 				<td>${member.name}</td>
 				<td>${member.email}</td>
