@@ -35,7 +35,7 @@
 		</ul>
 		
 		<h3>표현언어 연산자 empty 확인</h3>
-		<p>\${null} = ${null}</p>
+		<p>\${null} = ${null}</p> <!-- null이면 화면에 안 나옴. 디버깅 힘듦 -->
 		<p>\${n} = ${n}</p>
 		
 		<p>\${empty null} = ${empty null}</p>
