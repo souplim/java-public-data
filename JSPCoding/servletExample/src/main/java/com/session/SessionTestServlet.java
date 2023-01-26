@@ -18,7 +18,7 @@ public class SessionTestServlet extends HttpServlet {
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		
-		String param = request.getParameter("param");
+		String param = request.getParameter("param"); // create, 등 parameter값 얻어옴
 		String msg = null;
 		HttpSession session = null;
 		
