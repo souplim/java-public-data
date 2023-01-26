@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.ArrayList, com.board.vo.Board, com.board.service.BoardService" %>
+<%--
+	서버프로그램에서 사용자의 게시판 글 등록 서비스를 구현하시오.
+	(처리 결과, 성공 시에는 게시글 목록을 출력하는 /boardList 서블릿을 실행하고,
+	실패 시에는 error.jsp를 view 페이지로 지정하고 "message"키로 "게시글 등록 실패!" 메시지를 포워딩
+ --%>
 <%
 	ArrayList<Board> list = BoardService.getInstance().listBoard();
 	int count = list.size();
