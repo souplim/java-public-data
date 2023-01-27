@@ -432,3 +432,42 @@ comment on column t_member.reg_date is '회원 등록일';
 INSERT INTO t_member(m_id, m_passwd, m_name, m_email, m_tel, reg_date) VALUES('ej', 'ej1234', '임은재', 'ej0514@hanmail.net', '010-123-4567', sysdate);
 INSERT INTO t_member(m_id, m_passwd, m_name, m_email, m_tel, reg_date) VALUES('ae', 'ae1234', '임은재', 'ae0514@hanmail.net', '010-123-4567', sysdate);
 SELECT * FROM t_member;
+
+
+-- 새로운 board 테이블(기존 board 제거 후 생성)
+create table board2(
+    num number(4) not null,
+    author varchar2(20) not null,
+    title varchar2(500) not null,
+    content varchar2(4000) not null,
+    writeday date default sysdate,
+    readcnt number(4) default 0,
+    --reproot number(4),
+    --repstep number(4),
+    --repindent number(4),
+    passwd varchar2(12) not null,
+    constraint board2_pk primary key(num)
+);
+
+COMMENT ON TABLE board2 IS '게시판 테이블';
+COMMENT ON COLUMN board2.num IS '게시판 번호';
+COMMENT ON COLUMN board2.author IS '게시판 작성자';
+COMMENT ON COLUMN board2.title IS '게시판 제목';
+COMMENT ON COLUMN board2.content IS '게시판 내용';
+COMMENT ON COLUMN board2.writeday IS '게시판 작성일';
+COMMENT ON COLUMN board2.readcnt IS '게시판 조회수';
+--COMMENT ON COLUMN board2.reproot IS '게시판 답변글(원래글의 번호 참조 - 그룹번호)';
+--COMMENT ON COLUMN board2.repstep IS '게시판 답변글(답변글의 위치번호 지정)';
+--COMMENT ON COLUMN board2.repindent IS '게시판 답변글(답변글의 계층번호 지정)';
+COMMENT ON COLUMN board2.readcnt IS '게시판 비밀번호';
+
+CREATE SEQUENCE board2_seq
+START WITH 1
+INCREMENT BY 1
+MINVALUE 1
+MAXVALUE 100000
+NOCYCLE
+CACHE 2;
+
+drop table board2;
+drop sequence board2_seq;
