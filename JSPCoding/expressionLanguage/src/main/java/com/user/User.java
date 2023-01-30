@@ -12,7 +12,6 @@ public class User {
 		this.uid = uid;
 		this.unum = unum;
 	}
-	
 	public String getUname() {
 		return uname;
 	}
@@ -30,5 +29,10 @@ public class User {
 	}
 	public void setUnum(int unum) {
 		this.unum = unum;
+	}
+	
+	@Override
+	public String toString() {
+		return "User [uname=" + uname + ", uid=" + uid + ", unum=" + unum + "]";
 	}
 }
