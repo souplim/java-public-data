@@ -30,5 +30,19 @@
 			member.setUname("홍길동");
 			out.print(member.getUname());
 		 --%>
+		 
+		<jsp:useBean id="member" class="com.user.User" /> <%-- 인스턴스 생성 --%>
+		<c:set target="${ member }" property="uname" value="홍길동" /> <%-- 설정자 호출 --%>
+		\${ member.uname } = ${ member.uname }							<%-- 접근자 호출 후 출력 --%>
+
+		<c:set var="book" value="<%= new java.util.HashMap<String, String>() %>" />
+		
+		<c:set target="${ book }" property="java" value="자바로 배우는 프로그래밍 기초" />
+		<c:set target="${ book }" property="c" value="c로 배우는 프로그래밍 기초" />
+		<c:set target="${ book }" property="jsp" value="JSP로 배우는 웹프로그래밍 기초" />
+		
+		<p>\${book.java} = ${book.java}</p>
+		<p>\${book.c} = ${book.c}</p>
+		<p>\${book.jsp} = ${book.jsp}</p>
 	</body>
 </html>
