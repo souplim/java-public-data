@@ -449,6 +449,14 @@ create table board2(
     constraint board2_pk primary key(num)
 );
 
+-- 답변 게시판을 위한 컬럼 추가
+alter table board2
+add(reproot number(4));
+alter table board2
+add(repstep number(4));
+alter table board2
+add(repindent number(4));
+
 COMMENT ON TABLE board2 IS '게시판 테이블';
 COMMENT ON COLUMN board2.num IS '게시판 번호';
 COMMENT ON COLUMN board2.author IS '게시판 작성자';
@@ -456,10 +464,10 @@ COMMENT ON COLUMN board2.title IS '게시판 제목';
 COMMENT ON COLUMN board2.content IS '게시판 내용';
 COMMENT ON COLUMN board2.writeday IS '게시판 작성일';
 COMMENT ON COLUMN board2.readcnt IS '게시판 조회수';
---COMMENT ON COLUMN board2.reproot IS '게시판 답변글(원래글의 번호 참조 - 그룹번호)';
---COMMENT ON COLUMN board2.repstep IS '게시판 답변글(답변글의 위치번호 지정)';
---COMMENT ON COLUMN board2.repindent IS '게시판 답변글(답변글의 계층번호 지정)';
-COMMENT ON COLUMN board2.readcnt IS '게시판 비밀번호';
+COMMENT ON COLUMN board2.reproot IS '게시판 답변글(원래글의 번호 참조 - 그룹번호)';
+COMMENT ON COLUMN board2.repstep IS '게시판 답변글(답변글의 위치번호 지정)';
+COMMENT ON COLUMN board2.repindent IS '게시판 답변글(답변글의 계층번호 지정)';
+COMMENT ON COLUMN board2.passwd IS '게시판 비밀번호';
 
 CREATE SEQUENCE board2_seq
 START WITH 1
