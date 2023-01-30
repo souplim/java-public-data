@@ -469,6 +469,7 @@ COMMENT ON COLUMN board2.repstep IS '게시판 답변글(답변글의 위치번�
 COMMENT ON COLUMN board2.repindent IS '게시판 답변글(답변글의 계층번호 지정)';
 COMMENT ON COLUMN board2.passwd IS '게시판 비밀번호';
 
+-- board 게시판 테이블에 저장할 글번호 시퀀스(증가값: 시퀀스명.nextval / 현재값: 시퀀스명.currval)
 CREATE SEQUENCE board2_seq
 START WITH 1
 INCREMENT BY 1
@@ -479,3 +480,7 @@ CACHE 2;
 
 drop table board2;
 drop sequence board2_seq;
+
+-- 일반게시글 입력 시 reproot: num의 값. repstep/repindent : 0 으로 입력하면 됨
+INSERT INTO board2(num, author, title, content, reproot, repstep, repindent, passwd)
+VALUES(board2_seq.nextval, '홍길동','mvc 게시판 작성','mvc 게시판 작성하기 예제입니다.',board2_seq.currval, 0, 0, '1234');
