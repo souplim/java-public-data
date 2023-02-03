@@ -484,3 +484,119 @@ drop sequence board2_seq;
 -- 일반게시글 입력 시 reproot: num의 값. repstep/repindent : 0 으로 입력하면 됨
 INSERT INTO board2(num, author, title, content, reproot, repstep, repindent, passwd)
 VALUES(board2_seq.nextval, '홍길동','mvc 게시판 작성','mvc 게시판 작성하기 예제입니다.',board2_seq.currval, 0, 0, '1234');
+
+-- 전체글 조회
+SELECT * FROM board2;
+
+-- 상세 페이지 조회
+SELECT num, author, title, content, to_char(writeday, 'YYYY/MM/DD HH24:MI:SS') writeday, readcnt, repRoot, repStep, repIndent 
+FROM board2 WHERE num = 1;
+
+-- 비밀번호 확인(1: 비밀번호 일치 / 0: 비밀번호 불일치)
+SELECT NVL((SELECT 1 FROM board2 WHERE num = 1 AND passwd = '1234'), 0) AS result FROM dual;
+SELECT NVL((SELECT 1 FROM board2 WHERE num = 1 AND passwd = '4321'), 0) AS result FROM dual;
+
+SELECT NVL((SELECT 1 FROM board2 WHERE num = ? AND passwd = ?), 0) AS result FROM dual;
+
+-- 팀과제
+-- user(회원가입) 테이블
+drop table b_user;
+CREATE TABLE b_user (
+    u_id VARCHAR2(20) not null, -- 아이디
+    u_pw VARCHAR2(20) not null, -- 비밀번호
+    u_st NUMBER(1) default 0, -- 가입상태(가입:0, 미가입:1)
+    u_name VARCHAR2(20) not null, -- 이름
+    u_email VARCHAR2(50), -- 이메일
+    u_phone VARCHAR2(15) not null, -- 전화번호 
+    u_gender VARCHAR2(6) not null, -- 성별
+    u_regday DATE default sysdate, -- 등록일
+    constraint b_user_pk primary key(u_id)
+);
+
+COMMENT ON TABLE b_user IS '회원가입 테이블';
+COMMENT ON COLUMN b_user.u_id IS '회원가입 아이디';
+COMMENT ON COLUMN b_user.u_pw IS '회원가입 비밀번호';
+COMMENT ON COLUMN b_user.u_st IS '회원가입 가입상태';
+COMMENT ON COLUMN b_user.u_name IS '회원가입 이름';
+COMMENT ON COLUMN b_user.u_email IS '회원가입 이메일';
+COMMENT ON COLUMN b_user.u_phone IS '회원가입 전화번호';
+COMMENT ON COLUMN b_user.u_gender IS '회원가입 성별';
+COMMENT ON COLUMN b_user.u_regday IS '회원가입 등록일';
+
+
+-- 전체 글 조회
+SELECT * FROM b_user;
+
+-- user 테이블에 데이터 입력 
+INSERT INTO b_user(u_id, u_pw, u_st, u_name, u_email, u_phone, u_gender, u_regday)
+VALUES('ej', 'ej1234', 0, '임은재' , 'ej05@naver.com', '010-123-4567', 'female', sysdate);
+INSERT INTO b_user(u_id, u_pw, u_st, u_name, u_email, u_phone, u_gender, u_regday)
+VALUES('ejj', 'ej1234', 0, '임은재' , '', '010-123-4567', 'female', sysdate);
+INSERT INTO b_user(u_id, u_pw, u_st, u_name, u_email, u_phone, u_gender, u_regday)
+VALUES('ejjj', 'ej1234', 9, '임은재' , '', '010-123-4567', 'female', sysdate);
+
+-- 아이디 중복 확인
+SELECT u_id FROM b_user where u_id = 'ej';
+
+-- 상세 페이지 조회
+SELECT u_id, u_pw, u_st, u_name, u_email, u_phone, u_gender, u_regday
+FROM b_user where u_id = 'ej';
+
+-- 비밀번호 확인(1: 비밀번호 일치 / 0: 비밀번호 불일치)
+SELECT NVL((SELECT 1 FROM b_user WHERE u_id = 'ej' AND u_pw = 'ej1234'), 0) AS result FROM dual;
+SELECT NVL((SELECT 1 FROM b_user WHERE u_id = 'ej' AND u_pw = '1234'), 0) AS result FROM dual;
+
+SELECT NVL((SELECT 1 FROM b_user WHERE u_id = ? AND u_pw = ?), 0) AS result FROM dual;
+
+-- 수정
+UPDATE b_user SET u_pw = 'ej1234', u_name = '웅재', u_email = 'ejj@naver.com', u_phone='012-345-6789', u_gender = 'female' WHERE u_id = 'ejj';
+UPDATE b_user SET u_pw = ?, u_name = ?, u_email = ?, u_phone = ?, u_gender = ? WHERE u_id = ?;
+
+-- 탈퇴
+UPDATE b_user SET u_st = 1 WHERE u_id = 'ejj';
+UPDATE b_user SET u_st = 0 WHERE u_id = 'ejj';  
+
+UPDATE b_user SET u_st = 1 WHERE u_id = ?;
+
+
+-- REPLACE 함수를 확장한 개념으로 주어진 
+-- 문자열에서 특정 패턴을 찾아서 주어진 다른 형태로 치환하는 함수.
+-- REGEXP_REPLACE (source_char, pattern[, replace_string[, position[, occurrence]]])
+    
+-- 첫번째 인수 Source_char : 원본데이터, 컬럼명이나, 문자열이 올수 있다.
+-- 두번째 인수 pattern : 찾고자 하는 패턴을 의미
+-- 세번째 인수 replace_string : 변환하고자 하는 형태
+-- 네번째 인수 position : 검색 시작 위치를 지정, 아무런 값도 주지 않을 경우 기본값 : 1 -> 첫번째 자리부터 대체
+-- 다섯 번째 인수 occurrence : 패턴과 일치가 발생하는 횟수를 의미, 
+-- 0은 모든 값을 대체, 다른 n이란 숫자를 주면 n번째 발생하는 문자열을 대입
+
+-- 홍**, 홍*동
+SELECT
+    REGEXP_REPLACE(u_name, '.', '*', 2) AS u_name_masking1, -- 홍**     찾고자 하는 패턴 '.' : 모든 글자 한 글자
+    REGEXP_REPLACE(u_name, '.', '*', 2, 1) AS u_name_masking2 -- 홍*동
+FROM b_user;
+
+-- 010-****-5678
+SELECT 
+    REGEXP_REPLACE(u_phone,'(\d{3})\-(\d{3,4})\-(\d{4})','\1-****-\3') AS u_phone_masking
+FROM b_user;
+
+-- ***auser@naver.com, ******@naver.com
+-- CONCAT('','') 두 개의 인자값을 하나의 문자열로 반환하는 함수
+SELECT u_email,
+    CONCAT('***',SUBSTR(u_email, 4, LENGTH(u_email))) AS u_email_masking1, -- ***auser@naver.com
+    REGEXP_REPLACE(u_email, '^([a-zA-Z0-9]+)(@[a-zA-Z0-9.]+$)', '******\2') AS u_email_masking2 -- ******@naver.com
+FROM b_user;    
+
+-- 아이디 / 이름 / 전화번호 / 이메일 마스킹 / 등록일 조회
+SELECT
+    REGEXP_REPLACE(u_id, ',', '*', 4) AS u_id, 
+    REGEXP_REPLACE(u_name, '.', '*', 2, 1) AS u_name, 
+    REGEXP_REPLACE(u_phone,'(\d{3})\-(\d{3,4})\-(\d{4})','\1-****-\3') AS u_phone,
+    CONCAT('***',SUBSTR(u_email, 4, LENGTH(u_email))) AS u_email, 
+    TO_CHAR(u_regday, 'yyyy-mm-dd hh24:mi:ss') u_regday
+FROM b_user;    
+    
+-- reproot 그룹번호(원래의 번호 참조)
+-- repstep
+-- repindent
