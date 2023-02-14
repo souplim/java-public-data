@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<context:component-scan base-package="com.spring.polymorphism"/>
+
+	<!-- <bean id="tv" class="com.spring.polymorphism.SamsungTV"/> -->
+	<!-- <bean id="tv" class="com.spring.polymorphism.LgTV"/> -->
+	<!-- <bean id="tv" class="com.spring.polymorphism.SamsungTV" init-method="initMethod" destroy-method="destroyMethod" > -->
+	
+	<!-- 컨테이너가 기본 생성자 말고 매개변수를 가지는 다른 생성자를 호출하도록 설정하는 생성자 인젝션 -->
+	
+	<!-- <bean id="tv" class="com.spring.polymorphism.SamsungTV">
+		
+			<constructor-arg> 엘리먼트에는 ref와 value 속성을 사용하여 생성자 매개변수로 전달할 값을 지정할 수 있음 
+			인자로 전달될 데이터가 <bean>으로 등록된 다른 객체일 때는 ref 속성을 이용하여 해당 객체의 아이디나 이름을 참조하지만, 
+			고정된 문자열이나 정수값은 기본형 데이터일때는 value 속성을 사용함	
+		
+		<constructor-arg index="0" ref="sony"></constructor-arg>
+		
+		<constructor-arg index="0" ref="apple"></constructor-arg>
+		<constructor-arg index="1" value="55000"></constructor-arg>
+		
+		setter인젝션은 setter메서드를 스프링 컨테이너가 자동으로 호출하며, 호출하는 시점은 <bean> 객체 생성 이후. 따라서 기본생성자 반드시 필요
+		<property name="speaker" ref="apple"></property>
+		<property name="price" value="55000"></property>
+	</bean>  -->
+	
+	
+<!-- 	p 네임스페이스를 이용한 SamsungTV와 SonySpeaker의 의존성 주입 설정 
+		p:변수명-ref="" / p:변수명="" 설정
+	
+	<bean id="tv" class="com.spring.polymorphism.SamsungTV"
+		p:speaker-ref="sony" p:price="55000" />
+	
+	<bean id="sony" class="com.spring.polymorphism.SonySpeaker" /> bean element에 설정되면 반드시 생성
+	<bean id="apple" class="com.spring.polymorphism.AppleSpeaker" /> -->
+	
+	
+	<bean id="collectionBean" class="com.spring.injection.CollectionBean">
+		<!-- <property name="addressList">
+			<list>
+				<value>서울시 강남구 역삼동</value>
+				<value>서울시 영등포구 당산6가</value>
+			</list>
+		</property> -->
+		
+		<!-- <property name="addressList">
+			<set value-type="java.lang.String">
+				<value>서울시 마포구 신촌동</value>
+				<value>서울시 강남구 역삼동</value>
+				<value>서울시 강남구 역삼동</value>
+				<value>서울시 영등포구 당산6가</value>
+			</set>
+		</property> -->
+		
+		<!-- <property name="addressList">
+			<map>
+				<entry>
+					<key><value>홍길동</value></key>
+					<value>서울시 강남구 역삼동</value>
+				</entry>
+				<entry>
+					<key><value>김철수</value></key>
+					<value>서울시 영등포구 당산6가</value>
+				</entry>
+			</map>
+		</property> -->
+		
+		<!-- <property name="addressList">
+			<props>
+				<prop key="홍길동">서울시 강남구 역삼동</prop>
+				<prop key="김철수">서울시 영등포구 당산6가</prop>
+			</props>
+		</property> -->
+	</bean>
+</beans>
