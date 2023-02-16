@@ -2,9 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.mapper.ExampleMapper">
 
-	<select id="getSubjectList" parameterType="int" resultType="com.spring.example.domain.SubjectVO">
+	<!-- <select id="getSubjectList" parameterType="int" resultType="com.spring.example.domain.SubjectVO"> -->
+	<select id="getSubjectList" parameterType="int" resultType="subject"> <!-- mybatis-config.xml 설정파일로 별칭 주기 -->
 		select no, s_num, s_name from subject
 		<![CDATA[where no > #{no}]]> <!-- CDATA : <, > 연산자를 태그 시작으로 파싱하는 것 방지 -->
 	</select>
 
+	<!-- <insert id="subjectInsert" parameterType="com.spring.example.domain.SubjectVO"> -->
+	<insert id="subjectInsert" parameterType="subject">
+		insert into subject(no, s_num, s_name)
+		values(subject_seq.nextval, #{s_num}, #{s_name})
+	</insert> 
+	
+	<!-- <update id="subjectUpdate" parameterType="com.spring.example.domain.SubjectVO"> -->
+	<update id="subjectUpdate" parameterType="subject">
+		update subject set s_name=#{s_name}
+		where no = #{no}
+	</update>
+	
+	<delete id="subjectDelete" parameterType="int">
+		delete from subject
+		where no = #{no}
+	</delete>
+	
+	<select id="getSubjectName" parameterType="java.lang.String" resultType="java.lang.String">
+		select s_name from subject
+		where s_num = #{s_num}
+	</select>
 </mapper>
