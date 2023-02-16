@@ -20,15 +20,50 @@ import lombok.extern.log4j.Log4j;
 public class ExampleMapperTests {
 
 	@Setter(onMethod_ = @Autowired)
-	private ExampleMapper exampleMapper; // mybatis°¡ ÀÚµ¿À¸·Î ¸¸µé¾îÁØ ExampleMapper ÀÎÅÍÆäÀÌ½ºÀÇ ±¸ÇöÅ¬·¡½ºÀÇ ÀÎ½ºÅÏ½º ÁÖÀÔ
+	private ExampleMapper exampleMapper; // mybatisê°€ ìë™ìœ¼ë¡œ ë§Œë“¤ì–´ì¤€ ExampleMapper ì¸í„°í˜ì´ìŠ¤ì˜ êµ¬í˜„í´ë˜ìŠ¤ì˜ ì¸ìŠ¤í„´ìŠ¤ ì£¼ì…
 	
-	@Test
+	/* @Test
+	public void testSubjectInsert() {
+		log.info("------------------------------");
+		log.info("subjectInsert() ë©”ì„œë“œ ì‹¤í–‰");
+		SubjectVO svo = new SubjectVO();
+		svo.setS_num("06");
+		svo.setS_name("ë¬¼ë¦¬í•™ê³¼");
+		log.info(exampleMapper.subjectInsert(svo));
+	} */
+	
+	/* @Test
+	public void testSubjectUpdate() {
+		log.info("------------------------------");
+		log.info("subjectUpdate() ë©”ì„œë“œ ì‹¤í–‰");
+		SubjectVO svo = new SubjectVO();
+		svo.setS_name("ê²½ì˜í•™ê³¼");
+		svo.setNo(30);
+		log.info(exampleMapper.subjectUpdate(svo));
+	} */
+	
+	/* @Test
+	public void testSubjectDelete() {
+		log.info("------------------------------");
+		log.info("subjectDelete() ë©”ì„œë“œ ì‹¤í–‰");
+		log.info(exampleMapper.subjectDelete(24));
+	} */
+	
+	
+	/* @Test
 	public void testSubjectList() {
 		log.info("------------------------------");
-		log.info("getSubjectList() ¸Ş¼­µå ½ÇÇà");
-		List<SubjectVO> list = exampleMapper.getSubjectList(0); // no°¡ 0º¸´Ù Å« µ¥ÀÌÅÍ °¡Á®¿Í¶ó
+		log.info("getSubjectList() ë©”ì„œë“œ ì‹¤í–‰");
+		List<SubjectVO> list = exampleMapper.getSubjectList(0); // noê°€ 0ë³´ë‹¤ í° ë°ì´í„° ê°€ì ¸ì™€ë¼
 		for(SubjectVO vo : list)
 			log.info(vo);
+	} */
+	
+	@Test
+	public void testSubjectName() { // JUnitìœ¼ë¡œ í™•ì¸
+		log.info("------------------------------");
+		log.info("getSubjectName() ë©”ì„œë“œ ì‹¤í–‰");
+		log.info(exampleMapper.getSubjectName("01"));
 	}
 	
 }
