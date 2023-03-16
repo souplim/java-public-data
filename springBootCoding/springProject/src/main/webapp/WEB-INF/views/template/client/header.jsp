@@ -25,13 +25,14 @@
       <li class="dropdown <c:if test="${fn:containsIgnoreCase(clientUri, '/data')}">active</c:if>">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">공공데이터<span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
+          <!-- <li><a href="/data/chungnamView">충남 관광 명소</a></li>
+          <li><a href="/data/animalDaejeonView">대전 유기동물 공고</a></li> -->
+          <!-- 소제목 설정 -->
+          <li class="dropdown-header">명소찾기</li>
           <li><a href="/data/chungnamView">충남 관광 명소</a></li>
+          <li class="divider"></li><!-- 구분선 -->
+          <li class="dropdown-header">유기동물</li>
           <li><a href="/data/animalDaejeonView">대전 유기동물 공고</a></li>
-          <!-- <li><a href="#">Something else here</a></li>
-          <li class="divider"></li>
-          <li class="dropdown-header">Nav header</li>
-          <li><a href="#">Separated link</a></li>
-          <li><a href="#">One more separated link</a></li> -->
         </ul>
       </li>
     </ul>
