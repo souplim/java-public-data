@@ -24,11 +24,11 @@ public class DataServiceImpl implements DataService {
 		site.append("&"+URLEncoder.encode("start","UTF-8")+"="+URLEncoder.encode("1","UTF-8"));
 		site.append("&"+URLEncoder.encode("end","UTF-8")+"="+URLEncoder.encode("10","UTF-8"));
 		
+		/*
 		// URL 클래스 -> 참조된 자원에 대해 입출력 스트림을 형성할 수 있음
 		URL url = new URL(site.toString());
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		
-		/*
 		// 요청방식 선택(GET, POST)
 		conn.setRequestMethod("GET");
 		// 서버 Response Data를 xml(application/xml), json(application/json) 형식의 타입으로 요청
@@ -55,16 +55,33 @@ public class DataServiceImpl implements DataService {
 	}
 
 	@Override
-	public StringBuffer chungnamDetail(int mng_no) throws Exception {
+	public StringBuffer chungnamDetail(String mng_no) throws Exception {
 		// 전달해주어야 하는 파라미터
 		StringBuffer site = new StringBuffer("https://tour.chungnam.go.kr/_prog/openapi/");
 		site.append("?"+URLEncoder.encode("func","UTF-8")+"="+URLEncoder.encode("tour","UTF-8"));
 		site.append("&"+URLEncoder.encode("mode","UTF-8")+"="+URLEncoder.encode("V","UTF-8"));
-		site.append("&"+URLEncoder.encode("mng_no","UTF-8")+"="+URLEncoder.encode(mng_no+"","UTF-8"));
+		site.append("&"+URLEncoder.encode("mng_no","UTF-8")+"="+URLEncoder.encode(mng_no,"UTF-8"));
 		
-		// URL 클래스 -> 참조된 자원에 대해 입출력 스트림을 형성할 수 있음
-		URL url = new URL(site.toString());
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		OpenApiDTO openApi = new OpenApiDTO(site.toString(), "GET", "application/xml", null);
+		StringBuffer result = URLConnectUtil.openAPIData(openApi); 
+		return result; 
+	}
+
+	@Override
+	public StringBuffer animalDaejeonList() throws Exception {
+		// 오픈 api : "http://apis.data.go.kr/6300000/animalDaejeonService/animalDaejeonItem?serviceKey=I%2BQxszVDQ4qAPfv%2Bgmj8TG9ohiARCugB6WN29E%2Bo5y3ls6r4l0BlmrsAH23LJWsHOBil1cm8v8mlD8L%2FRSKWpA%3D%3D(URL-Encode)&animalSeq=1"
+		
+		// 전달해주어야 하는 파라미터
+		StringBuffer site = new StringBuffer("http://apis.data.go.kr/6300000/animalDaejeonService/animalDaejeonList");
+		site.append("?"+URLEncoder.encode("serviceKey","UTF-8")+"="+"I%2BQxszVDQ4qAPfv%2Bgmj8TG9ohiARCugB6WN29E%2Bo5y3ls6r4l0BlmrsAH23LJWsHOBil1cm8v8mlD8L%2FRSKWpA%3D%3D");
+		site.append("&"+URLEncoder.encode("pageNo","UTF-8")+"="+URLEncoder.encode("1","UTF-8")); /* 페이지 번호 - 필수 */
+		site.append("&"+URLEncoder.encode("numOfRows","UTF-8")+"="+URLEncoder.encode("10","UTF-8")); /* 페이지당 레코드 수 - 필수 */
+		site.append("&"+URLEncoder.encode("searchCondition","UTF-8")+"="+URLEncoder.encode("2","UTF-8")); /* 유기동물구분 - 옵션(1:개, 2:고양이, 3:기타) */
+		site.append("&"+URLEncoder.encode("searchCondition3","UTF-8")+"="+URLEncoder.encode("1","UTF-8")); /* 입양상태 - 옵션(1:공고중, 2:입양가능, 3:입양예정, 4:입양완료, 7:주인반환) */
+		
+//		site.append("&"+URLEncoder.encode("species","UTF-8")+"="+URLEncoder.encode("1","UTF-8")); /* 동물종구분 - 옵션(개, 고양이) */
+//		site.append("&"+URLEncoder.encode("gubun","UTF-8")+"="+URLEncoder.encode("1","UTF-8")); /* 성별구분 - 옵션(1:암, 2:수) */
+//		site.append("&"+URLEncoder.encode("searchKeyword","UTF-8")+"="+URLEncoder.encode("1","UTF-8")); /* 검색키워드 - 옵션(동물종구분, 기타사항, 등록번호 등 검색키워드로 검색) */
 		
 		OpenApiDTO openApi = new OpenApiDTO(site.toString(), "GET", "application/xml", null);
 		StringBuffer result = URLConnectUtil.openAPIData(openApi);
