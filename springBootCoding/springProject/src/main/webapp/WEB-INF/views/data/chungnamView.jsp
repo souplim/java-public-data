@@ -63,6 +63,8 @@
 		
 		// 버튼 클릭했을 때 상세 페이지로 이동
 		$(document).on("click", ".caption > .item-btn > .detailBtn", function(){
+			event.preventDefault();
+			let mng_no = $(this).parents("div.item").attr("data-mngno");
 			//console.log("mng_no"+mng_no);
 			location.href="/data/chungnamDetailView?mng_no="+mng_no;
 		});
