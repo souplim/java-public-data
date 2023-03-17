@@ -27,7 +27,7 @@ public class DataServiceImpl implements DataService {
 		/*
 		// URL 클래스 -> 참조된 자원에 대해 입출력 스트림을 형성할 수 있음
 		URL url = new URL(site.toString());
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection(); // url에 접근할 수 있는 인스턴스 생성
 		
 		// 요청방식 선택(GET, POST)
 		conn.setRequestMethod("GET");
@@ -39,7 +39,8 @@ public class DataServiceImpl implements DataService {
 		int resCode = conn.getResponseCode();
 		System.out.println("응답코드 : " + resCode); // 콘솔에 출력해서 확인
 		
-		BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+		// conn -> 외부api 가리킴. 그걸 읽어들임 -> InputStream -> 문자로 -> InputStreamReader -> 한줄씩 -> BufferedReader의 readLine()
+		BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8")); 
 		String inputLine;
 		StringBuffer output = new StringBuffer();
 		while((inputLine = in.readLine()) != null) { // 한줄씩 읽어서
