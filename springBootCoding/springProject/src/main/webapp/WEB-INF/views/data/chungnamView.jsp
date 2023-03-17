@@ -11,64 +11,64 @@
 	<script type="text/javascript" src="/resources/include/js/cookie.js"></script>
 	
 	<script type="text/javascript">
-	function template(mng_no, local_nm, type, nm, nm_sub, desc, list_img){
-		let $ul = $("#list");
+		function template(mng_no, local_nm, type, nm, nm_sub, desc, list_img){
+			let $ul = $("#list");
+			
+			let $element = $("#item-template").clone().removeAttr('id');
+			$element.attr("data-mngno", mng_no);
+			
+			$element.find('.item-light > a').attr({"href":list_img, "title":nm_sub});
+			$element.find('.item-light > a > img').attr("src", list_img);
+			
+			$element.find('.item-type').html(type);
+			$element.find('.item-title').html(nm);
+			$element.find('.item-sub').html(nm_sub);
+			$element.find('.item-content').html(desc);
+			
+			$ul.append($element);
+		}	
 		
-		let $element = $("#item-template").clone().removeAttr('id');
-		$element.attr("data-mngno", mng_no);
-		
-		$element.find('.item-light > a').attr({"href":list_img, "title":nm_sub});
-		$element.find('.item-light > a > img').attr("src", list_img);
-		
-		$element.find('.item-type').html(type);
-		$element.find('.item-title').html(nm);
-		$element.find('.item-sub').html(nm_sub);
-		$element.find('.item-content').html(desc);
-		
-		$ul.append($element);
-	}	
-	
-	$(function(){
-		$(".contentLayout .page-header h1").html("충남관광 - 관광명소"); // contentLayout.jsp -> tiles 설정 파일에서 준 제목이 들어가는 부분
-		
-		$.ajax({
-			// 오픈api: "https://tour.chungnam.go.kr/_prog/openapi/?func=tour&start=1&end=5",
-			url : "/data/chungnamList",
-			type : "get",
-			dataType : "xml",
-			success : function(data){
-				$(data).find('item').each(function(){
-					let mng_no = $(this).find("mng_no").text();
-					let local_nm = $(this).find("local_nm").text();
-					let type = $(this).find("type").text();
-					let nm = $(this).find("nm").text();
-					let nm_sub = $(this).find("nm_sub").text();
-					let desc = $(this).find("desc").text();
-					let list_img = $(this).find("list_img").text();
-					
-					template(mng_no, local_nm, type, nm, nm_sub, desc, list_img);
-				});
-			}, 
-			error : function(xhr, textStatus, errorThrown){
-				alert(textStatus + " (HTTP-" + xhr.status + " / " + errorThrown + ")");
-			}
+		$(function(){
+			$(".contentLayout .page-header h1").html("충남관광 - 관광명소"); // contentLayout.jsp -> tiles 설정 파일에서 준 제목이 들어가는 부분
+			
+			$.ajax({
+				// 오픈api: "https://tour.chungnam.go.kr/_prog/openapi/?func=tour&start=1&end=5",
+				url : "/data/chungnamList",
+				type : "get",
+				dataType : "xml",
+				success : function(data){
+					$(data).find('item').each(function(){ // 반복
+						let mng_no = $(this).find("mng_no").text();
+						let local_nm = $(this).find("local_nm").text();
+						let type = $(this).find("type").text();
+						let nm = $(this).find("nm").text();
+						let nm_sub = $(this).find("nm_sub").text();
+						let desc = $(this).find("desc").text();
+						let list_img = $(this).find("list_img").text();
+						
+						template(mng_no, local_nm, type, nm, nm_sub, desc, list_img);
+					});
+				}, 
+				error : function(xhr, textStatus, errorThrown){
+					alert(textStatus + " (HTTP-" + xhr.status + " / " + errorThrown + ")");
+				}
+			});
+			
+			/* span 태그 안 text 클래스 클릭했을 때 상세 페이지로 이동
+			$(document).on("click", "span.text", function(){
+				let mng_no = $(this).parents("li.item").attr("data-mngno");
+				//console.log("mng_no"+mng_no);
+				location.href="/data/chungnamDetailView?mng_no="+mng_no;
+			}); */
+			
+			// 버튼 클릭했을 때 상세 페이지로 이동
+			$(document).on("click", ".caption > .item-btn > .detailBtn", function(){
+				event.preventDefault(); // a태그의 기본 기능인 링크로 이동 -> 취소
+				let mng_no = $(this).parents("div.item").attr("data-mngno");
+				//console.log("mng_no"+mng_no);
+				location.href="/data/chungnamDetailView?mng_no="+mng_no;
+			});
 		});
-		
-		/* span 태그 안 text 클래스 클릭했을 때 상세 페이지로 이동
-		$(document).on("click", "span.text", function(){
-			let mng_no = $(this).parents("li.item").attr("data-mngno");
-			//console.log("mng_no"+mng_no);
-			location.href="/data/chungnamDetailView?mng_no="+mng_no;
-		}); */
-		
-		// 버튼 클릭했을 때 상세 페이지로 이동
-		$(document).on("click", ".caption > .item-btn > .detailBtn", function(){
-			event.preventDefault();
-			let mng_no = $(this).parents("div.item").attr("data-mngno");
-			//console.log("mng_no"+mng_no);
-			location.href="/data/chungnamDetailView?mng_no="+mng_no;
-		});
-	});
 	</script>
 </head>
 <body>
