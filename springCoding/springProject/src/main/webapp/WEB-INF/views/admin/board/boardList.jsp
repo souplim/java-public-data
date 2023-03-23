@@ -26,8 +26,8 @@
 				<div class="form-group">
 					<select id="search" name="search" class="form-control">
 						<option value="b_title">제목</option>
-						<option value="b_title">작성자</option>
-						<option value="b_title">내용</option>
+						<option value="b_name">작성자</option>
+						<option value="b_content">내용</option>
 						<option value="b_date">작성일자</option>
 					</select>
 				</div>
