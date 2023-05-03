@@ -1,22 +1,18 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-		<title>시작 페이지</title>
-		
-		<!-- 모바일 웹 페이지 설정 -->
-		<link rel="shortcut icon" href="/images/icon.png" />
-		<link rel="apple-touch-icon" href="/images/icon.png" />
-		<!-- 모바일 웹 페이지 설정 끝 -->
-		
-		<!--[if lt IE 9]>
-		<script src="/js/html5shiv.js"></script>
-		<![endif]-->
-	</head>
+<!-- 웹 개발에 있어 템플릿 엔진이란 지정된 템플릿 양식과 데이터가 합쳐져 HTML 문서를 출력하는 소프트웨어를 의미한다.
+	 서버 템플릿 엔진을 이용한 화면 생성은 서버에서 Java 코드로 문자열을 만든 뒤 이 문자열을 HTML로 변환하여 브라우저로 전달한다.
+	 자바에서 사용할 수 있는 서버 템플릿 엔진에는 JSP, Mustache(머스테치), Thymeleaf(타임리프) emddl whswogksek.
+	 타임리프(thymeleaf)는 스프링부트에서 사용하는 템플릿 엔진으로 HTML 태그에 속성으로 템플릿 기능을 사용하는 방식이다.
+ -->
+ <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+ 	<!-- common.html 안에 있는 head fragment가 현재 head 태그 자리에 그대로 변경되어 반영 -->
+	<head th:replace="/common/common.html :: head">
+
 	<body>
-		
+		<!-- Thymeleaf를 사용하는 방법은 4가지가 있다. 변수식으로 사용하는 ${}와 메세지방식 #{}, 객체변수식인 *{}, 링크방식 @{}이 있다. -->
+		<div class="container">
+			
+		</div>		
 	</body>	
 </html> 
 
