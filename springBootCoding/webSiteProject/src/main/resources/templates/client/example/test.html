@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- 웹 개발에 있어 템플릿 엔진이란 지정된 템플릿 양식과 데이터가 합쳐져 HTML 문서를 출력하는 소프트웨어를 의미한다.
 	 서버 템플릿 엔진을 이용한 화면 생성은 서버에서 Java 코드로 문자열을 만든 뒤 이 문자열을 HTML로 변환하여 브라우저로 전달한다.
-	 자바에서 사용할 수 있는 서버 템플릿 엔진에는 JSP, Mustache(머스테치), Thymeleaf(타임리프) emddl whswogksek.
+	 자바에서 사용할 수 있는 서버 템플릿 엔진에는 JSP, Mustache(머스테치), Thymeleaf(타임리프) 등이 존재한다.
 	 타임리프(thymeleaf)는 스프링부트에서 사용하는 템플릿 엔진으로 HTML 태그에 속성으로 템플릿 기능을 사용하는 방식이다.
  -->
  <html lang="ko" xmlns:th="http://www.thymeleaf.org">
@@ -110,6 +110,116 @@
 					<li>이름: <span th:text="*{name}"></span></li>
 					<li>나이: <span th:text="*{age}"></span></li>
 					<li>이름: <span th:text="*{email}"></span></li>
+				</ul>
+			</div>
+			
+			<div>
+				단순 데이터 반복
+				<!-- 반복 th:each 사용. th:each="변수 : ${#numbers.sequence(시작값,종료값)}" -->
+				<!-- Numbers Class(org.thymeleaf.expression.Numbers)의 Utility method인
+					 #numbers.sequence을 사용하여 먼저 원하는 반복 횟수 만큼의 배열을 생성 -->
+				<table>
+					<tr>
+						<td>번호</td>
+					</tr>
+					<tr th:each="num : ${#numbers.sequence(1,5)}">
+						<td th:text="${num}"></td>
+					</tr>
+				</table>
+				
+				<!-- 반복 th:each 사용. th:each="원소를 저장할 대상 : ${반복할 리스트}" -->
+				<table class="table table-striped">
+					<tr>
+						<td>이름</td>
+						<td>나이</td>
+						<td>이메일</td>
+					</tr>
+					<tr th:each="example : ${list}">
+						<td th:text="${example.name}"></td>					
+						<td th:text="${example.age}"></td>					
+						<td th:text="${example.email}"></td>					
+					</tr>
+				</table>
+			</div>
+			
+			<!-- th:each="원소를 저장할 대상 : ${반복할 리스트}" th:object="${원소를 저장할 대상}" -->
+			<!-- *{원소를 저장할 대상의 프로퍼티} ${상태 정보} -->
+			<div>
+				th:object를 사용한 반복
+				<table class="table table-bordered">
+					<tr>
+						<td>번호</td>
+						<td>이름</td>
+						<td>이메일</td>
+					</tr>
+					<tr th:each="example : ${list}" th:object="${example}">
+						<td th:text="${exampleStat.count}"></td>
+						<td th:text="*{name}"></td>
+						<td th:text="*{age}"></td>
+						<td th:text="*{email}"></td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- 반복 상태 정보는 원소를 저장할 대상 + Stat으로 명시 -->
+			<div>
+				반복 상태 유지(count)
+				<table class="table table-bordered">
+					<tr>
+						<td>번호</td>
+						<td>이름</td>
+						<td>나이</td>
+						<td>이메일</td>
+					</tr>
+					<tr th:each="example : ${list}">
+						<td th:text="${exampleStat.count}"></td>
+						<td th:text="${example.name}"></td>
+						<td th:text="${example.age}"></td>
+						<td th:text="${example.email}"></td>
+					</tr>
+				</table>
+			</div>
+			
+			<div>
+				반복 상태 유지(index)
+				<table class="table table-bordered">
+					<tr>
+						<td>번호</td>
+						<td>이름</td>
+						<td>나이</td>
+						<td>이메일</td>
+					</tr>
+					<tr th:each="example, status : ${list}">
+						<td th:text="${status.index}"></td> <!-- exampleStat 작성 시 에러 -->
+						<td th:text="${example.name}"></td>
+						<td th:text="${example.age}"></td>
+						<td th:text="${example.email}"></td>
+					</tr>
+				</table>
+			</div>
+			
+			<div>
+				<ul>
+					<li>default = <span th:text="${localDateTime}"></span></li>
+					<li>
+						yyyy-MM-dd HH:mm:ss = <span th:text="${#temporals.format(localDateTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+					</li>
+					<li>
+						yyyy-MM-dd/a hh:mm = <span th:text="${#temporals.format(localDateTime, 'yyyy-MM-dd/a hh:mm')}"></span>
+					</li>
+				</ul>
+			</div>
+			
+			<!-- 타임리프에서 URL을 생성할 때는 @{...} 문법을 사용하면 된다. -->
+			
+			<!-- 단순한 URL 표현 @{/hello} : /hello -->
+			<!-- 쿼리 파라미터를 포함하는 URL 표현 @{/hello(param1=${param1}, param2=${param2})} : /hello?param1=data1&param2=data2 -->
+			<!-- 경로 변수 @{/hello/{param1}/{param2}(param1=${param1}, param2=${param2})} : /hello/data1/data2 URL 경로상 변수가 있으면 ()는 경로 변수로 처리된다. -->
+			<!-- 경로 변수 + 쿼리 파라미터 @{/hello/{param1}(param1=${param1}, param2=${param2})} : /hello/data1?param2=data2 -->
+			<div>
+				<ul>
+					<li><a th:href="@{/example/exam01}">basic url</a></li>
+					<li><a th:href="@{/example/exam01(param1=java, param2=fighting)}">example query param</a></li>
 				</ul>
 			</div>
 		</div>		
