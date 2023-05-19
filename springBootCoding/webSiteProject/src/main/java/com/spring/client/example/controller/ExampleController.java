@@ -3,6 +3,7 @@ package com.spring.client.example.controller;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.spring.client.example.domain.ExampleDTO;
+import com.spring.client.example.domain.Grade;
+import com.spring.client.example.domain.StudentDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -59,5 +62,26 @@ public class ExampleController {
 	public String exam01(Model model, @ModelAttribute("param1") String param1, @ModelAttribute("param1") String param2) {
 		
 		return "client/example/exam01";
+	}
+	
+	/* 학생 정보를 입력받을 form 제어 */
+	public String studentForm(Model model, @ModelAttribute StudentDTO student) {
+		model.addAttribute("grades", Grade.values());
+		
+		Map<Integer, String> clubs = new LinkedHashMap<>();
+		clubs.put(1, "중앙 동아리");
+		clubs.put(2, "과 동아리");
+		clubs.put(3, "연합 동아리");
+		clubs.put(4, "과 학생회");
+		clubs.put(5, "총 학생회");
+		model.addAttribute("clubs", clubs);
+		
+		List<String> majors = new ArrayList<>();
+		majors.add("컴퓨터공학부");
+		majors.add("기계공학부");
+		majors.add("전자전기공학부");
+		model.addAttribute("majors", majors);
+		
+		return "client/example/studentForm";
 	}
 }
