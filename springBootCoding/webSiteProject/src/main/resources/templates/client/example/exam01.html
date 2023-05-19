@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+ <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="/common/common.html :: head">
+
+	<body>
+		<div class="container">
+			<div class="page-header">
+				<h3 class="text-center">페이지 이동</h3>
+			</div>
+			
+			<div th:if="${#strings.isEmpty(param.param1) || #strings.isEmpty(param.param2)}">
+				<p>파라미터가 존재하지 않습니다.</p>
+			</div>
+			
+			<div th:if="${not #strings.isEmpty(param.param1) && not #strings.isEmpty(param.param2)}">
+				<p th:text="${param.param1}"></p>
+				<p th:text="${param.param2}"></p>
+				
+				<!-- HTTP 요청 파라미터 접근 - param
+				요청에서 쿼리파라미터로 paramData=hello를 줬다면 ${param.paramData} 로 꺼내 사용할 수 있음
+				https://backtony.github.io/spring/2021-03-25-spring-mvc-2/ -->
+			</div>
+		</div>
+	</body>	
+</html> 
+
