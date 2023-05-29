@@ -65,6 +65,7 @@ public class ExampleController {
 	}
 	
 	/* 학생 정보를 입력받을 form 제어 */
+	@GetMapping("/studentForm")
 	public String studentForm(Model model, @ModelAttribute StudentDTO student) {
 		model.addAttribute("grades", Grade.values());
 		
