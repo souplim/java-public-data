@@ -1,22 +1,47 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-		<title>시작 페이지</title>
-		
-		<!-- 모바일 웹 페이지 설정 -->
-		<link rel="shortcut icon" href="/images/icon.png" />
-		<link rel="apple-touch-icon" href="/images/icon.png" />
-		<!-- 모바일 웹 페이지 설정 끝 -->
-		
-		<!--[if lt IE 9]>
-		<script src="/js/html5shiv.js"></script>
-		<![endif]-->
-	</head>
+	<head th:replace="/common/common.html :: head">
 	<body>
-		
+		<div class="container">
+			<div class="page-header"><h3 class="text-center">폼 데이터 출력</h3></div>
+			<table class="table table-striped">
+				<tr>
+					<td>학번</td>
+					<td>학생명</td>
+					<td>나이</td>
+					<td>성별</td>
+					<td>학년</td>
+					<td>재학여부</td>
+					<td>참여활동</td>
+					<td>전공</td>
+				</tr>
+				<tr>
+					<td th:text="${studentDTO.id}"></td>
+					<td th:text="${studentDTO.name}"></td>
+					<td th:text="${studentDTO.age}"></td>
+					<td th:text="${studentDTO.gender}"></td>
+					<td th:text="${studentDTO.grade.description}"></td>
+					<td>
+						<th:block th:if="${studentDTO.isAttending == true}" th:text="재학중"></th:block>
+						<th:block th:unless="${studentDTO.isAttending == true}" th:text="휴학중"></th:block>
+					</td>
+					<td>
+						<th:block th:each="club : ${studentDTO.clubs}" th:text="${club}"></th:block>
+					</td>
+					<td th:text="${studentDTO.major}"></td>
+				</tr>
+			</table>
+			<div class="text-right">
+				<button type="button" id="btn" class="btn btn-default">첫화면으로</button>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(function(){
+				$("#btn").click(function(){
+					location.href="/example/test";
+				});
+			});
+		</script>
 	</body>	
 </html> 
 
