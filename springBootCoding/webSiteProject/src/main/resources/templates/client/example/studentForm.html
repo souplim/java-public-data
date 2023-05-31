@@ -16,7 +16,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td>학색명</td>
+								<td>학생명</td>
 								<td class="text-left">
 									<input type="text" class="form-control" th:field="*{name}" />
 								</td>
@@ -44,7 +44,7 @@
 									<th:block th:each="grade : ${grades}">
 										<label class="radio-inline">
 											<input type="radio" th:field="*{grade}" th:value="${grade.name()}"/>
-											[[${grade.description}]]
+											[[${grade.description}]] <!--/* [[]] 문법을 사용하면 그 안에 바로 데이터가 출력됨 */-->
 										</label>
 									</th:block>
 								</td>
@@ -53,15 +53,55 @@
 								<td>재학여부</td>
 								<td class="text-left">
 									<label class="checkbox-inline">
-										<input type="radio" th:field="*{grade}" th:value="${grade.name()}"/>
-										[[${grade.description]]
+										<input type="checkbox" th:field="*{isAttending}"/>
+										재학 중이면 체크하세요
 									</label>
+								</td>
+							</tr>
+							<tr>
+								<td>참여 활동</td>
+								<td class="text-left">
+									<th:block th:each="club : ${clubs}">
+										<label class="checkbox-inline">
+											<input type="checkbox" th:field="*{clubs}" th:value="${club.value}" />
+											[[${club.value}]]
+										</label>
+									</th:block>
+								</td>
+							</tr>
+							<tr>
+								<td>전공</td>
+								<td class="text-left">
+									<select th:field="*{major}">
+										<option value="">전공을 선택하세요</option>
+										<option th:each="major : ${majors}" th:value="${major}" th:text="${major}" />
+									</select>
 								</td>
 							</tr>
 						</tbody>
 					</table>
+					<div class="text-right">
+						<button type="button" class="btn btn-default" id="insertBtn">학생정보등록</button>
+						<button type="button" class="btn btn-default" id="cancelBtn">다시입력</button>
+					</div>
 				</form>
 			</div>
 		</div>
+		<script type="text/javascript">
+			$(function(){
+				$("#insertBtn").click(function(){
+					$("#studentForm").attr({
+						"method" : "post",
+						"action" : "studentView"
+					});
+					$("#studentForm").submit();
+				});
+				$("#cancelBtn").click(function(){
+					$("#studentForm").each(function(){
+						this.reset();
+					});
+				});
+			});
+		</script>
 	</body>	
 </html> 
