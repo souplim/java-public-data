@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.spring.client.example.domain.ExampleDTO;
@@ -84,5 +85,12 @@ public class ExampleController {
 		model.addAttribute("majors", majors);
 		
 		return "client/example/studentForm";
+	}
+	
+	/* 학생 정보를 입력받아 보여주는 부분 */
+	@PostMapping("/studentView")
+	public String studentView(Model model, @ModelAttribute StudentDTO student) {
+		System.out.println(student);
+		return "client/example/studentView";
 	}
 }
